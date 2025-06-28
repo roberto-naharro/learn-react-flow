@@ -1,0 +1,6 @@
+# Run lint-staged to handle linting and formatting on staged files
+npx lint-staged
+
+# Run TypeScript compiler in noEmit mode to check all TypeScript files
+echo "Checking TypeScript types..."
+npx tsc --noEmit
