@@ -1,1 +1,22 @@
-npx --no -- commitlint --edit $1
+. "$(dirname -- "$0")/utils.sh"
+
+# Define colors for better visibility
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+RESET='\033[0m'
+
+# Setup Node.js environment
+setup_node_environment || {
+  echo -e "${RED}❌ Commit message validation cannot run without Node.js${RESET}"
+  echo -e "${YELLOW}⚠️  Please install Node.js or set up NVM before committing${RESET}"
+  exit 1
+}
+
+# Setup project paths
+setup_project_paths
+
+echo -e "${GREEN}🔍 Checking commit message format...${RESET}"
+
+# Check for commitlint
+check_command "commitlint" "commitlint not found" && ./node_modules/.bin/commitlint --edit "$1" || exit 1

@@ -1,6 +1,25 @@
-# Run lint-staged to handle linting and formatting on staged files
-npx lint-staged
+. "$(dirname -- "$0")/utils.sh"
 
-# Run TypeScript compiler in noEmit mode to check all TypeScript files
-echo "Checking TypeScript types..."
-npx tsc --noEmit
+# Define colors for better visibility
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+RESET='\033[0m'
+
+# Setup Node.js environment
+setup_node_environment || {
+  echo -e "${RED}❌ Pre-commit checks cannot run without Node.js${RESET}"
+  echo -e "${YELLOW}⚠️  Please install Node.js or set up NVM before committing${RESET}"
+  exit 1
+}
+
+# Setup project paths
+setup_project_paths
+
+# Run lint-staged to handle linting and formatting on staged files
+echo -e "${GREEN}🔍 Checking for lint errors...${RESET}"
+check_command "lint-staged" "lint-staged not found" && ./node_modules/.bin/lint-staged || exit 1
+
+# Run TypeScript check
+echo -e "${GREEN}🔍 Checking TypeScript types...${RESET}"
+check_command "tsc" "tsc not found" && ./node_modules/.bin/tsc --noEmit || exit 1
