@@ -1,0 +1,5 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.wordWrapColumn": 100,
+  "editor.rulers": [{ "column": 100, "color": "#3d3d3d" }]
+}

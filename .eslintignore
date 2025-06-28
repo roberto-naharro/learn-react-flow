@@ -1,0 +1,19 @@
+# Build files
+dist
+dist-ssr
+
+# Test related
+coverage
+test-results
+playwright-report
+blob-report
+.playwright
+e2e-results
+.jest-cache
+
+# Node modules
+node_modules
+
+# Temporary TypeScript files
+*.tsbuildinfo
+node_modules/.tmp

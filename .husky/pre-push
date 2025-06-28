@@ -1,0 +1,34 @@
+# Check if we should run tests based on config
+node -e "
+  import('./config.js').then(config => {
+    if (!config.default.prePush.enabled) {
+      console.log('Tests before push are disabled in config');
+      process.exit(0);
+    }
+
+    const runUnit = config.default.prePush.runUnitTests;
+    const runE2E = config.default.prePush.runE2ETests;
+
+    if (!runUnit && !runE2E) {
+      console.log('No tests configured to run before push');
+      process.exit(0);
+    }
+
+    console.log('Running tests before push...');
+
+    if (runUnit) {
+      console.log('Running unit tests...');
+      require('child_process').execSync('npm run test:unit', {stdio: 'inherit'});
+    }
+
+    if (runE2E) {
+      console.log('Running e2e tests...');
+      require('child_process').execSync('npm run test:e2e', {stdio: 'inherit'});
+    }
+
+    console.log('All tests passed!');
+  }).catch(err => {
+    console.error('Error loading config:', err);
+    process.exit(1);
+  });
+"
