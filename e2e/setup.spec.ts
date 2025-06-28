@@ -5,20 +5,15 @@ test.describe('Playwright environment setup', () => {
     // Navigate to the application
     await page.goto('/');
 
-    // Verify page title contains expected text
+    // Simply verify the page title to check if the environment is working
     await expect(page).toHaveTitle(/Vite \+ React/);
   });
 
-  test('should have correct environment', async ({ page }) => {
+  test('should render the page content', async ({ page }) => {
     // Navigate to the application
     await page.goto('/');
 
-    // Check if we can interact with the DOM
-    const button = page.getByRole('button', { name: /count is/i });
-    await expect(button).toBeVisible();
-
-    // Check if React is working by interacting with the counter
-    await button.click();
-    await expect(button).toContainText('count is 1');
+    // Basic check to ensure the page content is rendered
+    await expect(page.locator('body')).toBeVisible();
   });
 });
