@@ -1,6 +1,6 @@
 // This file demonstrates how to use Playwright global setup
 
-import { FullConfig } from '@playwright/test';
+import type { FullConfig } from '@playwright/test';
 
 /**
  * Global setup function that runs before all tests
