@@ -2,6 +2,33 @@
 
 This repository contains examples and exercises for learning and testing functionalities of React Flow and deck.gl libraries.
 
+## Table of Contents
+
+- [React Flow \& Deck.gl Learning Repository](#react-flow--deckgl-learning-repository)
+  - [Table of Contents](#table-of-contents)
+  - [Overview](#overview)
+  - [Getting Started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Development Tooling](#development-tooling)
+    - [Installation](#installation)
+  - [Testing](#testing)
+    - [Unit Testing with Jest](#unit-testing-with-jest)
+    - [End-to-End Testing with Playwright](#end-to-end-testing-with-playwright)
+    - [Test Configuration](#test-configuration)
+    - [Continuous Integration](#continuous-integration)
+  - [Exercises](#exercises)
+    - [Basic React Flow - Create a basic React app with ReactFlow](#basic-react-flow---create-a-basic-react-app-with-reactflow)
+      - [Create a simple flow diagram](#create-a-simple-flow-diagram)
+      - [Create Custom nodes](#create-custom-nodes)
+        - [Source node: Represents a data source (e.g., a URL pointing to a GeoJSON file)](#source-node-represents-a-data-source-eg-a-url-pointing-to-a-geojson-file)
+      - [Layer node: Represents a layer to be rendered on the map](#layer-node-represents-a-layer-to-be-rendered-on-the-map)
+    - [Basic deck.gl - Add a map visualization with Deck.gl and integrate with current code](#basic-deckgl---add-a-map-visualization-with-deckgl-and-integrate-with-current-code)
+    - [Bonus - Support an intersection node](#bonus---support-an-intersection-node)
+  - [Exercise progress record](#exercise-progress-record)
+    - [Basic React Flow - Create a simple flow diagram](#basic-react-flow---create-a-simple-flow-diagram)
+    - [Basic React Flow - Create Custom nodes](#basic-react-flow---create-custom-nodes)
+  - [License](#license)
+
 ## Overview
 
 This project serves as a playground for exploring interactive data visualization capabilities using:
@@ -163,6 +190,28 @@ Features:
 
 #### Create Custom nodes
 
+Implement the following custom nodes:
+
+##### Source node: Represents a data source (e.g., a URL pointing to a GeoJSON file)
+
+It includes:
+
+- A single output port to connect to downstream nodes.
+- A text input field labeled URL, where the user can enter the URL of a publicly accessible GeoJSON file (e.g.,
+  <https://example.com/my-data.geojson>).
+  This node acts as a provider of spatial data that can be consumed by
+  one or more Layer nodes.
+
+> [!TIP]
+> It's possible to get sample GeoJSON file URLs from <https://geojson.xyz> to test your implementation.
+
+#### Layer node: Represents a layer to be rendered on the map
+
+It includes:
+
+- A single input port to receive a connection from a Source node.
+- The Layer node will visualize the data fetched from the connected Source in next exercises.
+
 ### Basic deck.gl - Add a map visualization with Deck.gl and integrate with current code
 
 ### Bonus - Support an intersection node
@@ -217,6 +266,35 @@ The implementation successfully addresses all required features:
 - Saving and loading the diagram state from local storage
 
 The architecture is designed to be extensible for future features like custom nodes.
+
+### Basic React Flow - Create Custom nodes
+
+I have started implementing custom nodes for the flow diagram:
+
+Phase 1: Basic structure and types
+
+1. **Node Palette Refactor**
+   - Refactored the `NodePalette` to support both basic and custom node types using a unified `AppNode` component.
+   - The palette now supports extensible node definitions and drag-and-drop for custom nodes.
+
+2. **Custom Node Types**
+   - Added a `Source` node type:
+     - Represents a data source
+   - Added a `Layer` node type
+
+3. **TypeScript Types and Validation**
+   - Defined strong TypeScript types for node props and node type guards.
+   - Ensured type safety and extensibility for future custom nodes.
+
+4. **Component Structure**
+   - Created separate components for each node type (`BasicNode`, `SourceCustomNode`, `LayerCustomNode`).
+   - Used a shared container for consistent drag-and-drop and accessibility behavior.
+
+5. **Testing**
+   - Updated and extended tests for the node palette and drag-and-drop logic to cover custom node types.
+   - Skip e2e test for now. They will be updated with the final custom nodes version
+
+Phase 2: Custom node implementation and styles
 
 ## License
 

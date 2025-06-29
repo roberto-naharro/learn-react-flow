@@ -3,9 +3,21 @@ import { fireEvent, render, screen } from '@testing-library/react';
 
 import { NodePalette } from '../NodePalette';
 
+import type { NodeTypes } from '../NodeTypes/types';
+
 describe('NodePalette component', () => {
-  it('should render all node types', () => {
-    render(<NodePalette />);
+  const renderBasicNodeNodePalette = () => {
+    const nodeTypes = [
+      { type: 'input', label: 'Input Node', available: true },
+      { type: 'default', label: 'Default Node', available: true },
+      { type: 'output', label: 'Output Node', available: true },
+    ] as const satisfies NodeTypes;
+
+    return render(<NodePalette nodeTypes={nodeTypes} />);
+  };
+
+  it('should render all node basic node types', () => {
+    renderBasicNodeNodePalette();
 
     // Check that all node types are rendered
     expect(screen.getByText('Input Node')).toBeInTheDocument();
@@ -14,7 +26,7 @@ describe('NodePalette component', () => {
   });
 
   it('should set the correct data when dragging', () => {
-    render(<NodePalette />);
+    renderBasicNodeNodePalette();
 
     // Get a node button
     const nodeButton = screen.getByText('Input Node');
@@ -34,7 +46,7 @@ describe('NodePalette component', () => {
   });
 
   it('should have draggable buttons', () => {
-    render(<NodePalette />);
+    renderBasicNodeNodePalette();
 
     // Get all node buttons
     const nodeButtons = screen.getAllByRole('button');
