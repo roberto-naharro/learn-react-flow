@@ -150,9 +150,73 @@ npm run test:e2e:ui
 
 This repository includes exercises to help you learn both libraries:
 
-1. **Basic React Flow** - Create a basic React app with ReactFlow
-2. **Basic deck.gl** - Add a map visualization with Deck.gl and integrate with current code
-3. **Bonus** - Support an intersection node
+### Basic React Flow - Create a basic React app with ReactFlow
+
+#### Create a simple flow diagram
+
+Features:
+
+- Add nodes via drag & drop
+- Connect nodes using edges
+- Delete nodes and edges
+- Save and load the diagram state from the local storage
+
+#### Create Custom nodes
+
+### Basic deck.gl - Add a map visualization with Deck.gl and integrate with current code
+
+### Bonus - Support an intersection node
+
+## Exercise progress record
+
+### Basic React Flow - Create a simple flow diagram
+
+I have implemented a basic flow diagram editor with React Flow using a modular, context-based architecture. The implementation process included:
+
+1. **Application Architecture Setup**
+   - Created a domain-driven structure separating the layer-manager functionality
+   - Implemented a custom router for navigation between pages
+   - Set up a clean component hierarchy with proper separation of concerns
+
+2. **Context-Based State Management**
+   - Refactored from prop drilling to a context-based architecture
+   - Created specialized providers for different concerns:
+     - `NodesProvider`: Manages node state and operations
+     - `EdgesProvider`: Handles edge state and connections
+     - `DragAndDropProvider`: Coordinates drag and drop operations
+     - `PersistenceProvider`: Manages saving and loading diagram state
+
+3. **React Flow Integration**
+   - Implemented the main `FlowCanvas` component with React Flow
+   - Created drag-and-drop functionality for adding new nodes
+   - Set up node connections
+   - Added controls for manipulating the diagram (zoom, pan)
+
+4. **User Interface Components**
+   - Created a `NodePalette` component for selecting node types
+   - Implemented an `ActionPanel` with buttons for saving, restoring, and resetting
+   - Added a `ControlPanel` with instructions and drag sources
+   - Used styled components for consistent UI appearance
+
+5. **Data Persistence**
+   - Implemented localStorage-based persistence for diagram state
+   - Created functions for saving, loading, and resetting the diagram
+   - Ensured proper viewport restoration when loading saved diagrams
+
+6. **Code Quality and Organization**
+   - Set up proper TypeScript types throughout the application
+   - Organized code into logical domains and modules
+   - Created custom hooks for specific functionality
+   - Ensured proper error handling and edge cases
+
+The implementation successfully addresses all required features:
+
+- Adding nodes via drag & drop from a palette
+- Connecting nodes using edges with intuitive handle interactions
+- Deleting nodes and edges using keyboard shortcuts
+- Saving and loading the diagram state from local storage
+
+The architecture is designed to be extensible for future features like custom nodes.
 
 ## License
 

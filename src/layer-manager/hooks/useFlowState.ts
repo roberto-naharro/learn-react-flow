@@ -1,43 +1,65 @@
 import { useCallback, useState } from 'react';
 
-import { type Connection, addEdge, useEdgesState, useNodesState } from '@xyflow/react';
+import type { ReactFlowInstance } from '@xyflow/react';
 
-import { initialEdges, initialNodes } from '../data/initial-data';
+const STORAGE_KEY = 'react-flow-diagram';
 
 export const useFlowState = () => {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-  const [nodeName, setNodeName] = useState('New Node');
+  const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance | null>(null);
 
-  // Handle new connections between nodes
-  const onConnect = useCallback(
-    (params: Connection) => setEdges((eds) => addEdge(params, eds)),
-    [setEdges],
-  );
+  // Save the current flow state to localStorage
+  const saveFlowState = useCallback(() => {
+    if (reactFlowInstance) {
+      const flow = reactFlowInstance.toObject();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(flow));
+      return true;
+    }
+    console.warn('Cannot save flow state: reactFlowInstance not available');
+    return false;
+  }, [reactFlowInstance]);
 
-  // Add a new node when button is clicked
-  const addNode = useCallback(() => {
-    const newNodeId = (nodes.length + 1).toString();
-    const newNode = {
-      id: newNodeId,
-      data: { label: nodeName || 'New Node' },
-      position: {
-        x: Math.random() * 500,
-        y: Math.random() * 300,
-      },
-    };
+  // Get flow data from localStorage
+  const getStoredFlowData = useCallback(() => {
+    try {
+      const flowString = localStorage.getItem(STORAGE_KEY);
+      if (flowString) {
+        return JSON.parse(flowString);
+      }
+    } catch (error) {
+      console.error('Failed to parse flow state:', error);
+    }
+    return null;
+  }, []);
 
-    setNodes((nds) => nds.concat(newNode));
-  }, [nodes, nodeName, setNodes]);
+  // Reset function that can be called by the provider
+  const resetFlowState = useCallback(() => {
+    // This should now be implemented in the provider using this hook
+    // The provider will have access to the necessary setters
+    if (reactFlowInstance) {
+      requestAnimationFrame(() => {
+        reactFlowInstance.fitView({ padding: 0.2 });
+      });
+    }
+    return true;
+  }, [reactFlowInstance]);
+
+  // Load and restore flow from localStorage
+  const restoreFlowState = useCallback(() => {
+    // The actual restoration should happen in the provider
+    // using the data returned by getStoredFlowData
+    if (reactFlowInstance) {
+      setTimeout(() => {
+        reactFlowInstance.fitView({ padding: 0.2 });
+      }, 100);
+    }
+    return getStoredFlowData();
+  }, [getStoredFlowData, reactFlowInstance]);
 
   return {
-    nodes,
-    edges,
-    nodeName,
-    setNodeName,
-    onNodesChange,
-    onEdgesChange,
-    onConnect,
-    addNode,
+    saveFlowState,
+    restoreFlowState,
+    resetFlowState,
+    getStoredFlowData,
+    setReactFlowInstance,
   };
 };

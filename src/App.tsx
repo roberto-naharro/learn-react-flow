@@ -1,13 +1,9 @@
-import LayerManagerPage from './pages/LayerManagerPage';
-import { RouterProvider, useRouter } from './router';
-import { createStyles } from './ui/theme';
+import { ReactFlowProvider } from '@xyflow/react';
 
-const appStyles = createStyles(() => ({
-  container: {
-    width: '100vw',
-    height: '100vh',
-  },
-}));
+import { appStyles } from './App.styles';
+import LayerManagerPage from './layer-manager/pages/LayerManagerPage/LayerManagerPage';
+import { useRouter } from './router/hooks';
+import { RouterProvider } from './router/provider';
 
 // Router component to handle page rendering based on current route
 const Router = () => {
@@ -23,9 +19,11 @@ const Router = () => {
 function App() {
   return (
     <RouterProvider>
-      <div style={appStyles.container}>
-        <Router />
-      </div>
+      <ReactFlowProvider>
+        <div style={appStyles.container}>
+          <Router />
+        </div>
+      </ReactFlowProvider>
     </RouterProvider>
   );
 }

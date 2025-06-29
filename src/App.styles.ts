@@ -1,4 +1,4 @@
-import { createStyles } from './theme';
+import { createStyles } from './ui/theme';
 
 export const appStyles = createStyles(() => ({
   container: {
