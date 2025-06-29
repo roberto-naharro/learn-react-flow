@@ -2,22 +2,22 @@ import * as React from 'react';
 
 import { nodePaletteStyles } from '../NodePalette.styles';
 
-import type { NodeTypeProps } from './types';
-import type { Prettify } from '../../../../types/utility';
+import type { NodePaletteTypeProps } from './types';
+import type { Prettify } from '../../../../../types/utility';
 
-export type NodeTypeContainerProps = Prettify<
-  NodeTypeProps & {
+export type NodeTypePaletteContainerProps = Prettify<
+  NodePaletteTypeProps & {
     children: React.ReactNode;
   }
 >;
 
-const NodeTypeContainer = ({
+const NodeTypePaletteContainer = ({
   type,
   label,
   available = true,
   onDragStart,
   children,
-}: NodeTypeContainerProps) =>
+}: NodeTypePaletteContainerProps) =>
   available ? (
     <div
       key={type}
@@ -47,4 +47,4 @@ const NodeTypeContainer = ({
     </div>
   ) : null;
 
-export default NodeTypeContainer;
+export default NodeTypePaletteContainer;

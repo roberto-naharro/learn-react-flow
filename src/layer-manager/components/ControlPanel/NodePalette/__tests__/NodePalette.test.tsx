@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 
 import { NodePalette } from '../NodePalette';
 
-import type { NodeTypes } from '../NodeTypes/types';
+import type { NodePaletteTypes } from '../NodeTypes/types';
 
 describe('NodePalette component', () => {
   const renderBasicNodeNodePalette = () => {
@@ -11,7 +11,7 @@ describe('NodePalette component', () => {
       { type: 'input', label: 'Input Node', available: true },
       { type: 'default', label: 'Default Node', available: true },
       { type: 'output', label: 'Output Node', available: true },
-    ] as const satisfies NodeTypes;
+    ] as const satisfies NodePaletteTypes;
 
     return render(<NodePalette nodeTypes={nodeTypes} />);
   };

@@ -7,7 +7,8 @@ export interface NodesContextType {
   setNodes: React.Dispatch<React.SetStateAction<Node[]>>;
   onNodesChange: OnNodesChange;
   addNode: (node: Node) => void;
-  removeNode: (nodeId: string) => void; // Add removeNode to the type
+  removeNode: (nodeId: string) => void;
+  updateNodeData: (nodeId: string, data: object) => void;
 }
 
 export const NodesContext = createContext<NodesContextType | undefined>(undefined);

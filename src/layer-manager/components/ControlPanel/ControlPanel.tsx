@@ -1,7 +1,7 @@
 import { Panel } from '@xyflow/react';
 
 import { controlPanelStyles } from './ControlPanel.styles';
-import { NodePalette } from '../NodePalette/NodePalette';
+import { NodePalette } from './NodePalette/NodePalette';
 
 export const ControlPanel = () => {
   const styles = controlPanelStyles;

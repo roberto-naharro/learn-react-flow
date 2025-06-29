@@ -20,7 +20,7 @@ describe('Style exports', () => {
     const theme = {
       spacing: { xs: '4px', sm: '8px', md: '16px' },
       borderRadius: { md: '8px', sm: '4px' },
-      colors: { buttonBg: '#1a1a1a', text: '#333', primary: '#646cff' },
+      colors: { buttonBg: '#1a1a1a', text: '#333', primary: '#999eff' },
       fontSize: { md: '16px', sm: '14px' },
       transitions: { default: '0.3s ease' },
     };

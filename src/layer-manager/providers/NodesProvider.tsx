@@ -26,6 +26,18 @@ export const NodesProvider = ({ children }: { children: ReactNode }) => {
     [setNodes],
   );
 
+  // Update a node's data by ID
+  const updateNodeData = useCallback(
+    (nodeId: string, data: object) => {
+      setNodes((nds) =>
+        nds.map((node) =>
+          node.id === nodeId ? { ...node, data: { ...node.data, ...data } } : node,
+        ),
+      );
+    },
+    [setNodes],
+  );
+
   const value = useMemo(
     () => ({
       nodes,
@@ -33,8 +45,9 @@ export const NodesProvider = ({ children }: { children: ReactNode }) => {
       onNodesChange,
       addNode,
       removeNode,
+      updateNodeData,
     }),
-    [nodes, setNodes, onNodesChange, addNode, removeNode],
+    [nodes, setNodes, onNodesChange, addNode, removeNode, updateNodeData],
   );
 
   return <NodesContext.Provider value={value}>{children}</NodesContext.Provider>;

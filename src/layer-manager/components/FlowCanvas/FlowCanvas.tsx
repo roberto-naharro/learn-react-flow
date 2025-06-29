@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react';
 
 import {
   Background,
@@ -14,6 +14,7 @@ import { useDragDrop } from '../../hooks/useDragDrop';
 import { useEdgesContext } from '../../hooks/useEdgesContext';
 import { useNodesContext } from '../../hooks/useNodesContext';
 import { usePersistenceContext } from '../../hooks/usePersistenceContext';
+import { getNodeTypes } from '../../nodes/nodeTypes';
 import { ActionPanel } from '../ActionPanel/ActionPanel';
 import { ControlPanel } from '../ControlPanel/ControlPanel';
 
@@ -21,11 +22,20 @@ export const FlowCanvas = () => {
   const styles = flowCanvasStyles;
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
 
-  // Use the specific context hooks directly
-  const { nodes, onNodesChange } = useNodesContext();
+  const { nodes, onNodesChange, updateNodeData } = useNodesContext();
   const { edges, onEdgesChange, onConnect } = useEdgesContext();
   const { setReactFlowInstance: setRfInstance } = usePersistenceContext();
   const { onDrop, onDragOver } = useDragDrop();
+
+  // Correctly generate nodeTypes with injected onUrlChange for SourceCustomNode
+  const nodeTypes = useMemo(() => {
+    // Provide a custom prop for the source node type
+    return getNodeTypes({
+      source: {
+        onUrlChange: (id: string, url: string) => updateNodeData(id, { url }),
+      },
+    });
+  }, [updateNodeData]);
 
   return (
     <div style={styles.reactFlowWrapper} ref={reactFlowWrapper}>
@@ -41,6 +51,7 @@ export const FlowCanvas = () => {
         connectionLineType={ConnectionLineType.Bezier}
         deleteKeyCode={['Backspace', 'Delete']}
         fitView
+        nodeTypes={nodeTypes}
       >
         <Controls />
         <MiniMap />

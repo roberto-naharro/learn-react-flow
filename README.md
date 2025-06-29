@@ -27,6 +27,8 @@ This repository contains examples and exercises for learning and testing functio
   - [Exercise progress record](#exercise-progress-record)
     - [Basic React Flow - Create a simple flow diagram](#basic-react-flow---create-a-simple-flow-diagram)
     - [Basic React Flow - Create Custom nodes](#basic-react-flow---create-custom-nodes)
+      - [Phase 1: Basic structure and types](#phase-1-basic-structure-and-types)
+      - [Phase 2: Custom node implementation and styles](#phase-2-custom-node-implementation-and-styles)
   - [License](#license)
 
 ## Overview
@@ -271,7 +273,7 @@ The architecture is designed to be extensible for future features like custom no
 
 I have started implementing custom nodes for the flow diagram:
 
-Phase 1: Basic structure and types
+#### Phase 1: Basic structure and types
 
 1. **Node Palette Refactor**
    - Refactored the `NodePalette` to support both basic and custom node types using a unified `AppNode` component.
@@ -294,7 +296,31 @@ Phase 1: Basic structure and types
    - Updated and extended tests for the node palette and drag-and-drop logic to cover custom node types.
    - Skip e2e test for now. They will be updated with the final custom nodes version
 
-Phase 2: Custom node implementation and styles
+#### Phase 2: Custom node implementation and styles
+
+1. **Custom Node Canvas Components**
+   - Implemented `SourceCustomNode` and `LayerCustomNode` React components for use in the flow diagram.
+   - Each custom node has its own styles and structure, matching the design requirements.
+
+2. **Custom Node Palette Components**
+   - Created palette components for each custom node (`SourceCustomNodePalette`, `LayerCustomNodePalette`) with visual cues for connection points.
+   - Used consistent drag-and-drop containers and accessible markup.
+
+3. **Styling**
+   - Added dedicated style modules for custom nodes and their palette representations.
+   - Leveraged the shared theme and style utilities for consistent appearance.
+
+4. **Node Type Registration**
+   - Registered custom node types in the `getNodeTypes` utility for React Flow.
+   - Ensured correct prop injection (e.g., `onUrlChange` for the Source node).
+
+5. **Context and State Integration**
+   - Extended the nodes context/provider to support updating node data (e.g., updating the URL in the Source node).
+   - Connected custom node input fields to context-driven state updates.
+
+6. **Testing**
+   - Added and updated unit tests for the node palette and custom node drag-and-drop logic.
+   - Ensured that custom nodes appear and behave correctly in the palette and on the canvas.
 
 ## License
 

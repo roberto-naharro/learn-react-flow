@@ -11,7 +11,7 @@ jest.mock('@xyflow/react', () => ({
   Panel: reactFlowMock.Panel,
 }));
 
-jest.mock('../../NodePalette/NodePalette', () => ({
+jest.mock('../NodePalette/NodePalette', () => ({
   NodePalette: () => <div data-testid="mock-node-palette">Node Palette Mock</div>,
 }));
 

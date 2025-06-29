@@ -3,8 +3,10 @@
  */
 export const theme = {
   colors: {
-    primary: '#646cff',
-    primaryHover: '#535bf2',
+    primary: '#999eff',
+    primaryHover: '#5962ff',
+    secondary: '#ffa9d4',
+    secondaryHover: '#ff54aa',
     background: '#242424',
     backgroundLight: '#ffffff',
     text: 'rgba(255, 255, 255, 0.87)',

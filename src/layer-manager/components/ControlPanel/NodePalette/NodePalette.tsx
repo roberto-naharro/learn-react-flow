@@ -1,16 +1,19 @@
 import * as React from 'react';
 import { useCallback } from 'react';
 
-import { AppNode } from './AppNode';
 import { nodePaletteStyles } from './NodePalette.styles';
+import { SingleNodePalette } from './SingleNodePalette';
 
-import type { NodeTypes } from './NodeTypes/types';
+import type { NodePaletteTypes } from './NodeTypes/types';
 
 // Node types that can be dragged onto the canvas
-const defaultNodeTypes = [{ type: 'source' }, { type: 'layer' }] as const satisfies NodeTypes;
+const defaultNodeTypes = [
+  { type: 'source' },
+  { type: 'layer' },
+] as const satisfies NodePaletteTypes;
 
 export type NodePaletteProps = {
-  nodeTypes?: NodeTypes;
+  nodeTypes?: NodePaletteTypes;
 };
 export const NodePalette = ({ nodeTypes = defaultNodeTypes }: NodePaletteProps) => {
   const styles = nodePaletteStyles;
@@ -27,7 +30,7 @@ export const NodePalette = ({ nodeTypes = defaultNodeTypes }: NodePaletteProps) 
     <div style={styles.container}>
       <div style={styles.nodeList}>
         {nodeTypes.map((node) => (
-          <AppNode {...node} key={node.type} onDragStart={onDragStart} />
+          <SingleNodePalette {...node} key={node.type} onDragStart={onDragStart} />
         ))}
       </div>
     </div>
