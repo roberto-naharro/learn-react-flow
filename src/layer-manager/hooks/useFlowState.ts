@@ -26,7 +26,12 @@ export const useFlowState = () => {
         return JSON.parse(flowString);
       }
     } catch (error) {
-      console.error('Failed to parse flow state:', error);
+      if (error instanceof Error) {
+        error.message = `Failed to parse flow state from localStorage: ${error.message}`;
+        console.error(error);
+      } else {
+        console.error('Failed to parse flow state from localStorage');
+      }
     }
     return null;
   }, []);

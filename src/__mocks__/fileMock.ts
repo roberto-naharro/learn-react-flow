@@ -1,2 +1,1 @@
-const fileMock = 'test-file-stub';
-export default fileMock;
+export default 'test-file-stub';
