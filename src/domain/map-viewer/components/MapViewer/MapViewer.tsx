@@ -4,6 +4,7 @@ import { GeoJsonLayer } from '@deck.gl/layers';
 import DeckGL from '@deck.gl/react';
 import { Map } from 'react-map-gl/maplibre';
 
+import { mapViewerStyles } from './MapViewer.styles';
 import { useEdgesContext } from '../../../flow/hooks/useEdgesContext';
 import { NODE_LAYER_TYPE_NAME } from '../../../flow/node/components/LayerCustomNode';
 import { NODE_SOURCE_TYPE_NAME } from '../../../flow/node/components/SourceCustomNode';
@@ -47,6 +48,7 @@ function getConnectedSourceUrl(layerNodeId: string, edges: Edge[], nodes: Node[]
 // Memoized inner component
 const MapViewerInner = memo(
   ({ nodes, edges }: { nodes: Node[]; edges: Edge[] }) => {
+    const styles = mapViewerStyles;
     const [geojsonCache, setGeojsonCache] = useState<GeojsonCache>({});
     const [hoverInfo, setHoverInfo] = useState<HoverInfo>(null);
 
@@ -115,27 +117,19 @@ const MapViewerInner = memo(
     }, [connectedLayers, geojsonCache]);
 
     return (
-      <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
+      <div style={styles.mapContainer}>
         <DeckGL initialViewState={INITIAL_VIEW_STATE} controller={true} layers={deckLayers}>
           <Map mapStyle="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json" />
         </DeckGL>
         {hoverInfo && hoverInfo.object && (
           <div
             style={{
-              position: 'absolute',
-              zIndex: 10,
-              pointerEvents: 'none',
+              ...styles.tooltip,
               left: hoverInfo.x,
               top: hoverInfo.y,
-              background: 'rgba(0,0,0,0.8)',
-              color: 'white',
-              padding: 8,
-              borderRadius: 4,
-              maxWidth: 300,
-              fontSize: 12,
             }}
           >
-            <pre style={{ margin: 0, whiteSpace: 'pre-wrap' }}>
+            <pre style={styles.tooltipContent}>
               {JSON.stringify(hoverInfo.object.properties, null, 2)}
             </pre>
           </div>

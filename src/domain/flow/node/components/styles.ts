@@ -1,11 +1,14 @@
+import { nodeStyles as sharedNodeStyles } from '../../../../shared/styles/nodes';
 import { createStyles } from '../../../../shared/styles/theme';
 
-export const nodeStyles = createStyles((theme) => ({
+export const nodeStyles = createStyles(() => ({
   container: {
-    padding: theme.spacing.md,
-    borderRadius: 6,
-    minWidth: '10em',
-    minHeight: '10em',
+    ...sharedNodeStyles.base,
   },
-  label: { marginBottom: theme.spacing.sm, fontWeight: 600 },
+  label: {
+    ...sharedNodeStyles.label,
+  },
+  input: {
+    ...sharedNodeStyles.input,
+  },
 }));

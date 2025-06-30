@@ -372,6 +372,28 @@ During the implementation, of the other exercises, I have done a lot of testing 
 2. **Node Domain Organization**
    - Moved all node-related logic (custom node components, palette, type guards, and styles) under `domain/flow/nodes/` to reflect their tight coupling with the flow domain.
 
+3. **Comprehensive CSS-in-JS Styling System**
+   - Implemented a complete theme-based styling system using CSS-in-JS with TypeScript support.
+   - Created a centralized theme (`src/shared/styles/theme.ts`) with comprehensive color palettes, spacing scales, typography, shadows, and transitions.
+   - Established shared foundation styles for buttons, forms, typography, panels, and nodes in `src/shared/styles/`.
+   - Organized styles hierarchically from component-specific to domain-specific to shared styles.
+
+4. **Interactive State Management Without SASS**
+   - Implemented React state-driven interactive states using `useState` and event handlers (`onMouseEnter/Leave`, `onFocus/Blur`).
+   - Created utility functions in `src/shared/styles/utils.ts` for merging base styles with hover/focus/disabled variants.
+   - Updated components like `NodeTypePaletteContainer` to use proper React state management for interactive styling.
+
+5. **Style Cleanup and Consolidation**
+   - Moved hardcoded inline styles from components to dedicated `.styles.ts` files (e.g., `MapViewer.styles.ts`).
+   - Eliminated redundant domain-specific style files by consolidating common patterns into shared styles.
+   - Updated all style imports to use the enhanced shared style system with proper theme-based values.
+   - Removed unused CSS class names in favor of consistent CSS-in-JS objects.
+
+6. **Comprehensive Style Testing**
+   - Created extensive tests in `src/shared/styles/__tests__/` covering theme consistency, variant styles, and interactive state utilities.
+   - Added component-specific style tests for key components like `NodePalette` and `MapViewer`.
+   - Implemented integration tests for style utility functions to ensure proper hover/focus state management.
+
 ## License
 
 [MIT](LICENSE)

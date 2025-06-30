@@ -27,8 +27,8 @@ export const NodePalette = ({ nodeTypes = defaultNodeTypes }: NodePaletteProps) 
   }, []);
 
   return (
-    <div style={styles.container}>
-      <div style={styles.nodeList}>
+    <div style={styles.paletteContainer}>
+      <div style={styles.nodeTypesList}>
         {nodeTypes.map((node) => (
           <SingleNodePalette {...node} key={node.type} onDragStart={onDragStart} />
         ))}

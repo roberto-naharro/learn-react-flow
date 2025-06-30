@@ -1,6 +1,6 @@
+import { buttonStyles } from '../../../../shared/styles/buttons';
 import { panelStyles } from '../../../../shared/styles/panels';
 import { createStyles } from '../../../../shared/styles/theme';
-import { buttonStyles } from '../../styles/buttons';
 
 export const actionPanelStyles = createStyles(
   (theme) =>
@@ -13,8 +13,8 @@ export const actionPanelStyles = createStyles(
         backgroundColor: theme.colors.actionsPanelBg,
       },
       button: {
-        ...buttonStyles.flowControl,
-        backgroundColor: theme.colors.actionButton,
+        ...buttonStyles.base,
+        ...buttonStyles.actionButton,
       },
     }) as const,
 );

@@ -1,16 +1,16 @@
 import { createStyles } from '../../../../../shared/styles/theme';
 
 export const nodePaletteStyles = createStyles((theme) => ({
-  container: {
+  paletteContainer: {
     marginBottom: theme.spacing.md,
   },
-  nodeList: {
+  nodeTypesList: {
     display: 'flex',
     flexDirection: 'column',
     gap: theme.spacing.xl,
     padding: theme.spacing.md,
   },
-  dragAndDropNode: {
+  paletteNode: {
     position: 'relative',
     padding: theme.spacing.md,
     borderRadius: theme.borderRadius.sm,
@@ -25,34 +25,38 @@ export const nodePaletteStyles = createStyles((theme) => ({
     fontSize: theme.fontSize.md,
     textAlign: 'center',
     width: '100%',
+    transition: theme.transitions.default,
   },
-  dragAndDropNodeContainer: {
+  paletteNodeHover: {
+    backgroundColor: theme.colors.nodeHoverBg,
+    borderColor: theme.colors.primary,
+  },
+  paletteNodeTypesContainer: {
     width: '100%',
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
     gap: theme.spacing.md,
   },
-  connectionRight: {
+  connectionHandleRight: {
     position: 'absolute',
-    width: '16px',
-    height: '16px',
-    borderRadius: '50%',
+    width: theme.spacing.md,
+    height: theme.spacing.md,
+    borderRadius: theme.borderRadius.round,
     backgroundColor: theme.colors.white,
     border: `1px solid ${theme.colors.border}`,
-    right: '-16px',
+    right: `-${theme.spacing.md}`,
     top: '50%',
     transform: 'translateY(-50%)',
   },
-
-  connectionLeft: {
+  connectionHandleLeft: {
     position: 'absolute',
-    width: '16px',
-    height: '16px',
-    borderRadius: '50%',
+    width: theme.spacing.md,
+    height: theme.spacing.md,
+    borderRadius: theme.borderRadius.round,
     backgroundColor: theme.colors.white,
     border: `1px solid ${theme.colors.border}`,
-    left: '-16px',
+    left: `-${theme.spacing.md}`,
     top: '50%',
     transform: 'translateY(-50%)',
   },

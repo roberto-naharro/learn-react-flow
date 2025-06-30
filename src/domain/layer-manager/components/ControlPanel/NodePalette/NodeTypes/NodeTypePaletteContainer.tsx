@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 
 import { nodePaletteStyles } from '../NodePalette.styles';
 
@@ -17,17 +18,22 @@ const NodeTypePaletteContainer = ({
   available = true,
   onDragStart,
   children,
-}: NodeTypePaletteContainerProps) =>
-  available ? (
+}: NodeTypePaletteContainerProps) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  if (!available) return null;
+
+  return (
     <div
       key={type}
       style={{
-        ...nodePaletteStyles.dragAndDropNode,
-        cursor: 'grab',
+        ...nodePaletteStyles.paletteNode,
+        ...(isHovered ? nodePaletteStyles.paletteNodeHover : {}),
       }}
       draggable
       onDragStart={(event) => onDragStart(event, type)}
-      className={'dndnode' + (type ? ` ${type}` : '')}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       tabIndex={0}
       role="button"
       aria-label={`Drag ${label}`}
@@ -45,6 +51,7 @@ const NodeTypePaletteContainer = ({
     >
       {children}
     </div>
-  ) : null;
+  );
+};
 
 export default NodeTypePaletteContainer;
