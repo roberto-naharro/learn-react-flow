@@ -1,4 +1,4 @@
-import { createStyles } from './styles/theme';
+import { createStyles } from './shared/styles/theme';
 
 export const appStyles = createStyles(() => ({
   container: {

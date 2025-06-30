@@ -1,1 +1,3 @@
-export type Route = 'layer-manager' | 'map';
+import type { ROUTES } from './constants';
+
+export type Route = keyof typeof ROUTES;

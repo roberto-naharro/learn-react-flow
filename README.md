@@ -30,6 +30,7 @@ This repository contains examples and exercises for learning and testing functio
       - [Phase 1: Basic structure and types](#phase-1-basic-structure-and-types)
       - [Phase 2: Custom node implementation and styles](#phase-2-custom-node-implementation-and-styles)
     - [Basic deck.gl - Add a map visualization](#basic-deckgl---add-a-map-visualization)
+    - [Refactoring and Cleanup](#refactoring-and-cleanup)
   - [License](#license)
 
 ## Overview
@@ -357,6 +358,19 @@ I have implemented the basic deck.gl integration with the React Flow diagram, al
    - Refactored and unified style imports for all components, moving shared styles to `src/styles/`.
    - Updated and added tests for style modules and the new map view.
    - Ensured all navigation and state management works between the diagram and map views.
+
+### Refactoring and Cleanup
+
+During the implementation, of the other exercises, I have done a lot of testing and research about how to use React Flow and deck.gl together. The code end up being a bit messy, so I took the opportunity to refactor and clean up the codebase. The main changes include:
+
+1. **Domain-Driven Folder Structure**
+   - Reorganized the `src/` directory by business domains: `flow`, `layer-manager`, and `map-viewer`.
+   - Grouped all related components, hooks, context, types, and styles within each domain folder.
+   - Extracted truly reusable code (components, hooks, utilities, styles) into a `shared/` directory.
+   - Placed application-level infrastructure (such as the router) in a dedicated `router/` folder, separate from both domain and shared code.
+
+2. **Node Domain Organization**
+   - Moved all node-related logic (custom node components, palette, type guards, and styles) under `domain/flow/nodes/` to reflect their tight coupling with the flow domain.
 
 ## License
 
