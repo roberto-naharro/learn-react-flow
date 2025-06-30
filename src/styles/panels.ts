@@ -1,4 +1,4 @@
-import { createStyles } from '../../ui/theme';
+import { createStyles } from './theme';
 
 // Keep only shared panel styles that might be used across multiple components
 export const panelStyles = createStyles(

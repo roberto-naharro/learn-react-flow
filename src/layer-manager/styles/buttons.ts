@@ -1,4 +1,5 @@
-import { createStyles } from '../../ui/theme';
+import { buttonStyles as globalButtonStyles } from '../../styles/buttons';
+import { createStyles } from '../../styles/theme';
 
 export const buttonStyles = createStyles(
   (theme) =>
@@ -15,15 +16,7 @@ export const buttonStyles = createStyles(
         transition: 'border-color 0.25s',
       },
       flowControl: {
-        backgroundColor: theme.colors.primary,
-        color: theme.colors.text,
-        padding: `${theme.spacing.xs} ${theme.spacing.md}`,
-        borderRadius: theme.borderRadius.sm,
-        border: 'none',
-        cursor: 'pointer',
-        fontSize: theme.fontSize.sm,
-        fontWeight: 500,
-        transition: theme.transitions.default,
+        ...globalButtonStyles.actionButton,
       },
     }) as const,
 );

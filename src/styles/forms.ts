@@ -1,4 +1,4 @@
-import { createStyles } from '../../ui/theme';
+import { createStyles } from './theme';
 
 export const formStyles = createStyles((theme) => ({
   inputContainer: {

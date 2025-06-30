@@ -1,18 +1,12 @@
 import { describe, expect, it } from '@jest/globals';
 
-import * as styles from '../index';
+import { buttonStyles } from '../buttons';
+import { nodeStyles } from '../nodes';
 
-describe('Style exports', () => {
-  it('should export all style modules correctly', () => {
-    // Check that all styles are exported
-    expect(styles).toBeDefined();
-
-    // Check for specific style exports to ensure everything is included
-    expect(styles.buttonStyles).toBeDefined();
-    expect(styles.inputStyles).toBeDefined();
-    expect(styles.nodeStyles).toBeDefined();
-    expect(styles.panelStyles).toBeDefined();
-    expect(styles.typographyStyles).toBeDefined();
+describe('Layer Manager Local Style exports', () => {
+  it('should export buttonStyles and nodeStyles correctly', () => {
+    expect(buttonStyles).toBeDefined();
+    expect(nodeStyles).toBeDefined();
   });
 
   it('should have the expected button style properties', () => {
@@ -25,13 +19,12 @@ describe('Style exports', () => {
       transitions: { default: '0.3s ease' },
     };
 
-    const buttonStyle = styles.buttonStyles;
-    expect(buttonStyle.button).toBeDefined();
-    expect(buttonStyle.flowControl).toBeDefined();
+    expect(buttonStyles.button).toBeDefined();
+    expect(buttonStyles.flowControl).toBeDefined();
 
     // Check specific properties with updated values
-    expect(buttonStyle.button.backgroundColor).toBe(theme.colors.buttonBg);
-    expect(buttonStyle.flowControl.backgroundColor).toBe(theme.colors.primary);
+    expect(buttonStyles.button.backgroundColor).toBe(theme.colors.buttonBg);
+    expect(buttonStyles.flowControl.backgroundColor).toBe(theme.colors.primary);
   });
 
   it('should have the expected node style properties', () => {
@@ -43,31 +36,10 @@ describe('Style exports', () => {
       transitions: { default: '0.3s ease' },
     };
 
-    const nodeStyle = styles.nodeStyles;
-    expect(nodeStyle.dragAndDropNode).toBeDefined();
+    expect(nodeStyles.dragAndDropNode).toBeDefined();
 
     // Check specific properties
-    expect(nodeStyle.dragAndDropNode.backgroundColor).toBe(theme.colors.nodeBg);
-    expect(nodeStyle.dragAndDropNode.border).toBe(`1px solid ${theme.colors.border}`);
-  });
-
-  it('should have the expected panel style properties', () => {
-    // Update the theme object to match actual colors used
-    const theme = {
-      colors: { panelBg: 'rgba(255, 255, 255, 0.9)' },
-      borderRadius: { md: '8px' },
-      shadows: { md: '0 2px 4px rgba(0,0,0,0.1)' },
-      spacing: { sm: '8px', md: '16px' },
-    };
-
-    const panelStyle = styles.panelStyles;
-    expect(panelStyle.base).toBeDefined();
-    expect(panelStyle.smallPadding).toBeDefined();
-    expect(panelStyle.mediumPadding).toBeDefined();
-
-    // Check specific properties with updated values
-    expect(panelStyle.base.backgroundColor).toBe(theme.colors.panelBg);
-    expect(panelStyle.smallPadding.padding).toBe(theme.spacing.sm);
-    expect(panelStyle.mediumPadding.padding).toBe(theme.spacing.md);
+    expect(nodeStyles.dragAndDropNode.backgroundColor).toBe(theme.colors.nodeBg);
+    expect(nodeStyles.dragAndDropNode.border).toBe(`1px solid ${theme.colors.border}`);
   });
 });

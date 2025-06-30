@@ -1,8 +1,8 @@
+import { buttonStyles } from '../../../styles/buttons';
 import { panelStyles } from '../../../styles/panels';
 import { createStyles } from '../../../styles/theme';
-import { buttonStyles } from '../../styles/buttons';
 
-export const actionPanelStyles = createStyles(
+export const mapViewerPageStyles = createStyles(
   (theme) =>
     ({
       container: {
@@ -13,7 +13,7 @@ export const actionPanelStyles = createStyles(
         backgroundColor: theme.colors.actionsPanelBg,
       },
       button: {
-        ...buttonStyles.flowControl,
+        ...buttonStyles.actionButton,
         backgroundColor: theme.colors.actionButton,
       },
     }) as const,

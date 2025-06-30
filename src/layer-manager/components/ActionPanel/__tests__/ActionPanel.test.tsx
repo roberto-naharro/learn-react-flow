@@ -1,6 +1,7 @@
-import { beforeEach, describe, expect, it, jest } from '@jest/globals';
+import { afterAll, beforeAll, beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { fireEvent, render, screen } from '@testing-library/react';
 
+import { RouterProvider } from '../../../../router/provider';
 import {
   PersistenceContext,
   type PersistenceContextType,
@@ -22,11 +23,24 @@ describe('ActionPanel', () => {
     } as PersistenceContextType;
 
     return render(
-      <PersistenceContext.Provider value={contextValue}>
-        <ActionPanel />
-      </PersistenceContext.Provider>,
+      <RouterProvider>
+        <PersistenceContext.Provider value={contextValue}>
+          <ActionPanel />
+        </PersistenceContext.Provider>
+      </RouterProvider>,
     );
   };
+
+  let originalPushState: typeof window.history.pushState;
+
+  beforeAll(() => {
+    originalPushState = window.history.pushState;
+    window.history.pushState = jest.fn();
+  });
+
+  afterAll(() => {
+    window.history.pushState = originalPushState;
+  });
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -37,7 +51,7 @@ describe('ActionPanel', () => {
 
     expect(screen.getByText('Save')).toBeInTheDocument();
     expect(screen.getByText('Restore')).toBeInTheDocument();
-    expect(screen.getByText('Reset')).toBeInTheDocument();
+    expect(screen.getByText('Reset Diagram')).toBeInTheDocument();
   });
 
   it('should call saveFlowState when Save button is clicked', () => {
@@ -57,7 +71,14 @@ describe('ActionPanel', () => {
   it('should call resetFlowState when Reset button is clicked', () => {
     renderWithContext();
 
-    fireEvent.click(screen.getByText('Reset'));
+    fireEvent.click(screen.getByText('Reset Diagram'));
     expect(mockResetFlowState).toHaveBeenCalledTimes(1);
+  });
+
+  it('should navigate to map when Show Map button is clicked', () => {
+    renderWithContext();
+
+    fireEvent.click(screen.getByText('Show Map'));
+    expect(window.history.pushState).toHaveBeenCalledWith({}, '', '/map');
   });
 });

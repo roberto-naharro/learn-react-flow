@@ -1,4 +1,4 @@
-import { createStyles } from '../../ui/theme';
+import { createStyles } from '../../styles/theme';
 
 export const nodeStyles = createStyles(
   (theme) =>

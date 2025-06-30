@@ -2,7 +2,7 @@ import { Handle, Position } from '@xyflow/react';
 
 import { sourceCustomNodeStyles } from './SourceCustomNode.styles';
 
-type SourceCustomNodeProps = {
+export type SourceCustomNodeProps = {
   id: string;
   data: {
     url?: string;

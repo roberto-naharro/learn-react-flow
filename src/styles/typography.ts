@@ -1,4 +1,4 @@
-import { createStyles } from '../../ui/theme';
+import { createStyles } from './theme';
 
 export const typographyStyles = createStyles(
   (theme) =>
@@ -17,9 +17,6 @@ export const typographyStyles = createStyles(
         fontSize: theme.fontSize.sm,
         color: theme.colors.textMuted,
         marginTop: theme.spacing.md,
-        '& p': {
-          marginBottom: theme.spacing.xs,
-        },
       },
     }) as const,
 );

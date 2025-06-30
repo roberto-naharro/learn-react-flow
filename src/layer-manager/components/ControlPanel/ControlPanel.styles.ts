@@ -1,7 +1,7 @@
-import { createStyles } from '../../../ui/theme';
-import { formStyles } from '../../styles/forms';
-import { panelStyles } from '../../styles/panels';
-import { typographyStyles } from '../../styles/typography';
+import { formStyles } from '../../../styles/forms';
+import { panelStyles } from '../../../styles/panels';
+import { createStyles } from '../../../styles/theme';
+import { typographyStyles } from '../../../styles/typography';
 
 export const controlPanelStyles = createStyles((theme) => ({
   container: {

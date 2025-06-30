@@ -2,7 +2,7 @@ import { Handle, Position } from '@xyflow/react';
 
 import { layerCustomNodeStyles } from './LayerCustomNode.styles';
 
-type LayerCustomNodeProps = {
+export type LayerCustomNodeProps = {
   id: string;
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   data: {};

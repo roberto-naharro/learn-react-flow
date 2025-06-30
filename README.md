@@ -29,6 +29,7 @@ This repository contains examples and exercises for learning and testing functio
     - [Basic React Flow - Create Custom nodes](#basic-react-flow---create-custom-nodes)
       - [Phase 1: Basic structure and types](#phase-1-basic-structure-and-types)
       - [Phase 2: Custom node implementation and styles](#phase-2-custom-node-implementation-and-styles)
+    - [Basic deck.gl - Add a map visualization](#basic-deckgl---add-a-map-visualization)
   - [License](#license)
 
 ## Overview
@@ -216,6 +217,13 @@ It includes:
 
 ### Basic deck.gl - Add a map visualization with Deck.gl and integrate with current code
 
+Features:
+
+- Switch between diagram and map view using the toggle button.
+- Each Layer node connected to a Source node renders a Deck.gl GeoJsonLayer using the URL from the Source node.
+- Layers are rendered in the order of their vertical position in the diagram (topmost node is rendered in front).
+- Hovering over a geometry on the map shows a tooltip with its properties.
+
 ### Bonus - Support an intersection node
 
 ## Exercise progress record
@@ -321,6 +329,34 @@ I have started implementing custom nodes for the flow diagram:
 6. **Testing**
    - Added and updated unit tests for the node palette and custom node drag-and-drop logic.
    - Ensured that custom nodes appear and behave correctly in the palette and on the canvas.
+
+### Basic deck.gl - Add a map visualization
+
+I have implemented the basic deck.gl integration with the React Flow diagram, allowing users to visualize data layers on a map. The implementation process included:
+
+1. **Dependencies Setup**
+   - Added `@deck.gl/core`, `@deck.gl/layers`, `@deck.gl/react`, `react-map-gl`, and `maplibre-gl` to the project dependencies.
+   - Ensured type support for GeoJSON and Deck.gl.
+
+2. **Map Viewer Page and Navigation**
+   - Created `MapViewerPage` and `MapViewer` components under `src/map-viewer/`.
+   - Added a toggle button to switch between the diagram and map view.
+   - Updated the router and action panel to support navigation between views.
+
+3. **Rendering GeoJSON Layers**
+   - Implemented logic to find all Layer nodes connected to Source nodes.
+   - For each Layer node, fetched the GeoJSON from the connected Source node's URL.
+   - Rendered a Deck.gl `GeoJsonLayer` for each connected Layer node.
+   - Layers are rendered in the order of their vertical position in the diagram (topmost node is rendered in front).
+
+4. **Map Interactivity and Tooltips**
+   - Added support for hovering over geometries on the map to show a tooltip with their properties.
+   - Ensured the map and tooltip are styled and positioned correctly.
+
+5. **Styling and Test Updates**
+   - Refactored and unified style imports for all components, moving shared styles to `src/styles/`.
+   - Updated and added tests for style modules and the new map view.
+   - Ensured all navigation and state management works between the diagram and map views.
 
 ## License
 

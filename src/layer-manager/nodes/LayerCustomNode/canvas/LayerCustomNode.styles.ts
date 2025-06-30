@@ -1,4 +1,4 @@
-import { createStyles } from '../../../../ui/theme';
+import { createStyles } from '../../../../styles/theme';
 import { nodeStyles } from '../../styles';
 
 export const layerCustomNodeStyles = createStyles((theme) => ({
