@@ -20,6 +20,6 @@ setup_project_paths
 echo -e "${GREEN}🔍 Checking for lint errors...${RESET}"
 check_command "lint-staged" "lint-staged not found" && ./node_modules/.bin/lint-staged || exit 1
 
-# Run TypeScript check
+# Run TypeScript check using our custom typecheck script
 echo -e "${GREEN}🔍 Checking TypeScript types...${RESET}"
-check_command "tsc" "tsc not found" && ./node_modules/.bin/tsc --noEmit || exit 1
+npm run typecheck || exit 1

@@ -25,6 +25,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "typecheck": "sh scripts/typecheck.sh",
     "preview": "vite preview",
     "test:unit": "jest",
     "test:e2e": "playwright test",
