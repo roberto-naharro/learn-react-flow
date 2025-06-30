@@ -103,6 +103,7 @@ const MapViewerInner = memo(
             id: `geojson-layer-${layerNode.id}`,
             data,
             pickable: true,
+            // Polygon and LineString properties
             stroked: true,
             filled: true,
             lineWidthScale: 2,
@@ -110,6 +111,16 @@ const MapViewerInner = memo(
             getFillColor: [255, 140, 0, 100 + i * 50],
             getLineColor: [0, 0, 0, 200],
             getLineWidth: 2,
+            // Point properties - these were missing!
+            pointType: 'circle',
+            getPointRadius: 5,
+            pointRadiusMinPixels: 3,
+            pointRadiusMaxPixels: 20,
+            pointRadiusUnits: 'pixels',
+            pointAntialiasing: true,
+            pointBillboard: true,
+            // Point color - use the same color scheme as fill but with full opacity
+            getPointColor: [255, 140, 0, 255],
             onHover: handleHover,
           });
         })
