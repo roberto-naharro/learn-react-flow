@@ -4,12 +4,12 @@ import { nodePaletteStyles } from '../../../../../layer-manager/components/Contr
 
 export const layerCustomNodePaletteStyles = createStyles(() => ({
   container: {
-    ...nodePaletteStyles.dragAndDropNodeContainer,
+    ...nodePaletteStyles.paletteNode,
   },
   label: {
     ...typographyStyles.subheading,
   },
   connectionLeft: {
-    ...nodePaletteStyles.connectionLeft,
+    ...nodePaletteStyles.connectionHandleLeft,
   },
 }));

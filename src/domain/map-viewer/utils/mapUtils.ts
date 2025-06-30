@@ -50,7 +50,7 @@ export function createGeoJsonLayer(
       ...LAYER_COLORS.fill.base,
       LAYER_COLORS.fill.alphaBase + layerIndex * LAYER_COLORS.fill.alphaIncrement,
     ],
-    getLineColor: LAYER_COLORS.stroke,
+    getLineColor: [...LAYER_COLORS.stroke],
     getLineWidth: 2,
     // Point properties
     pointType: 'circle',
@@ -60,7 +60,7 @@ export function createGeoJsonLayer(
     pointRadiusUnits: 'pixels',
     pointAntialiasing: true,
     pointBillboard: true,
-    getPointColor: LAYER_COLORS.point,
+    getPointColor: [...LAYER_COLORS.point],
     onHover,
   });
 }

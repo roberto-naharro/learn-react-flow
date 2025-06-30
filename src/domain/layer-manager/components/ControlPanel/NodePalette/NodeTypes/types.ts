@@ -6,7 +6,7 @@ export type NodePaletteTypeProps = {
   type: string;
   label?: string;
   available?: boolean;
-  onDragStart: (event: React.DragEvent<HTMLDivElement>, nodeType: string) => void;
+  onDragStart: (event: React.DragEvent<HTMLElement>, nodeType: string) => void;
 };
 
 type BasicNodePalette = Omit<BasicNodePaletteProps, 'onDragStart'>;

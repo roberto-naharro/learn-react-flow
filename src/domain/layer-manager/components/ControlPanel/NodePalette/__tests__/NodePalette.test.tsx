@@ -45,14 +45,17 @@ describe('NodePalette component', () => {
     expect(dataTransfer.effectAllowed).toBe('move');
   });
 
-  it('should have draggable buttons', () => {
+  it('should have draggable accessible buttons', () => {
     renderBasicNodeNodePalette();
 
     // Get all node buttons
     const nodeButtons = screen.getAllByRole('button');
+    expect(nodeButtons).toHaveLength(3); // Input, Default, and Output nodes
 
-    // Check that all buttons are draggable
+    // Check that buttons are both accessible AND draggable
     nodeButtons.forEach((button) => {
+      expect(button).toHaveAttribute('aria-label');
+      expect(button).toHaveAttribute('type', 'button');
       expect(button).toHaveAttribute('draggable', 'true');
     });
   });

@@ -16,6 +16,7 @@ type NodeTypeProps = {
 
 export const getNodeTypes = (props: NodeTypeProps = {}) =>
   Object.entries(nodeTypes).reduce((acc, [key, Component]) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     acc[key] = (nodeProps: any) => (
       <Component {...nodeProps} data={{ ...nodeProps.data, ...props[key as keyof typeof props] }} />
     );

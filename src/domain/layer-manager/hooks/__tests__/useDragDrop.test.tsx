@@ -92,13 +92,14 @@ describe('useDragDrop', () => {
   it('should handle onDrop with node type from dataTransfer', () => {
     // Create wrapper with empty drag context value
     const customWrapper = ({ children }: { children: React.ReactNode }) => {
-      const dragAndDropValue = [null, jest.fn()] as DragAndDropContextType;
+      const dragAndDropValue: DragAndDropContextType = [null, jest.fn()];
       const nodesValue = {
         nodes: [],
         setNodes: jest.fn(),
         onNodesChange: jest.fn(),
         addNode: mockAddNode,
         removeNode: jest.fn(),
+        updateNodeData: jest.fn(),
       };
 
       return (
@@ -134,13 +135,14 @@ describe('useDragDrop', () => {
   it('should not add node if no node type is available', () => {
     // Create wrapper with empty drag context value
     const customWrapper = ({ children }: { children: React.ReactNode }) => {
-      const dragAndDropValue = [null, jest.fn()] as const;
+      const dragAndDropValue: DragAndDropContextType = [null, jest.fn()];
       const nodesValue = {
         nodes: [],
         setNodes: jest.fn(),
         onNodesChange: jest.fn(),
         addNode: mockAddNode,
         removeNode: jest.fn(),
+        updateNodeData: jest.fn(),
       };
 
       return (

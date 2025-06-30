@@ -19,7 +19,7 @@ export const NodePalette = ({ nodeTypes = defaultNodeTypes }: NodePaletteProps) 
   const styles = nodePaletteStyles;
 
   // Start drag with node type data - Match exactly with React Flow example
-  const onDragStart = useCallback((event: React.DragEvent<HTMLDivElement>, nodeType: string) => {
+  const onDragStart = useCallback((event: React.DragEvent<HTMLElement>, nodeType: string) => {
     // Important: Need to set application/reactflow as the format
     event.dataTransfer.setData('application/reactflow', nodeType);
     // Set allowed effect

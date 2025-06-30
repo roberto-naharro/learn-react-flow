@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { render } from '@testing-library/react';
 

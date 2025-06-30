@@ -6,6 +6,15 @@ import { nodePaletteStyles } from '../NodePalette.styles';
 import type { NodePaletteTypeProps } from './types';
 import type { Prettify } from '../../../../../../shared/types/utility';
 
+// Utility to create minimal drag event for keyboard accessibility
+const createKeyboardDragEvent = (): React.DragEvent<HTMLElement> =>
+  ({
+    dataTransfer: {
+      setData: () => {},
+      effectAllowed: 'move' as const,
+    },
+  }) as unknown as React.DragEvent<HTMLElement>;
+
 export type NodeTypePaletteContainerProps = Prettify<
   NodePaletteTypeProps & {
     children: React.ReactNode;
@@ -24,33 +33,36 @@ const NodeTypePaletteContainer = ({
   if (!available) return null;
 
   return (
-    <div
+    <button
       key={type}
+      type="button"
       style={{
         ...nodePaletteStyles.paletteNode,
         ...(isHovered ? nodePaletteStyles.paletteNodeHover : {}),
+        // Remove default button styles to make it look like the original div
+        background: 'none',
+        border: 'none',
+        font: 'inherit',
       }}
       draggable
       onDragStart={(event) => onDragStart(event, type)}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      tabIndex={0}
-      role="button"
-      aria-label={`Drag ${label}`}
+      aria-label={`Add ${label} node to canvas`}
       onKeyDown={(event) => {
         if (event.key === 'Enter' || event.key === ' ') {
           event.preventDefault();
-          // Simulate drag start on keyboard interaction
-          const dragEvent: React.DragEvent<HTMLDivElement> = new DragEvent('dragstart', {
-            bubbles: true,
-          });
-          event.currentTarget.dispatchEvent(dragEvent);
-          onDragStart(dragEvent, type);
+          // Handle keyboard activation for accessibility compliance
+          onDragStart(createKeyboardDragEvent(), type);
         }
+      }}
+      onMouseDown={(event) => {
+        // Allow drag to initiate but prevent button click side effects
+        event.stopPropagation();
       }}
     >
       {children}
-    </div>
+    </button>
   );
 };
 
