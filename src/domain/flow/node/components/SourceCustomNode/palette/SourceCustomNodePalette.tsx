@@ -12,8 +12,14 @@ const SourceCustomNodePalette = ({
     <div style={sourceCustomNodePaletteStyles.container}>
       <span style={sourceCustomNodePaletteStyles.connectionRight} />
       <h3 style={sourceCustomNodePaletteStyles.label}>{label}</h3>
-      <div>
-        <input className="nodrag" type="text" disabled placeholder="GeoJSON URL" />
+      <div style={sourceCustomNodePaletteStyles.inputContainer}>
+        <input
+          className="nodrag"
+          type="text"
+          disabled
+          placeholder="GeoJSON URL"
+          style={sourceCustomNodePaletteStyles.input}
+        />
       </div>
     </div>
   </NodeTypePaletteContainer>

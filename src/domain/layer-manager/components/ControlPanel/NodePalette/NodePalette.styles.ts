@@ -10,6 +10,18 @@ export const nodePaletteStyles = createStyles((theme) => ({
     gap: theme.spacing.xl,
     padding: theme.spacing.md,
   },
+  nodeInnerContainer: {
+    background: 'none',
+    border: 'none',
+    padding: 0,
+    margin: 0,
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   paletteNode: {
     position: 'relative',
     padding: theme.spacing.md,

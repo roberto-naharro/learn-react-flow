@@ -39,10 +39,6 @@ const NodeTypePaletteContainer = ({
       style={{
         ...nodePaletteStyles.paletteNode,
         ...(isHovered ? nodePaletteStyles.paletteNodeHover : {}),
-        // Remove default button styles to make it look like the original div
-        background: 'none',
-        border: 'none',
-        font: 'inherit',
       }}
       draggable
       onDragStart={(event) => onDragStart(event, type)}
