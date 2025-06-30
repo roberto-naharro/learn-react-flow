@@ -394,6 +394,13 @@ During the implementation, of the other exercises, I have done a lot of testing 
    - Added component-specific style tests for key components like `NodePalette` and `MapViewer`.
    - Implemented integration tests for style utility functions to ensure proper hover/focus state management.
 
+7. **MapViewer Component Architecture Refactoring**
+   - Refactored the MapViewer component by extracting domain-specific logic into custom hooks.
+   - Created dedicated hooks: `useConnectedLayers`, `useGeojsonCache`, and `useDeckLayers` for better separation of concerns.
+   - Extracted utility functions to `mapUtils.ts` for improved code reusability and testability.
+   - Consolidated map-related constants in `constants.ts` to eliminate hardcoded values throughout the codebase.
+   - Established consistent color management with `LAYER_COLORS` constant for Deck.gl layer styling.
+
 ## License
 
 [MIT](LICENSE)
