@@ -14,4 +14,20 @@ export const sourceCustomNodeStyles = createStyles((theme) => ({
   input: {
     ...nodeStyles.input,
   },
+  error: {
+    color: theme.colors.error,
+    fontSize: '12px',
+    marginTop: '4px',
+  },
+  success: {
+    color: theme.colors.success,
+    fontSize: '12px',
+    marginTop: '4px',
+  },
+  errorContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.33)',
+    borderRadius: theme.borderRadius.sm,
+    padding: theme.spacing.sm,
+    marginTop: theme.spacing.xs,
+  },
 }));

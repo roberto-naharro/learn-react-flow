@@ -25,6 +25,9 @@ const config: Config = {
     '/test-results/',
   ],
 
+  // Transform ES modules from deck.gl and related packages
+  transformIgnorePatterns: ['node_modules/(?!(@deck\\.gl|@mapbox|@turf)/)'],
+
   collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*.d.ts'],
 
   // Set cache directory to improve performance

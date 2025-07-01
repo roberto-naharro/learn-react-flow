@@ -9,7 +9,8 @@ import { useNodesContext } from '../../../flow/node/hooks/useNodesContext';
 import { INITIAL_VIEW_STATE, MAP_STYLE_URL } from '../../constants';
 import { useConnectedLayers } from '../../hooks/useConnectedLayers';
 import { useDeckLayers } from '../../hooks/useDeckLayers';
-import { useGeojsonCache } from '../../hooks/useGeojsonCache';
+import { useFilteredGeojson } from '../../hooks/useGeojsonCache';
+import { GeoJsonProvider } from '../../providers/GeoJsonProvider';
 
 import type { MapViewerInnerProps } from '../../types';
 
@@ -18,7 +19,7 @@ const MapViewerInner = memo(
     const styles = mapViewerStyles;
 
     const connectedLayers = useConnectedLayers(nodes, edges);
-    const geojsonCache = useGeojsonCache(connectedLayers);
+    const geojsonCache = useFilteredGeojson(connectedLayers);
     const { deckLayers, hoverInfo } = useDeckLayers(connectedLayers, geojsonCache);
 
     return (
@@ -54,5 +55,9 @@ const MapViewerInner = memo(
 export const MapViewer = () => {
   const { nodes } = useNodesContext();
   const { edges } = useEdgesContext();
-  return <MapViewerInner nodes={nodes} edges={edges} />;
+  return (
+    <GeoJsonProvider>
+      <MapViewerInner nodes={nodes} edges={edges} />
+    </GeoJsonProvider>
+  );
 };

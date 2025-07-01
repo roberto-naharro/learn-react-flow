@@ -1,28 +1,22 @@
-import { useEffect, useState } from 'react';
-
-import { fetchGeoJsonData, updateGeojsonCache } from '../utils/mapUtils';
+import { useGeoJsonContext } from './useGeoJsonContext';
 
 import type { ConnectedLayer, GeojsonCache } from '../types';
 
 /**
- * Hook to manage GeoJSON data caching
+ * Hook to filter GeoJSON data from the central cache based on connected layers
+ * This doesn't perform caching but returns a filtered subset of the central cache
  */
-export function useGeojsonCache(connectedLayers: ConnectedLayer[]) {
-  const [geojsonCache, setGeojsonCache] = useState<GeojsonCache>({});
+export function useFilteredGeojson(connectedLayers: ConnectedLayer[]): GeojsonCache {
+  const { geojsonCache } = useGeoJsonContext();
 
-  useEffect(() => {
-    // Extract unique URLs from connected layers to avoid duplicate fetches
-    const urls = Array.from(new Set(connectedLayers.map((l) => l.sourceUrl)));
+  // Filter cache to include only entries relevant to connected layers
+  const filteredCache = connectedLayers.reduce((cache, layer) => {
+    const data = geojsonCache[layer.sourceUrl];
+    if (data !== undefined) {
+      cache[layer.sourceUrl] = data;
+    }
+    return cache;
+  }, {} as GeojsonCache);
 
-    // Fetch GeoJSON data for each unique URL that's not already cached
-    // Using forEach with async functions (not awaited) for parallel fetching
-    urls.forEach(async (url) => {
-      if (!geojsonCache[url]) {
-        const data = await fetchGeoJsonData(url);
-        updateGeojsonCache(setGeojsonCache, url, data);
-      }
-    });
-  }, [connectedLayers, geojsonCache]);
-
-  return geojsonCache;
+  return filteredCache;
 }

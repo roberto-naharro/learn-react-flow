@@ -14,6 +14,8 @@ jest.mock('react-map-gl/maplibre', () => ({
     return null;
   },
 }));
+// Add this line to mock the GeoJsonProvider specifically for this test
+jest.mock('../domain/map-viewer/providers/GeoJsonProvider');
 
 /**
  * @jest-environment node

@@ -4,7 +4,7 @@ import { NODE_SOURCE_TYPE_NAME } from '../../flow/node/components/SourceCustomNo
 import { LAYER_COLORS } from '../constants';
 
 import type { SourceCustomNodeProps } from '../../flow/node/components/SourceCustomNode/canvas/SourceCustomNode';
-import type { ConnectedLayer, GeojsonCache, HoverInfo } from '../types';
+import type { ConnectedLayer, HoverInfo } from '../types';
 import type { PickingInfo } from '@deck.gl/core';
 import type { Edge, Node } from '@xyflow/react';
 import type { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
@@ -84,29 +84,5 @@ export function createHoverHandler(setHoverInfo: (info: HoverInfo) => void) {
   };
 }
 
-/**
- * Fetches GeoJSON data from a URL
- */
-export async function fetchGeoJsonData(
-  url: string,
-): Promise<FeatureCollection<Geometry, GeoJsonProperties> | null> {
-  try {
-    const response = await fetch(url);
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error(`Failed to fetch GeoJSON from ${url}:`, error);
-    return null;
-  }
-}
-
-/**
- * Updates GeoJSON cache with new data
- */
-export function updateGeojsonCache(
-  setGeojsonCache: React.Dispatch<React.SetStateAction<GeojsonCache>>,
-  url: string,
-  data: FeatureCollection<Geometry, GeoJsonProperties> | null,
-): void {
-  setGeojsonCache((cache) => ({ ...cache, [url]: data }));
-}
+// Removed: fetchGeoJsonData and updateGeojsonCache functions
+// These are now handled by the GeoJsonProvider and Web Worker
