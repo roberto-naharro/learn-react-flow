@@ -6,7 +6,7 @@ import { nodePaletteStyles } from '../NodePalette.styles';
 import type { NodePaletteTypeProps } from './types';
 import type { Prettify } from '../../../../../../shared/types/utility';
 
-// Utility to create minimal drag event for keyboard accessibility
+// Create synthetic drag event for keyboard accessibility
 const createKeyboardDragEvent = (): React.DragEvent<HTMLElement> =>
   ({
     dataTransfer: {
@@ -44,16 +44,17 @@ const NodeTypePaletteContainer = ({
       onDragStart={(event) => onDragStart(event, type)}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      aria-label={`Add ${label} node to canvas`}
+      aria-label={`add ${(label ?? type).toLowerCase()} node to canvas`}
       onKeyDown={(event) => {
         if (event.key === 'Enter' || event.key === ' ') {
           event.preventDefault();
-          // Handle keyboard activation for accessibility compliance
+          // Trigger drag operation via keyboard for accessibility compliance
+          // Creates synthetic drag event since keyboard can't initiate native drag
           onDragStart(createKeyboardDragEvent(), type);
         }
       }}
       onMouseDown={(event) => {
-        // Allow drag to initiate but prevent button click side effects
+        // Prevent button click behavior during drag operations
         event.stopPropagation();
       }}
     >

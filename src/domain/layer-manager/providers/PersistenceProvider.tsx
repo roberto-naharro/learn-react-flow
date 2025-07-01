@@ -41,7 +41,8 @@ export const PersistenceProvider = ({ children }: { children: ReactNode }) => {
     resetFlowState();
   }, [resetFlowState, setNodes, setEdges, setViewport]);
 
-  // Initial load from storage
+  // Initial load from storage on mount only
+  // Using ref to prevent re-initialization during re-renders or strict mode double effects
   useEffect(() => {
     if (!initialized.current) {
       const flowData = getStoredFlowData();

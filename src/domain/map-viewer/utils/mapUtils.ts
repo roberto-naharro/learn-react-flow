@@ -46,20 +46,22 @@ export function createGeoJsonLayer(
     filled: true,
     lineWidthScale: 2,
     lineWidthMinPixels: 1,
+    // Configure layer fill color with dynamic transparency based on layer index
+    // Each subsequent layer gets slightly more opaque to show stacking order
     getFillColor: [
-      ...LAYER_COLORS.fill.base,
-      LAYER_COLORS.fill.alphaBase + layerIndex * LAYER_COLORS.fill.alphaIncrement,
+      ...LAYER_COLORS.fill.base, // RGB base color
+      LAYER_COLORS.fill.alphaBase + layerIndex * LAYER_COLORS.fill.alphaIncrement, // Dynamic alpha
     ],
     getLineColor: [...LAYER_COLORS.stroke],
     getLineWidth: 2,
-    // Point properties
+    // Point rendering configuration for optimal visibility across zoom levels
     pointType: 'circle',
     getPointRadius: 5,
-    pointRadiusMinPixels: 3,
-    pointRadiusMaxPixels: 20,
+    pointRadiusMinPixels: 3, // Minimum size when zoomed out
+    pointRadiusMaxPixels: 20, // Maximum size when zoomed in
     pointRadiusUnits: 'pixels',
     pointAntialiasing: true,
-    pointBillboard: true,
+    pointBillboard: true, // Points always face the camera
     getPointColor: [...LAYER_COLORS.point],
     onHover,
   });

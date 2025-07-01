@@ -1,6 +1,6 @@
 # React Flow & Deck.gl Learning Repository
 
-This repository contains examples and exercises for learning and testing functionalities of React Flow and deck.gl libraries.
+This repository contains examples and exercises for learning React Flow and deck.gl library functionalities.
 
 ## Table of Contents
 
@@ -31,6 +31,7 @@ This repository contains examples and exercises for learning and testing functio
       - [Phase 2: Custom node implementation and styles](#phase-2-custom-node-implementation-and-styles)
     - [Basic deck.gl - Add a map visualization](#basic-deckgl---add-a-map-visualization)
     - [Refactoring and Cleanup](#refactoring-and-cleanup)
+    - [End-to-End Testing for Initial Exercises](#end-to-end-testing-for-initial-exercises)
   - [License](#license)
 
 ## Overview
@@ -112,7 +113,7 @@ These tools work together to maintain code quality and consistent style througho
 3. Start the development server:
 
    ```bash
-   npm start
+   npm run dev
    ```
 
 ## Testing
@@ -201,20 +202,17 @@ Implement the following custom nodes:
 It includes:
 
 - A single output port to connect to downstream nodes.
-- A text input field labeled URL, where the user can enter the URL of a publicly accessible GeoJSON file (e.g.,
-  <https://example.com/my-data.geojson>).
-  This node acts as a provider of spatial data that can be consumed by
-  one or more Layer nodes.
+- A text input field labeled 'URL' where users can enter the URL of a publicly accessible GeoJSON file (e.g., `https://example.com/my-data.geojson`). This node serves as a spatial data provider that can be consumed by one or more Layer nodes.
 
 > [!TIP]
-> It's possible to get sample GeoJSON file URLs from <https://geojson.xyz> to test your implementation.
+> It's possible to get sample GeoJSON file URLs from `https://geojson.xyz` to test your implementation.
 
-#### Layer node: Represents a layer to be rendered on the map
+#### Layer Node: Represents a Layer to be Rendered on the Map
 
 It includes:
 
 - A single input port to receive a connection from a Source node.
-- The Layer node will visualize the data fetched from the connected Source in next exercises.
+- The Layer node visualizes data fetched from the connected Source node in subsequent exercises.
 
 ### Basic deck.gl - Add a map visualization with Deck.gl and integrate with current code
 
@@ -225,7 +223,9 @@ Features:
 - Layers are rendered in the order of their vertical position in the diagram (topmost node is rendered in front).
 - Hovering over a geometry on the map shows a tooltip with its properties.
 
-### Bonus - Support an intersection node
+### Bonus - Support an Intersection Node
+
+_This exercise is not yet implemented._
 
 ## Exercise progress record
 
@@ -280,7 +280,7 @@ The architecture is designed to be extensible for future features like custom no
 
 ### Basic React Flow - Create Custom nodes
 
-I have started implementing custom nodes for the flow diagram:
+I implemented custom nodes for the flow diagram with the following approach:
 
 #### Phase 1: Basic structure and types
 
@@ -361,7 +361,7 @@ I have implemented the basic deck.gl integration with the React Flow diagram, al
 
 ### Refactoring and Cleanup
 
-During the implementation, of the other exercises, I have done a lot of testing and research about how to use React Flow and deck.gl together. The code end up being a bit messy, so I took the opportunity to refactor and clean up the codebase. The main changes include:
+During the implementation of the other exercises, extensive testing and research was conducted on React Flow and deck.gl integration. The codebase required refactoring and cleanup to maintain code quality standards. The main changes include:
 
 1. **Domain-Driven Folder Structure**
    - Reorganized the `src/` directory by business domains: `flow`, `layer-manager`, and `map-viewer`.
@@ -400,6 +400,47 @@ During the implementation, of the other exercises, I have done a lot of testing 
    - Extracted utility functions to `mapUtils.ts` for improved code reusability and testability.
    - Consolidated map-related constants in `constants.ts` to eliminate hardcoded values throughout the codebase.
    - Established consistent color management with `LAYER_COLORS` constant for Deck.gl layer styling.
+
+### End-to-End Testing for Initial Exercises
+
+I have implemented comprehensive end-to-end tests for all the initial exercises using Playwright. The tests cover the complete functionality of custom nodes, flow diagram operations, and map visualization. The implementation process included:
+
+1. **Test Architecture Refactoring**
+   - Created reusable helper functions in `e2e/helpers/test-helpers.ts` for all common operations (node creation, connections, assertions)
+   - Extracted all magic numbers and hardcoded values to semantic constants in `e2e/constants/test-constants.ts`
+
+2. **Comprehensive Test Coverage**
+   - **Flow Diagram Tests** (`flow-diagram.spec.ts`): Complete coverage of custom node functionality
+     - Custom node creation (Source and Layer nodes)
+     - Node connections via drag-and-drop handles
+     - URL input functionality for Source nodes
+     - Save and restore diagram state from localStorage
+     - Node selection and deletion operations
+   - **Map Viewer Tests** (`map-viewer.spec.ts`): Full map visualization functionality
+     - View switching between diagram and map
+     - Map rendering verification with reliable selectors
+     - Multiple layer visualization with connected nodes
+     - Tooltip functionality on map hover interactions
+     - Handling of unconnected nodes (no map layers rendered)
+
+3. **Test Reliability Improvements**
+   - Fixed map rendering detection using specific `#deckgl-overlay` canvas selector instead of generic selectors
+   - Implemented strategic positioning to avoid UI panel interference during interactions
+   - Updated to reliable test data sources with working GeoJSON URLs
+
+4. **Code Quality and Maintainability**
+   - **Categorized wait times**: VERY_SHORT (200ms) to LONG (1000ms) based on operation complexity
+   - **Standardized positions**: SOURCE_DEFAULT, LAYER_DEFAULT, etc. for consistent test layouts
+   - **Semantic selectors**: REACT_FLOW_NODE, DECKGL_WRAPPER, etc. instead of raw CSS selectors
+   - **Named expectations**: SINGLE_NODE, DOUBLE_NODES, etc. for clear test assertions
+   - **Zero maintenance overhead**: UI changes only require updating constants file
+
+5. **Cross-Browser Testing**
+   - Configured tests to run on both Chromium and Firefox
+   - All 28 tests pass reliably across both browser engines
+   - Consistent behavior verified for drag-and-drop operations and map rendering
+
+The test suite now provides complete coverage of all functionality described in the README exercises, from basic custom node operations to complex map visualizations with multiple connected layers. The architecture is designed to be easily extensible for future functionality while maintaining high reliability and clear documentation through semantic naming conventions.
 
 ## License
 

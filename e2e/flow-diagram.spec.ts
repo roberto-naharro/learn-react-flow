@@ -1,126 +1,141 @@
 import { expect, test } from '@playwright/test';
 
+import {
+  EXPECTED_COUNTS,
+  KEYBOARD,
+  NODE_POSITIONS,
+  SELECTORS,
+  WAIT_TIMES,
+} from './constants/test-constants';
+import {
+  TEST_GEOJSON_URL,
+  connectSourceToLayer,
+  createLayerNode,
+  createSourceNode,
+  fillSourceNodeUrl,
+  resetFlowState,
+  restoreFlowState,
+  saveFlowState,
+  setupTest,
+  verifyNodeAndEdgeCounts,
+} from './helpers/test-helpers';
+
 test.describe('Flow Diagram', () => {
   test.beforeEach(async ({ page }) => {
-    // Navigate to the application
-    await page.goto('/');
-
-    // Clear localStorage first
-    await page.evaluate(() => localStorage.clear());
-
-    // Wait for the flow diagram to be visible
-    await page.waitForSelector('.react-flow');
+    await setupTest(page);
   });
 
-  test.skip('should allow creating new nodes by drag and drop', async ({ page }) => {
-    // Find a draggable node in the palette
-    const sourceNode = page.locator('.dndnode:has-text("Input Node")').first();
+  test('should allow creating new Source node by drag and drop', async ({ page }) => {
+    await createSourceNode(page);
 
-    // Get the react-flow pane where we'll drop the node
-    const canvas = page.locator('.react-flow__pane');
-
-    // Perform drag and drop - add force:true to ensure the drag works
-    await sourceNode.dragTo(canvas, { force: true });
-
-    // Wait for the new node to appear
-    await page.waitForTimeout(500);
-
-    // Check that a new node was added
-    await expect(page.locator('.react-flow__node')).toHaveCount(1);
+    await expect(page.locator(SELECTORS.REACT_FLOW_NODE)).toHaveCount(EXPECTED_COUNTS.SINGLE_NODE);
+    await expect(page.locator(SELECTORS.GEOJSON_URL_INPUT)).toBeVisible();
   });
 
-  test.skip('should allow connecting nodes', async ({ page }) => {
-    // First, make sure we have at least two nodes to connect
-    const sourceNode = page.locator('.dndnode:has-text("Input Node")').first();
-    const canvas = page.locator('.react-flow__pane');
+  test('should allow creating new Layer node by drag and drop', async ({ page }) => {
+    await createLayerNode(page, NODE_POSITIONS.LAYER_OFFSET);
 
-    // Create first node (input)
-    await sourceNode.dragTo(canvas, { force: true });
-    await page.waitForTimeout(300);
-
-    // Create second node (default)
-    const defaultNode = page.locator('.dndnode:has-text("Default Node")').first();
-    await defaultNode.dragTo(canvas, {
-      force: true,
-      targetPosition: { x: 100, y: 200 },
-    });
-    await page.waitForTimeout(300);
-
-    // Get the first and second nodes
-    const firstNode = page.locator('.react-flow__node').first();
-    const secondNode = page.locator('.react-flow__node').nth(1);
-
-    // Get the source handle of the first node - using the exact class from the DOM
-    const sourceHandle = firstNode.locator('.react-flow__handle-bottom');
-
-    // Get the target handle of the second node - using the exact class from the DOM
-    const targetHandle = secondNode.locator('.react-flow__handle-top');
-
-    // Connect the nodes by dragging from source to target handle
-    await sourceHandle.dragTo(targetHandle, { force: true });
-
-    // Wait for the edge to be created
-    await page.waitForTimeout(500);
-
-    // Check that a new edge was created
-    await expect(page.locator('.react-flow__edge')).toHaveCount(1);
+    await expect(page.locator(SELECTORS.REACT_FLOW_NODE)).toHaveCount(EXPECTED_COUNTS.SINGLE_NODE);
+    await expect(page.locator(SELECTORS.REACT_FLOW_NODE)).toContainText(/Layer/i);
   });
 
-  test.skip('should save and restore flow state', async ({ page }) => {
-    // Create a simple flow with a couple of nodes
-    const canvas = page.locator('.react-flow__pane');
+  test('should allow connecting Source node to Layer node', async ({ page }) => {
+    await createSourceNode(page, NODE_POSITIONS.SOURCE_DEFAULT);
+    await createLayerNode(page, NODE_POSITIONS.LAYER_DEFAULT);
+    await connectSourceToLayer(page, 0, 1);
 
-    // Create a node
-    const sourceNode = page.locator('.dndnode:has-text("Input Node")').first();
-    await sourceNode.dragTo(canvas, { force: true });
-    await page.waitForTimeout(300);
+    await expect(page.locator(SELECTORS.REACT_FLOW_EDGE)).toHaveCount(EXPECTED_COUNTS.SINGLE_EDGE);
+  });
 
-    // Create another node (default)
-    const defaultNode = page.locator('.dndnode:has-text("Default Node")').first();
-    await defaultNode.dragTo(canvas, {
-      force: true,
-      targetPosition: { x: 100, y: 200 },
-    });
-    await page.waitForTimeout(300);
+  test('should save and restore flow state with custom nodes', async ({ page }) => {
+    await createSourceNode(page, NODE_POSITIONS.SOURCE_DEFAULT);
+    await createLayerNode(page, NODE_POSITIONS.LAYER_DEFAULT);
 
     // Save the flow
-    await page.getByRole('button', { name: /save/i }).click();
+    await saveFlowState(page);
 
     // Reset the flow
-    await page.getByRole('button', { name: /reset/i }).click();
-    await page.waitForTimeout(500);
+    await resetFlowState(page);
 
     // Verify flow was reset (should have no nodes)
-    await expect(page.locator('.react-flow__node')).toHaveCount(0);
+    await expect(page.locator(SELECTORS.REACT_FLOW_NODE)).toHaveCount(EXPECTED_COUNTS.NO_ELEMENTS);
 
     // Restore the flow
-    await page.getByRole('button', { name: /restore/i }).click();
-    await page.waitForTimeout(500);
+    await restoreFlowState(page);
 
-    // Verify flow was restored (should have at least one node again)
-    await expect(page.locator('.react-flow__node')).toHaveCount(2);
+    // Verify flow was restored (should have two nodes again)
+    await expect(page.locator(SELECTORS.REACT_FLOW_NODE)).toHaveCount(EXPECTED_COUNTS.DOUBLE_NODES);
   });
 
-  test.skip('should delete nodes when pressing delete key', async ({ page }) => {
-    // Create a node
-    const sourceNode = page.locator('.dndnode:has-text("Input Node")').first();
-    const canvas = page.locator('.react-flow__pane');
-    await sourceNode.dragTo(canvas, { force: true });
-    await page.waitForTimeout(300);
+  test('should delete nodes when pressing delete key', async ({ page }) => {
+    await createSourceNode(page);
 
-    // Get the initial node count
-    const initialNodeCount = await page.locator('.react-flow__node').count();
-    expect(initialNodeCount).toBe(1);
+    const initialNodeCount = await page.locator(SELECTORS.REACT_FLOW_NODE).count();
+    expect(initialNodeCount).toBe(EXPECTED_COUNTS.SINGLE_NODE);
 
     // Select a node
-    await page.locator('.react-flow__node').first().click();
-    await page.waitForTimeout(200);
+    await page.locator(SELECTORS.REACT_FLOW_NODE).first().click();
+    await page.waitForTimeout(WAIT_TIMES.VERY_SHORT);
 
     // Press delete key
     await page.keyboard.press('Delete');
-    await page.waitForTimeout(200);
+    await page.waitForTimeout(WAIT_TIMES.VERY_SHORT);
 
     // Verify node was deleted
-    await expect(page.locator('.react-flow__node')).toHaveCount(0);
+    await expect(page.locator(SELECTORS.REACT_FLOW_NODE)).toHaveCount(EXPECTED_COUNTS.NO_ELEMENTS);
+  });
+
+  test('should allow entering URL in Source node input field', async ({ page }) => {
+    await createSourceNode(page);
+
+    // Enter URL in the input field
+    await fillSourceNodeUrl(page, TEST_GEOJSON_URL);
+
+    // Verify the URL was entered correctly
+    const inputField = page.locator(SELECTORS.GEOJSON_URL_INPUT);
+    await expect(inputField).toHaveValue(TEST_GEOJSON_URL);
+  });
+
+  test('should maintain URL state when saving and restoring', async ({ page }) => {
+    await createSourceNode(page);
+
+    // Enter URL in the input field
+    await fillSourceNodeUrl(page, TEST_GEOJSON_URL);
+
+    // Save the flow
+    await saveFlowState(page);
+
+    // Reset the flow
+    await resetFlowState(page);
+
+    // Verify flow was reset
+    await expect(page.locator(SELECTORS.REACT_FLOW_NODE)).toHaveCount(EXPECTED_COUNTS.NO_ELEMENTS);
+
+    // Restore the flow
+    await restoreFlowState(page);
+
+    // Verify URL was restored
+    const restoredInputField = page.locator(SELECTORS.GEOJSON_URL_INPUT);
+    await expect(restoredInputField).toHaveValue(TEST_GEOJSON_URL);
+  });
+
+  test('should delete nodes when selecting and pressing delete key', async ({ page }) => {
+    // Create Source and Layer nodes and connect them
+    await createSourceNode(page, NODE_POSITIONS.SOURCE_DEFAULT);
+    await createLayerNode(page, NODE_POSITIONS.LAYER_DEFAULT);
+    await connectSourceToLayer(page, 0, 1);
+
+    // Verify edge was created
+    await verifyNodeAndEdgeCounts(page, EXPECTED_COUNTS.DOUBLE_NODES, EXPECTED_COUNTS.SINGLE_EDGE);
+
+    // Select first node and delete it
+    await page.locator(SELECTORS.REACT_FLOW_NODE).first().click();
+    await page.waitForTimeout(WAIT_TIMES.VERY_SHORT);
+    await page.keyboard.press(KEYBOARD.DELETE);
+    await page.waitForTimeout(WAIT_TIMES.SHORT);
+
+    // Verify one node was deleted (and edge should be gone too)
+    await expect(page.locator(SELECTORS.REACT_FLOW_NODE)).toHaveCount(EXPECTED_COUNTS.SINGLE_NODE);
+    await expect(page.locator(SELECTORS.REACT_FLOW_EDGE)).toHaveCount(EXPECTED_COUNTS.NO_ELEMENTS);
   });
 });

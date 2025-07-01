@@ -13,9 +13,9 @@ export const layerCustomNodePaletteStyles = createStyles(() => ({
   },
   connectionLeft: {
     ...nodePaletteStyles.connectionHandleLeft,
-    // Position relative to the button container, not the inner div
+    // Position relative to button container for proper edge alignment
     position: 'absolute',
-    left: '-8px', // Half of the handle width to center it on the edge
+    left: '-8px', // Center handle on left edge
     top: '50%',
     transform: 'translateY(-50%)',
   },

@@ -23,7 +23,10 @@ export const useDragDrop = () => {
     (event: React.DragEvent<HTMLDivElement>) => {
       event.preventDefault();
 
-      // Try to get the node type from the context or data transfer
+      // Try to get the node type from multiple sources with fallback priority:
+      // 1. Context state (for palette drag operations)
+      // 2. React Flow's standard data transfer format
+      // 3. Plain text format (browser compatibility fallback)
       let nodeType = draggedNodeType;
       nodeType ??=
         event.dataTransfer.getData('application/reactflow') ??

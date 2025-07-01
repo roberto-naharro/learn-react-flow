@@ -22,12 +22,20 @@ export const ActionPanel = () => {
   const styles = actionPanelStyles;
 
   return (
-    <Panel position="top-right">
-      <div style={styles.container}>
-        <StyledButton onClick={saveFlowState}>Save</StyledButton>
-        <StyledButton onClick={restoreFlowState}>Restore</StyledButton>
-        <StyledButton onClick={resetFlowState}>Reset Diagram</StyledButton>
-        <StyledButton onClick={() => navigate('map')}>Show Map</StyledButton>
+    <Panel position="top-right" aria-label="Action Panel">
+      <div style={styles.container} aria-label="Diagram actions">
+        <StyledButton onClick={saveFlowState} aria-label="Save diagram state">
+          Save
+        </StyledButton>
+        <StyledButton onClick={restoreFlowState} aria-label="Restore diagram state">
+          Restore
+        </StyledButton>
+        <StyledButton onClick={resetFlowState} aria-label="Reset diagram">
+          Reset Diagram
+        </StyledButton>
+        <StyledButton onClick={() => navigate('map')} aria-label="Show map">
+          Show Map
+        </StyledButton>
       </div>
     </Panel>
   );

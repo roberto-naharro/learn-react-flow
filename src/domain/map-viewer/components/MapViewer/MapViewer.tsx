@@ -42,8 +42,10 @@ const MapViewerInner = memo(
       </div>
     );
   },
+  // Custom memo comparison for performance optimization
+  // Only re-render when nodes or edges array references change
+  // This prevents expensive map re-renders when unrelated context state updates occur
   (prevProps, nextProps) => {
-    // Shallow compare nodes and edges arrays by reference
     return prevProps.nodes === nextProps.nodes && prevProps.edges === nextProps.edges;
   },
 );

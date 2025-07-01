@@ -8,7 +8,7 @@ const SourceCustomNodePalette = ({
   label = 'Source',
   ...props
 }: PartialKeys<SourceCustomNodePaletteProps, 'label'>) => (
-  <NodeTypePaletteContainer {...props}>
+  <NodeTypePaletteContainer label={label} {...props}>
     <div style={sourceCustomNodePaletteStyles.container}>
       <span style={sourceCustomNodePaletteStyles.connectionRight} />
       <h3 style={sourceCustomNodePaletteStyles.label}>{label}</h3>

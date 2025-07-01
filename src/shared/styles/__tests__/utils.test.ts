@@ -33,10 +33,10 @@ describe('Style Utilities', () => {
     it('should merge base and hover styles when hovered', () => {
       const result = mergeHoverStyles(baseStyles, hoverStyles, true);
 
-      expect(result.backgroundColor).toBe('darkblue'); // hover overrides
-      expect(result.color).toBe('white'); // base preserved
-      expect(result.padding).toBe('8px'); // base preserved
-      expect(result.boxShadow).toBe('0 2px 4px rgba(0,0,0,0.1)'); // hover added
+      expect(result.backgroundColor).toBe('darkblue');
+      expect(result.color).toBe('white');
+      expect(result.padding).toBe('8px');
+      expect(result.boxShadow).toBe('0 2px 4px rgba(0,0,0,0.1)');
     });
 
     it('should handle empty hover styles', () => {
@@ -74,9 +74,9 @@ describe('Style Utilities', () => {
     it('should merge base and focus styles when focused', () => {
       const result = mergeFocusStyles(baseStyles, focusStyles, true);
 
-      expect(result.border).toBe('1px solid blue'); // focus overrides
-      expect(result.outline).toBe('none'); // base preserved
-      expect(result.boxShadow).toBe('0 0 0 2px rgba(0,123,255,0.25)'); // focus added
+      expect(result.border).toBe('1px solid blue');
+      expect(result.outline).toBe('none');
+      expect(result.boxShadow).toBe('0 0 0 2px rgba(0,123,255,0.25)');
     });
 
     it('should handle empty focus styles', () => {

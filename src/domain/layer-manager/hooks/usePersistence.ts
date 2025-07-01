@@ -41,6 +41,8 @@ export const usePersistence = () => {
     // This should now be implemented in the provider using this hook
     // The provider will have access to the necessary setters
     if (reactFlowInstance) {
+      // Use requestAnimationFrame for immediate viewport fitting after reset
+      // This ensures DOM updates are complete before viewport calculation
       requestAnimationFrame(() => {
         reactFlowInstance.fitView({ padding: 0.2 });
       });
@@ -53,6 +55,8 @@ export const usePersistence = () => {
     // The actual restoration should happen in the provider
     // using the data returned by getStoredFlowData
     if (reactFlowInstance) {
+      // Use setTimeout for restore operations to allow React state updates to settle
+      // This prevents viewport calculations on stale node positions
       setTimeout(() => {
         reactFlowInstance.fitView({ padding: 0.2 });
       }, 100);

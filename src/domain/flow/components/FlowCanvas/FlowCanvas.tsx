@@ -27,9 +27,10 @@ export const FlowCanvas = () => {
   const { setReactFlowInstance: setRfInstance } = usePersistenceContext();
   const { onDrop, onDragOver } = useDragDrop();
 
-  // Correctly generate nodeTypes with injected onUrlChange for SourceCustomNode
+  // Generate React Flow node types with dependency injection
+  // The source node type needs access to updateNodeData callback for URL changes
+  // This pattern allows us to inject context-dependent callbacks into isolated node components
   const nodeTypes = useMemo(() => {
-    // Provide a custom prop for the source node type
     return getNodeTypes({
       source: {
         onUrlChange: (id: string, url: string) => updateNodeData(id, { url }),

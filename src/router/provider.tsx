@@ -19,12 +19,14 @@ export const RouterProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   // Handle browser back/forward navigation
+  // Updates internal route state when user navigates via browser buttons
   useEffect(() => {
     const handlePopState = () => {
       setCurrentRoute(getInitialRoute());
     };
 
     window.addEventListener('popstate', handlePopState);
+    // Cleanup listener to prevent memory leaks
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
