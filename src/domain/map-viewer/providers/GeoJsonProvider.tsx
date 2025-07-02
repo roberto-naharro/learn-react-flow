@@ -24,7 +24,10 @@ export const GeoJsonProvider = ({ children }: GeoJsonProviderProps) => {
   const { edges } = useEdgesContext();
   const connectedLayers = useConnectedLayers(nodes, edges);
 
-  // Helper function to get all source URLs that need to be fetched
+  /**
+   * Determines which GeoJSON URLs need to be fetched based on layer connections.
+   * Includes direct layer connections and sources connected to intersections that feed into layers.
+   */
   const getUrlsToFetch = useCallback(() => {
     const urls = new Set<string>();
 
@@ -61,7 +64,9 @@ export const GeoJsonProvider = ({ children }: GeoJsonProviderProps) => {
     return Array.from(urls);
   }, [connectedLayers, edges, nodes]);
 
-  // Helper function to set loading status for source nodes
+  /**
+   * Updates the loading status of source nodes that match the given URL.
+   */
   const setSourceLoadingStatus = useCallback(
     (url: string) => {
       setNodes((currentNodes) => {
@@ -83,12 +88,10 @@ export const GeoJsonProvider = ({ children }: GeoJsonProviderProps) => {
     [setNodes],
   );
 
-  // Add useCallback to memoize fetchGeoJson
   const fetchGeoJson = useCallback(
     (url: string) => {
       if (!workerManager.isAvailable) return;
 
-      // Set loading status for source nodes
       setSourceLoadingStatus(url);
 
       workerManager.fetchGeoJson(url);
@@ -103,7 +106,6 @@ export const GeoJsonProvider = ({ children }: GeoJsonProviderProps) => {
     const handleWorkerMessage = (event: MessageEvent<GeoJsonWorkerResponse>) => {
       const { url, data, error } = event.data;
 
-      // Update the geojson cache
       setGeojsonCache((cache) => ({ ...cache, [url]: data || null }));
 
       // Update the nodes that use this source URL
@@ -136,13 +138,11 @@ export const GeoJsonProvider = ({ children }: GeoJsonProviderProps) => {
     };
   }, [setNodes]);
 
-  // Fetch GeoJSON data for URLs needed by layers (including intersection sources)
   useEffect(() => {
     if (!workerManager.isAvailable) return;
 
     const urlsToFetch = getUrlsToFetch();
 
-    // Fetch GeoJSON data for each unique URL that's not already cached
     urlsToFetch.forEach((url) => {
       if (!geojsonCache[url]) {
         fetchGeoJson(url);
@@ -150,7 +150,6 @@ export const GeoJsonProvider = ({ children }: GeoJsonProviderProps) => {
     });
   }, [getUrlsToFetch, geojsonCache, fetchGeoJson]);
 
-  // Memoize the context value to avoid unnecessary re-renders
   const contextValue = useMemo(
     () => ({ geojsonCache, fetchGeoJson }),
     [geojsonCache, fetchGeoJson],

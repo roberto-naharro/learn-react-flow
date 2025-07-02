@@ -44,15 +44,11 @@ const MapViewerInner = memo(
       </div>
     );
   },
-  // Custom memo comparison for performance optimization
-  // Only re-render when nodes or edges array references change
-  // This prevents expensive map re-renders when unrelated context state updates occur
   (prevProps, nextProps) => {
     return prevProps.nodes === nextProps.nodes && prevProps.edges === nextProps.edges;
   },
 );
 
-// Wrapper to provide nodes and edges as props
 export const MapViewer = () => {
   const { nodes } = useNodesContext();
   const { edges } = useEdgesContext();

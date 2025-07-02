@@ -15,7 +15,11 @@ export function createWorkerFactory(workerUrl: string): WorkerFactory {
 }
 
 /**
- * Creates a worker manager that provides a consistent interface for managing Web Workers
+ * Creates a worker manager that provides a consistent interface for managing Web Workers.
+ * Handles worker lifecycle, message passing, and event management with proper error handling.
+ *
+ * @param workerFactory - Factory function to create worker instances
+ * @returns Worker manager with type-safe message/response handling
  */
 export function createWorkerManager<TMessage, TResponse>(
   workerFactory: WorkerFactory,

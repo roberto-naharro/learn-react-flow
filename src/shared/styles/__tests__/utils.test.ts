@@ -7,7 +7,7 @@ import {
   createHoverHandlers,
   mergeFocusStyles,
   mergeHoverStyles,
-} from '../utils';
+} from '../styleInteractionUtils';
 
 describe('Style Utilities', () => {
   describe('mergeHoverStyles', () => {

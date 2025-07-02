@@ -14,7 +14,8 @@ export interface GeoJsonWorkerManager {
 }
 
 /**
- * Creates a GeoJSON worker manager
+ * Creates a specialized worker manager for GeoJSON fetching operations.
+ * Provides a typed interface for GeoJSON-specific worker communication.
  */
 export function createGeoJsonWorkerManager(): GeoJsonWorkerManager {
   const workerManager: WorkerManager<FetchGeoJsonMessage, GeoJsonWorkerResponse> =

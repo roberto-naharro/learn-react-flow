@@ -7,7 +7,9 @@ const STORAGE_KEY = 'react-flow-diagram';
 export const usePersistence = () => {
   const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance | null>(null);
 
-  // Save the current flow state to localStorage
+  /**
+   * Serializes current flow state to localStorage for persistence.
+   */
   const saveFlowState = useCallback(() => {
     if (reactFlowInstance) {
       const flow = reactFlowInstance.toObject();
@@ -18,7 +20,9 @@ export const usePersistence = () => {
     return false;
   }, [reactFlowInstance]);
 
-  // Get flow data from localStorage
+  /**
+   * Retrieves and parses flow diagram state from localStorage with error handling.
+   */
   const getStoredFlowData = useCallback(() => {
     try {
       const flowString = localStorage.getItem(STORAGE_KEY);
@@ -36,13 +40,8 @@ export const usePersistence = () => {
     return null;
   }, []);
 
-  // Reset function that can be called by the provider
   const resetFlowState = useCallback(() => {
-    // This should now be implemented in the provider using this hook
-    // The provider will have access to the necessary setters
     if (reactFlowInstance) {
-      // Use requestAnimationFrame for immediate viewport fitting after reset
-      // This ensures DOM updates are complete before viewport calculation
       requestAnimationFrame(() => {
         reactFlowInstance.fitView({ padding: 0.2 });
       });
@@ -50,13 +49,8 @@ export const usePersistence = () => {
     return true;
   }, [reactFlowInstance]);
 
-  // Load and restore flow from localStorage
   const restoreFlowState = useCallback(() => {
-    // The actual restoration should happen in the provider
-    // using the data returned by getStoredFlowData
     if (reactFlowInstance) {
-      // Use setTimeout for restore operations to allow React state updates to settle
-      // This prevents viewport calculations on stale node positions
       setTimeout(() => {
         reactFlowInstance.fitView({ padding: 0.2 });
       }, 100);

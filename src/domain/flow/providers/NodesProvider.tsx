@@ -10,7 +10,6 @@ import type { Node } from '@xyflow/react';
 export const NodesProvider = ({ children }: { children: ReactNode }) => {
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
 
-  // Add a node to the flow
   const addNode = useCallback(
     (node: Node) => {
       setNodes((nds) => nds.concat(node));
@@ -18,7 +17,6 @@ export const NodesProvider = ({ children }: { children: ReactNode }) => {
     [setNodes],
   );
 
-  // Remove a node by ID
   const removeNode = useCallback(
     (nodeId: string) => {
       setNodes((nds) => nds.filter((node) => node.id !== nodeId));
@@ -26,7 +24,6 @@ export const NodesProvider = ({ children }: { children: ReactNode }) => {
     [setNodes],
   );
 
-  // Update a node's data by ID
   const updateNodeData = useCallback(
     (nodeId: string, data: object) => {
       setNodes((nds) =>

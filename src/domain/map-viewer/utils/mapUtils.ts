@@ -19,10 +19,10 @@ export function getConnectedSourceUrl(
   nodes: Node[],
 ): string | null {
   // Find incoming edge to this layer node
-  const edge = edges.find((e) => e.target === layerNodeId);
+  const edge = edges.find((currentEdge) => currentEdge.target === layerNodeId);
   if (!edge) return null;
 
-  const sourceNode = nodes.find((n) => n.id === edge.source);
+  const sourceNode = nodes.find((node) => node.id === edge.source);
 
   if (sourceNode?.type === NODE_SOURCE_TYPE_NAME) {
     return (sourceNode as SourceCustomNodeProps)?.data?.url ?? null;
@@ -52,22 +52,19 @@ export function createGeoJsonLayer(
     filled: true,
     lineWidthScale: 2,
     lineWidthMinPixels: 1,
-    // Configure layer fill color with dynamic transparency based on layer index
-    // Each subsequent layer gets slightly more opaque to show stacking order
     getFillColor: [
       ...LAYER_COLORS.fill.base, // RGB base color
       LAYER_COLORS.fill.alphaBase + layerIndex * LAYER_COLORS.fill.alphaIncrement, // Dynamic alpha
     ],
     getLineColor: [...LAYER_COLORS.stroke],
     getLineWidth: 2,
-    // Point rendering configuration for optimal visibility across zoom levels
     pointType: 'circle',
     getPointRadius: 5,
-    pointRadiusMinPixels: 3, // Minimum size when zoomed out
-    pointRadiusMaxPixels: 20, // Maximum size when zoomed in
+    pointRadiusMinPixels: 3,
+    pointRadiusMaxPixels: 20,
     pointRadiusUnits: 'pixels',
     pointAntialiasing: true,
-    pointBillboard: true, // Points always face the camera
+    pointBillboard: true,
     getPointColor: [...LAYER_COLORS.point],
     onHover,
   });
@@ -89,6 +86,3 @@ export function createHoverHandler(setHoverInfo: (info: HoverInfo) => void) {
     }
   };
 }
-
-// Removed: fetchGeoJsonData and updateGeojsonCache functions
-// These are now handled by the GeoJsonProvider and Web Worker

@@ -4,24 +4,24 @@ import { useIntersectionContext } from './useIntersectionContext';
 import type { ConnectedLayer, GeojsonCache } from '../types';
 
 /**
- * Hook to filter GeoJSON data from both URL and intersection caches based on connected layers
- * This doesn't perform caching but returns a filtered subset of the central caches
+ * Merges GeoJSON data from both direct sources and intersection results based on connected layers.
+ * Handles different source URL patterns to route data from appropriate caches.
+ *
+ * @param connectedLayers - Layer nodes with their connected source URLs
+ * @returns Unified cache containing all relevant GeoJSON data for map rendering
  */
 export function useFilteredGeojson(connectedLayers: ConnectedLayer[]): GeojsonCache {
   const { geojsonCache } = useGeoJsonContext();
   const { intersectionCache } = useIntersectionContext();
 
-  // Filter cache to include only entries relevant to connected layers
   const filteredCache = connectedLayers.reduce((cache, layer) => {
     if (layer.sourceUrl.startsWith('intersection:')) {
-      // Handle intersection data
       const nodeId = layer.sourceUrl.replace('intersection:', '');
       const data = intersectionCache[nodeId];
       if (data !== undefined) {
         cache[layer.sourceUrl] = data;
       }
     } else {
-      // Handle regular URL data
       const data = geojsonCache[layer.sourceUrl];
       if (data !== undefined) {
         cache[layer.sourceUrl] = data;

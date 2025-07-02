@@ -27,9 +27,7 @@ export const FlowCanvas = () => {
   const { setReactFlowInstance: setRfInstance } = usePersistenceContext();
   const { onDrop, onDragOver } = useDragDrop();
 
-  // Correctly generate nodeTypes with injected onUrlChange for SourceCustomNode
   const nodeTypes = useMemo(() => {
-    // Provide a custom prop for the source node type
     return getNodeTypes({
       source: {
         onUrlChange: (id: string, url: string) => updateNodeData(id, { url }),

@@ -18,7 +18,10 @@ export const useDragDrop = () => {
     event.dataTransfer.dropEffect = 'move';
   }, []);
 
-  // Create a new node from a drop event
+  /**
+   * Handles drop events to create new nodes in the flow diagram.
+   * Uses multiple fallback strategies to determine node type from different data transfer formats.
+   */
   const onDrop = useCallback(
     (event: React.DragEvent<HTMLDivElement>) => {
       event.preventDefault();

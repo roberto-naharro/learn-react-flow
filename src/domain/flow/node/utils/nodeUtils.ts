@@ -12,26 +12,26 @@ export function getConnectedIntersectionSources(
   intersectionNodeId: string,
   edges: Edge[],
   nodes: Node[],
-): { sourceUrlA?: string; sourceUrlB?: string } {
+): { firstSourceUrl?: string; secondSourceUrl?: string } {
   // Find incoming edges to this intersection node
   const incomingEdges = edges.filter((e) => e.target === intersectionNodeId);
 
   if (incomingEdges.length < 2) {
-    return { sourceUrlA: undefined, sourceUrlB: undefined };
+    return { firstSourceUrl: undefined, secondSourceUrl: undefined };
   }
 
   // Get the first two source nodes connected to this intersection
-  const sourceNodeA = nodes.find(
-    (n) => n.id === incomingEdges[0].source && n.type === NODE_SOURCE_TYPE_NAME,
+  const firstSourceNode = nodes.find(
+    (node) => node.id === incomingEdges[0].source && node.type === NODE_SOURCE_TYPE_NAME,
   ) as SourceCustomNodeProps;
 
-  const sourceNodeB = nodes.find(
-    (n) => n.id === incomingEdges[1].source && n.type === NODE_SOURCE_TYPE_NAME,
+  const secondSourceNode = nodes.find(
+    (node) => node.id === incomingEdges[1].source && node.type === NODE_SOURCE_TYPE_NAME,
   ) as SourceCustomNodeProps;
 
   return {
-    sourceUrlA: sourceNodeA?.data?.url,
-    sourceUrlB: sourceNodeB?.data?.url,
+    firstSourceUrl: firstSourceNode?.data?.url,
+    secondSourceUrl: secondSourceNode?.data?.url,
   };
 }
 

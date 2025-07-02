@@ -9,21 +9,114 @@ import { useGeoJsonContext } from '../hooks/useGeoJsonContext';
 
 import type { IntersectionWorkerResponse } from '../../../shared/workers/types';
 import type { IntersectionCache } from '../context/IntersectionContext';
-import type { Node } from '@xyflow/react';
+import type { Edge, Node } from '@xyflow/react';
 import type { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
 
-// Get the worker manager instance
 const workerManager = getIntersectionWorkerManager();
 
 type IntersectionProviderProps = {
   children: ReactNode;
 };
 
+/**
+ * Retrieves the source nodes that are connected to the specified target node via edges,
+ * filtering only those source nodes that have a defined `data.url` property.
+ *
+ * @param node - The target node for which to find connected source nodes.
+ * @param edges - The list of edges representing connections between nodes.
+ * @param currentNodes - The list of all current nodes to search for source nodes.
+ * @returns An array of source nodes that are connected to the given node and have a `data.url` property.
+ */
+const getConnectedSources = (node: Node, edges: Edge[], currentNodes: Node[]) => {
+  const connectedEdges = edges.filter((edge) => edge.target === node.id);
+  return connectedEdges
+    .map((edge) => currentNodes.find((n) => n.id === edge.source))
+    .filter((sourceNode) => sourceNode?.data?.url);
+};
+
+/**
+ * Processes a given intersection node, checking its connected sources and determining if
+ * it needs to compute the intersection of two geometries.
+ *
+ * @param node - The intersection node to process.
+ * @param edges - The list of edges connecting nodes.
+ * @param currentNodes - The list of all current nodes in the flow.
+ * @param intersectionCache - Cache storing previously computed intersections.
+ * @param computeIntersection - Function to compute the intersection of two geometries.
+ * @returns An object containing the updated node and a boolean indicating if changes were made.
+ */
+const processIntersectionNode = (
+  node: Node,
+  edges: Edge[],
+  currentNodes: Node[],
+  intersectionCache: IntersectionCache,
+  computeIntersection: (
+    nodeId: string,
+    geoA: FeatureCollection<Geometry, GeoJsonProperties>,
+    geoB: FeatureCollection<Geometry, GeoJsonProperties>,
+  ) => void,
+): { updatedNode: Node; hasChanges: boolean } => {
+  if (node.type !== 'intersection') {
+    return { updatedNode: node, hasChanges: false };
+  }
+
+  const connectedSources = getConnectedSources(node, edges, currentNodes);
+
+  if (connectedSources.length !== 2) {
+    const errorMessage = 'Needs exactly 2 sources';
+    if (node.data?.geojsonError !== errorMessage) {
+      return {
+        updatedNode: {
+          ...node,
+          data: {
+            ...node.data,
+            geojsonError: errorMessage,
+            status: undefined,
+          },
+        },
+        hasChanges: true,
+      };
+    }
+    return { updatedNode: node, hasChanges: false };
+  }
+
+  const firstSourceNode = connectedSources[0];
+  const secondSourceNode = connectedSources[1];
+  const areBothSourcesReady =
+    firstSourceNode?.data?.geojsonData && secondSourceNode?.data?.geojsonData;
+  const isAlreadyComputed = intersectionCache[node.id] || node.data?.geojsonData;
+  const isLoading = node.data?.status === 'loading';
+
+  if (areBothSourcesReady && !isAlreadyComputed && !isLoading) {
+    setTimeout(() => {
+      computeIntersection(
+        node.id,
+        firstSourceNode.data.geojsonData as FeatureCollection<Geometry, GeoJsonProperties>,
+        secondSourceNode.data.geojsonData as FeatureCollection<Geometry, GeoJsonProperties>,
+      );
+    }, 0);
+
+    return {
+      updatedNode: {
+        ...node,
+        data: {
+          ...node.data,
+          geojsonError: undefined,
+          status: 'loading' as const,
+        },
+      },
+      hasChanges: true,
+    };
+  }
+
+  return { updatedNode: node, hasChanges: false };
+};
+
 export const IntersectionProvider = ({ children }: IntersectionProviderProps) => {
   const [intersectionCache, setIntersectionCache] = useState<IntersectionCache>({});
   const { nodes, setNodes } = useNodesContext();
   const { edges } = useEdgesContext();
-  useGeoJsonContext(); // Keep context active
+  useGeoJsonContext();
 
   const computeIntersection = useCallback(
     (
@@ -32,8 +125,6 @@ export const IntersectionProvider = ({ children }: IntersectionProviderProps) =>
       geojsonB: FeatureCollection<Geometry, GeoJsonProperties>,
     ) => {
       if (!workerManager.isAvailable) return;
-
-      // Set loading status
       setNodes((currentNodes) =>
         currentNodes.map((node) =>
           node.id === nodeId
@@ -54,8 +145,7 @@ export const IntersectionProvider = ({ children }: IntersectionProviderProps) =>
     [setNodes],
   );
 
-  // Helper function to update a single intersection node
-  const updateSingleIntersectionNode = useCallback(
+  const createUpdatedIntersectionNode = useCallback(
     (
       node: Node,
       nodeId: string,
@@ -64,36 +154,41 @@ export const IntersectionProvider = ({ children }: IntersectionProviderProps) =>
     ) => {
       if (node.id !== nodeId) return node;
 
+      let status: 'ready' | undefined;
+      if (data) {
+        status = 'ready' as const;
+      } else if (error) {
+        status = undefined;
+      } else {
+        status = node.data?.status as 'ready' | undefined;
+      }
+
       return {
         ...node,
         data: {
           ...node.data,
           geojsonData: data,
           geojsonError: error,
-          status: data ? ('ready' as const) : error ? undefined : node.data?.status,
+          status,
         },
       };
     },
     [],
   );
 
-  // Helper function to update intersection node with result
   const updateIntersectionNode = useCallback(
     (nodeId: string, data?: FeatureCollection<Geometry, GeoJsonProperties>, error?: string) => {
-      // Update the intersection cache
       if (data) {
         setIntersectionCache((cache) => ({ ...cache, [nodeId]: data }));
       }
 
-      // Update the node with the result
       setNodes((currentNodes) =>
-        currentNodes.map((node) => updateSingleIntersectionNode(node, nodeId, data, error)),
+        currentNodes.map((node) => createUpdatedIntersectionNode(node, nodeId, data, error)),
       );
     },
-    [setNodes, updateSingleIntersectionNode],
+    [setNodes, createUpdatedIntersectionNode],
   );
 
-  // Set up worker message handler
   useEffect(() => {
     if (!workerManager.isAvailable) return;
 
@@ -109,76 +204,29 @@ export const IntersectionProvider = ({ children }: IntersectionProviderProps) =>
     };
   }, [updateIntersectionNode]);
 
-  // Simple intersection processing: compute when both sources have data
+  // Main effect to process intersection nodes and trigger computations
+  // Validates each intersection has exactly 2 sources and initiates computation when ready
   useEffect(() => {
     if (!workerManager.isAvailable) return;
 
-    // Update intersection node status and trigger computation
     setNodes((currentNodes) => {
-      let hasChanges = false;
+      let hasAnyChanges = false;
       const updatedNodes = currentNodes.map((node) => {
-        if (node.type !== 'intersection') return node;
-
-        // Find connected source nodes
-        const connectedEdges = edges.filter((edge) => edge.target === node.id);
-        const connectedSources = connectedEdges
-          .map((edge) => currentNodes.find((n) => n.id === edge.source))
-          .filter((sourceNode) => sourceNode && sourceNode.data && sourceNode.data.url);
-
-        // Check if intersection has wrong number of sources
-        if (connectedSources.length !== 2) {
-          const errorMessage = 'Needs exactly 2 sources';
-          if (node.data?.geojsonError !== errorMessage) {
-            hasChanges = true;
-            return {
-              ...node,
-              data: {
-                ...node.data,
-                geojsonError: errorMessage,
-                status: undefined,
-              },
-            };
-          }
-          return node;
-        }
-
-        // Check if both sources have data and intersection not computed yet
-        const sourceA = connectedSources[0];
-        const sourceB = connectedSources[1];
-        const bothSourcesReady = sourceA?.data?.geojsonData && sourceB?.data?.geojsonData;
-        const alreadyComputed = intersectionCache[node.id] || node.data?.geojsonData;
-        const isLoading = node.data?.status === 'loading';
-
-        if (bothSourcesReady && !alreadyComputed && !isLoading) {
-          // Trigger computation (async)
-          setTimeout(() => {
-            computeIntersection(
-              node.id,
-              sourceA.data.geojsonData as FeatureCollection<Geometry, GeoJsonProperties>,
-              sourceB.data.geojsonData as FeatureCollection<Geometry, GeoJsonProperties>,
-            );
-          }, 0);
-
-          // Set loading status immediately
-          hasChanges = true;
-          return {
-            ...node,
-            data: {
-              ...node.data,
-              geojsonError: undefined,
-              status: 'loading' as const,
-            },
-          };
-        }
-
-        return node;
+        const { updatedNode, hasChanges } = processIntersectionNode(
+          node,
+          edges,
+          currentNodes,
+          intersectionCache,
+          computeIntersection,
+        );
+        if (hasChanges) hasAnyChanges = true;
+        return updatedNode;
       });
 
-      return hasChanges ? updatedNodes : currentNodes;
+      return hasAnyChanges ? updatedNodes : currentNodes;
     });
   }, [nodes, edges, intersectionCache, computeIntersection, setNodes]);
 
-  // Memoize the context value to avoid unnecessary re-renders
   const contextValue = useMemo(
     () => ({ intersectionCache, computeIntersection }),
     [intersectionCache, computeIntersection],

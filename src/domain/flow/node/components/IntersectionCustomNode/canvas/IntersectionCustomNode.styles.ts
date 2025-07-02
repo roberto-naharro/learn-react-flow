@@ -1,6 +1,6 @@
 import { nodeStyles as sharedNodeStyles } from '../../../../../../shared/styles/nodes';
 import { createStyles } from '../../../../../../shared/styles/theme';
-import { nodeStyles } from '../../styles';
+import { nodeStyles } from '../../nodeComponentStyles';
 
 export const intersectionCustomNodeStyles = createStyles((theme) => ({
   container: {

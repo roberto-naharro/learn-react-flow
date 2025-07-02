@@ -16,6 +16,10 @@ import type {
 // Type for valid intersection features
 type ValidFeatureToIntersect = Feature<Polygon | MultiPolygon, GeoJsonProperties>;
 
+/**
+ * Type guard to validate that a feature has geometry suitable for intersection operations.
+ * Only Polygon and MultiPolygon geometries are supported.
+ */
 const isValidGeometryType = (
   feature: Feature<Geometry, GeoJsonProperties>,
 ): feature is ValidFeatureToIntersect => {
@@ -25,6 +29,10 @@ const isValidGeometryType = (
   );
 };
 
+/**
+ * Validates that a GeoJSON FeatureCollection contains valid data for intersection computation.
+ * Checks structure and ensures at least one feature has intersectable geometry.
+ */
 const validateGeoJsonForIntersection = (
   geojson: FeatureCollection<Geometry, GeoJsonProperties>,
 ): boolean => {
@@ -43,6 +51,14 @@ const validateGeoJsonForIntersection = (
   );
 };
 
+/**
+ * Computes spatial intersections between all valid feature combinations from two GeoJSON sources.
+ * Uses Turf.js for geometric operations and merges properties from intersecting features.
+ *
+ * @param sourceA - First GeoJSON collection
+ * @param sourceB - Second GeoJSON collection
+ * @returns Array of intersection features with merged properties
+ */
 async function computeIntersectionFeatures(
   sourceA: FeatureCollection<Geometry, GeoJsonProperties>,
   sourceB: FeatureCollection<Geometry, GeoJsonProperties>,
