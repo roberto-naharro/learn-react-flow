@@ -21,9 +21,9 @@ This repository contains examples and exercises for learning React Flow and deck
       - [Create a simple flow diagram](#create-a-simple-flow-diagram)
       - [Create Custom nodes](#create-custom-nodes)
         - [Source node: Represents a data source (e.g., a URL pointing to a GeoJSON file)](#source-node-represents-a-data-source-eg-a-url-pointing-to-a-geojson-file)
-      - [Layer node: Represents a layer to be rendered on the map](#layer-node-represents-a-layer-to-be-rendered-on-the-map)
+      - [Layer Node: Represents a Layer to be Rendered on the Map](#layer-node-represents-a-layer-to-be-rendered-on-the-map)
     - [Basic deck.gl - Add a map visualization with Deck.gl and integrate with current code](#basic-deckgl---add-a-map-visualization-with-deckgl-and-integrate-with-current-code)
-    - [Bonus - Support an intersection node](#bonus---support-an-intersection-node)
+    - [Bonus - Support an Intersection Node](#bonus---support-an-intersection-node)
   - [Exercise progress record](#exercise-progress-record)
     - [Basic React Flow - Create a simple flow diagram](#basic-react-flow---create-a-simple-flow-diagram)
     - [Basic React Flow - Create Custom nodes](#basic-react-flow---create-custom-nodes)
@@ -32,6 +32,8 @@ This repository contains examples and exercises for learning React Flow and deck
     - [Basic deck.gl - Add a map visualization](#basic-deckgl---add-a-map-visualization)
     - [Refactoring and Cleanup](#refactoring-and-cleanup)
     - [End-to-End Testing for Initial Exercises](#end-to-end-testing-for-initial-exercises)
+    - [Bonus exercise - Support an intersection node](#bonus-exercise---support-an-intersection-node)
+    - [Refactoring and Cleanup - last changes](#refactoring-and-cleanup---last-changes)
   - [License](#license)
 
 ## Overview
@@ -225,7 +227,23 @@ Features:
 
 ### Bonus - Support an Intersection Node
 
-_This exercise is not yet implemented._
+Implement a new type of node that receives two GeoJSON sources and
+computes their spatial intersection using Turf.js.
+
+**Intersection node**: Acts as both input and output. It includes:
+
+1. Two input ports, each expected to be connected to a Source node.
+2. One output port, which can be connected to a Layer node
+
+When both input connections are valid (i.e., both point to valid Source nodes with
+valid GeoJSON URLs), the node should:
+
+- Compute the spatial intersection between the two using the turf.intersect
+  function.
+- Provide the resulting GeoJSON as the output of this node.
+
+The Layer node connected to an Intersection node should render the result of the
+intersection on the map.
 
 ## Exercise progress record
 
@@ -380,7 +398,7 @@ During the implementation of the other exercises, extensive testing and research
 
 4. **Interactive State Management Without SASS**
    - Implemented React state-driven interactive states using `useState` and event handlers (`onMouseEnter/Leave`, `onFocus/Blur`).
-   - Created utility functions in `src/shared/styles/utils.ts` for merging base styles with hover/focus/disabled variants.
+   - Created utility functions in `src/shared/styles/styleInteractionUtils.ts` for merging base styles with hover/focus/disabled variants.
    - Updated components like `NodeTypePaletteContainer` to use proper React state management for interactive styling.
 
 5. **Style Cleanup and Consolidation**
@@ -441,6 +459,83 @@ I have implemented comprehensive end-to-end tests for all the initial exercises 
    - Consistent behavior verified for drag-and-drop operations and map rendering
 
 The test suite now provides complete coverage of all functionality described in the README exercises, from basic custom node operations to complex map visualizations with multiple connected layers. The architecture is designed to be easily extensible for future functionality while maintaining high reliability and clear documentation through semantic naming conventions.
+
+### Bonus exercise - Support an intersection node
+
+This exercise introduces a new custom node type, `IntersectionCustomNode`, which allows users to compute the intersection of two GeoJSON datasets. The implementation leverages Turf.js for spatial operations and integrates with the existing architecture. Now, I will extend the existing React Flow + Deck.gl application to support spatial intersection operations between GeoJSON datasets using a new intersection node type.
+
+1. **New Node Type: IntersectionCustomNode**
+   - Created complete intersection node with canvas and palette components
+   - Implemented proper styling with visual indicators for computation status
+   - Added validation requiring exactly 2 source connections
+   - Status display: "Needs exactly 2 sources", "Loading...", or "Ready"
+
+2. **Spatial Intersection Processing**
+   - Integrated Turf.js library for geometric intersection computation
+   - Web Worker implementation for non-blocking spatial operations
+   - Support for Polygon and MultiPolygon geometry intersection
+   - Property merging from intersecting features with computation timestamp
+
+3. **Data Flow Architecture**
+   - Enhanced GeoJsonProvider to fetch data for intersection sources
+   - New IntersectionProvider for managing intersection computation state
+   - IntersectionContext for sharing intersection results across components
+   - Smart caching system for intersection results
+
+4. **Worker Management System**
+   - Generic WorkerManager base class for type-safe worker communication
+   - Specialized IntersectionWorkerManager for intersection operations
+   - Proper lifecycle management with error handling and cleanup
+   - Message passing interface with typed request/response patterns
+
+5. **Enhanced Testing Coverage**
+   - Test scenarios: node creation, connection validation, computation triggers
+   - Map visualization testing for intersection results
+   - Tooltip functionality for intersection geometry properties
+
+The intersection functionality seamlessly integrates with the existing architecture, allowing users to create complex geospatial analysis workflows by connecting source nodes through intersection nodes to layer nodes for visualization.
+
+### Refactoring and Cleanup - last changes
+
+After all exercises and extensive testing, the codebase underwent a final round of refactoring and cleanup to ensure it meets professional standards. The focus was on enhancing code quality, maintainability, and clarity while preserving functionality.
+
+1. **Comment Removal**
+   - Eliminated verbose comments
+   - Removed generic function descriptions and obvious code explanations
+   - Cleaned up implementation details that were clear from code context
+   - Maintained only essential business logic comments
+
+2. **Variable and Function Naming Improvements**
+   - Replaced single-letter variables (`n`, `e`, `a`, `b`) with descriptive names
+   - Updated function names for clarity: `updateSingleIntersectionNode` → `createUpdatedIntersectionNode`
+   - Enhanced boolean variables with proper prefixes: `areBothSourcesReady`, `isAlreadyComputed`
+   - Improved parameter naming: `firstSourceNode`, `secondSourceNode` vs generic `sourceA`, `sourceB`
+
+3. **File Organization and Naming**
+   - Renamed generic files for better clarity:
+     - `src/shared/styles/utils.ts` → `styleInteractionUtils.ts`
+     - `src/domain/flow/node/components/styles.ts` → `nodeComponentStyles.ts`
+   - Updated all import references automatically
+   - Maintained consistent naming patterns across similar directories
+
+4. **Code Structure Improvements**
+   - **Fixed SonarQube complexity issues**: Extracted helper functions to reduce nesting depth
+   - `getConnectedSources()` - isolated source node lookup logic
+   - `processIntersectionNode()` - handles validation and computation logic
+   - Reduced function nesting from 5+ levels to 3 levels maximum
+   - Fixed nested ternary operations with clear if/else statements
+
+5. **TSDoc Documentation**
+   - Added comprehensive TSDoc comments to critical functions
+   - Documented complex business logic and non-obvious behavior
+   - Enhanced functions with proper parameter and return type documentation
+   - Focused on utility functions, hooks, workers, and data transformation logic
+   - Examples: `getUrlsToFetch()`, `computeIntersectionFeatures()`, `useFilteredGeojson()`
+
+6. **Type Safety and Linting**
+   - Fixed TypeScript warnings and errors
+   - Replaced `any[]` types with proper `Edge[]` and `Node[]` types
+   - Enhanced type guards and interface consistency
 
 ## License
 
