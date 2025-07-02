@@ -1,20 +1,18 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 
+import { getGeoJsonWorkerManager } from '../../../shared/workers/geoJsonWorkerManager';
 import { useEdgesContext } from '../../flow/hooks/useEdgesContext';
+import { NODE_INTERSECTION_TYPE_NAME } from '../../flow/node/components/IntersectionCustomNode';
 import { useNodesContext } from '../../flow/node/hooks/useNodesContext';
 import { GeoJsonContext } from '../context/GeoJsonContext';
 import { useConnectedLayers } from '../hooks/useConnectedLayers';
 
+import type { GeoJsonWorkerResponse } from '../../../shared/workers/types';
 import type { GeojsonCache } from '../types';
 
-// Create a worker
-let worker: Worker | null = null;
-
-// Initialize the worker (only in browser environment)
-if (typeof window !== 'undefined' && window.Worker) {
-  worker = new Worker(new URL('../workers/geoJsonWorker.ts', import.meta.url), { type: 'module' });
-}
+// Get the worker manager instance
+const workerManager = getGeoJsonWorkerManager();
 
 type GeoJsonProviderProps = {
   children: ReactNode;
@@ -26,71 +24,131 @@ export const GeoJsonProvider = ({ children }: GeoJsonProviderProps) => {
   const { edges } = useEdgesContext();
   const connectedLayers = useConnectedLayers(nodes, edges);
 
-  // Add useCallback to memoize fetchGeoJson
-  const fetchGeoJson = useCallback((url: string) => {
-    if (!worker) return;
+  // Helper function to get all source URLs that need to be fetched
+  const getUrlsToFetch = useCallback(() => {
+    const urls = new Set<string>();
 
-    worker.postMessage({
-      type: 'FETCH_GEOJSON',
-      url,
+    // Get direct layer connections
+    connectedLayers.forEach((layer) => {
+      if (layer.sourceUrl && !layer.sourceUrl.startsWith('intersection:')) {
+        urls.add(layer.sourceUrl);
+      }
     });
-  }, []);
 
-  // Set up worker message handler
-  useEffect(() => {
-    if (!worker) return;
+    // Get all intersection source URLs (treat them like individual layers)
+    const intersectionNodes = nodes.filter((node) => node.type === NODE_INTERSECTION_TYPE_NAME);
 
-    const handleWorkerMessage = (event: MessageEvent) => {
-      const { url, data, error } = event.data;
+    intersectionNodes.forEach((intersectionNode) => {
+      // Check if this intersection is connected to any layer
+      const isConnectedToLayer = edges.some(
+        (edge) =>
+          edge.source === intersectionNode.id &&
+          nodes.find((n) => n.id === edge.target)?.type === 'layer',
+      );
 
-      // Update the geojson cache
-      setGeojsonCache((cache) => ({ ...cache, [url]: data }));
+      if (isConnectedToLayer) {
+        // Get all source URLs connected to this intersection
+        const intersectionSources = edges
+          .filter((edge) => edge.target === intersectionNode.id)
+          .map((edge) => nodes.find((n) => n.id === edge.source))
+          .filter((sourceNode) => sourceNode && sourceNode.data && sourceNode.data.url)
+          .map((sourceNode) => sourceNode!.data.url as string);
 
-      // Update the nodes that use this source URL
+        intersectionSources.forEach((url) => urls.add(url));
+      }
+    });
+
+    return Array.from(urls);
+  }, [connectedLayers, edges, nodes]);
+
+  // Helper function to set loading status for source nodes
+  const setSourceLoadingStatus = useCallback(
+    (url: string) => {
       setNodes((currentNodes) => {
         return currentNodes.map((node) => {
-          // Check if node is a source with this URL or a layer connected to this source
-          const isSourceWithUrl = node.data?.url === url;
-          const connectedLayer = connectedLayers.find(
-            (layer) => layer.sourceUrl === url && layer.id === node.id,
-          );
-
-          if (isSourceWithUrl || connectedLayer) {
+          if (node.data?.url === url) {
             return {
               ...node,
               data: {
                 ...node.data,
-                geojsonData: data,
-                geojsonError: error,
+                status: 'loading' as const,
+                geojsonError: undefined,
               },
             };
           }
           return node;
         });
       });
+    },
+    [setNodes],
+  );
+
+  // Add useCallback to memoize fetchGeoJson
+  const fetchGeoJson = useCallback(
+    (url: string) => {
+      if (!workerManager.isAvailable) return;
+
+      // Set loading status for source nodes
+      setSourceLoadingStatus(url);
+
+      workerManager.fetchGeoJson(url);
+    },
+    [setSourceLoadingStatus],
+  );
+
+  // Set up worker message handler
+  useEffect(() => {
+    if (!workerManager.isAvailable) return;
+
+    const handleWorkerMessage = (event: MessageEvent<GeoJsonWorkerResponse>) => {
+      const { url, data, error } = event.data;
+
+      // Update the geojson cache
+      setGeojsonCache((cache) => ({ ...cache, [url]: data || null }));
+
+      // Update the nodes that use this source URL
+      setNodes((currentNodes) => {
+        return currentNodes.map((node) => {
+          // Source node with matching URL should always be updated
+          const isSourceWithUrl = node.data?.url === url;
+
+          if (isSourceWithUrl) {
+            return {
+              ...node,
+              data: {
+                ...node.data,
+                geojsonData: data,
+                geojsonError: error,
+                status: data ? ('ready' as const) : undefined,
+              },
+            };
+          }
+
+          return node;
+        });
+      });
     };
 
-    worker.addEventListener('message', handleWorkerMessage);
+    workerManager.onMessage(handleWorkerMessage);
 
     return () => {
-      worker?.removeEventListener('message', handleWorkerMessage);
+      workerManager.offMessage(handleWorkerMessage);
     };
-  }, [connectedLayers, setNodes]);
+  }, [setNodes]);
 
-  // Fetch GeoJSON data for connected layers
+  // Fetch GeoJSON data for URLs needed by layers (including intersection sources)
   useEffect(() => {
-    if (!worker) return;
+    if (!workerManager.isAvailable) return;
 
-    // Extract unique URLs from connected layers to avoid duplicate fetches
-    const urls = Array.from(new Set(connectedLayers.map((l) => l.sourceUrl)));
+    const urlsToFetch = getUrlsToFetch();
 
     // Fetch GeoJSON data for each unique URL that's not already cached
-    urls.forEach((url) => {
+    urlsToFetch.forEach((url) => {
       if (!geojsonCache[url]) {
         fetchGeoJson(url);
       }
     });
-  }, [connectedLayers, geojsonCache, fetchGeoJson]);
+  }, [getUrlsToFetch, geojsonCache, fetchGeoJson]);
 
   // Memoize the context value to avoid unnecessary re-renders
   const contextValue = useMemo(

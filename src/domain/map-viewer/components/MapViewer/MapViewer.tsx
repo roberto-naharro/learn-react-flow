@@ -9,8 +9,9 @@ import { useNodesContext } from '../../../flow/node/hooks/useNodesContext';
 import { INITIAL_VIEW_STATE, MAP_STYLE_URL } from '../../constants';
 import { useConnectedLayers } from '../../hooks/useConnectedLayers';
 import { useDeckLayers } from '../../hooks/useDeckLayers';
-import { useFilteredGeojson } from '../../hooks/useGeojsonCache';
+import { useFilteredGeojson } from '../../hooks/useFilteredGeojson';
 import { GeoJsonProvider } from '../../providers/GeoJsonProvider';
+import { IntersectionProvider } from '../../providers/IntersectionProvider';
 
 import type { MapViewerInnerProps } from '../../types';
 
@@ -57,7 +58,9 @@ export const MapViewer = () => {
   const { edges } = useEdgesContext();
   return (
     <GeoJsonProvider>
-      <MapViewerInner nodes={nodes} edges={edges} />
+      <IntersectionProvider>
+        <MapViewerInner nodes={nodes} edges={edges} />
+      </IntersectionProvider>
     </GeoJsonProvider>
   );
 };

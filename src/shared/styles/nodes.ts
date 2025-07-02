@@ -40,4 +40,9 @@ export const nodeStyles = createStyles((theme) => ({
     border: `1px solid ${theme.colors.secondaryHover}`,
     color: theme.colors.white,
   },
+  third: {
+    backgroundColor: theme.colors.success,
+    border: `1px solid ${theme.colors.success}`,
+    color: theme.colors.white,
+  },
 }));

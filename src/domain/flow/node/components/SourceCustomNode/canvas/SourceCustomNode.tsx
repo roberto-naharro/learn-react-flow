@@ -9,16 +9,20 @@ export type SourceCustomNodeProps = {
     onUrlChange?: (id: string, url: string) => void;
     geojsonError?: string;
     geojsonData?: unknown;
+    status?: 'loading' | 'ready';
   };
 };
 const SourceCustomNode = ({ data, id }: SourceCustomNodeProps) => {
   const styles = sourceCustomNodeStyles;
-  let statusMessage = null;
-  if (data.geojsonError) {
-    statusMessage = <div style={styles.error}>❌ Error: {data.geojsonError}</div>;
-  } else if (data.geojsonData) {
-    statusMessage = <div style={styles.success}> ✅ GeoJSON Loaded Successfully</div>;
-  }
+
+  const getStatusLabel = () => {
+    if (data.status === 'loading') return '🟡 Computing...';
+    if (data.geojsonError) return '🔴 Error';
+    if (data.geojsonData) return '🟢 Ready';
+    return null;
+  };
+
+  const statusLabel = getStatusLabel();
 
   return (
     <div style={styles.container}>
@@ -30,7 +34,8 @@ const SourceCustomNode = ({ data, id }: SourceCustomNodeProps) => {
         placeholder="Enter GeoJSON URL"
         style={styles.input}
       />
-      <div style={styles.errorContainer}>{statusMessage}</div>
+      {statusLabel ? <div style={styles.statusLabel}>{statusLabel}</div> : null}
+      {data.geojsonError ? <div style={styles.errorMessage}>{data.geojsonError}</div> : null}
       <Handle type="source" position={Position.Right} id={`${id}-source`} />
     </div>
   );

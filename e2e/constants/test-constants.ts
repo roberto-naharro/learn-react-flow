@@ -2,6 +2,8 @@
 export const TEST_URLS = {
   GEOJSON_PARKS:
     'https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_10m_parks_and_protected_lands_scale_rank.geojson',
+  GEOJSON_STATES:
+    'https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_110m_admin_1_states_provinces_shp.geojson',
 } as const;
 
 // Selectors
@@ -13,6 +15,7 @@ export const SELECTORS = {
   REACT_FLOW_EDGE: '.react-flow__edge',
   REACT_FLOW_HANDLE_RIGHT: '.react-flow__handle-right',
   REACT_FLOW_HANDLE_LEFT: '.react-flow__handle-left',
+  REACT_FLOW_HANDLE_BY_ID: (handleId: string) => `[data-handleid="${handleId}"]`,
 
   // Map elements
   DECKGL_WRAPPER: '#deckgl-wrapper',
@@ -28,6 +31,7 @@ export const SELECTORS = {
 export const BUTTON_PATTERNS = {
   ADD_SOURCE_NODE: /add source node/i,
   ADD_LAYER_NODE: /add layer node/i,
+  ADD_INTERSECTION_NODE: /add intersection node/i,
   SAVE: /save/i,
   RESTORE: /restore/i,
   RESET: /reset/i,
@@ -41,14 +45,17 @@ export const WAIT_TIMES = {
   SHORT: 300, // For node creation, connections
   MEDIUM: 500, // For complex operations, map loading
   LONG: 1000, // For heavy operations
+  INTERSECTION: 4000, // For intersection computation
 } as const;
 
 // Node positions for consistent test layouts
 export const NODE_POSITIONS = {
-  SOURCE_DEFAULT: { x: 100, y: 100 },
-  LAYER_DEFAULT: { x: 300, y: 100 },
+  SOURCE_DEFAULT: { x: 0, y: 100 },
+  SOURCE_SECONDARY: { x: 400, y: 500 },
+  INTERSECTION_DEFAULT: { x: 700, y: 300 },
+  LAYER_DEFAULT: { x: 800, y: 275 },
   SOURCE_SECOND: { x: 100, y: 300 },
-  LAYER_SECOND: { x: 300, y: 300 },
+  LAYER_SECOND: { x: 1000, y: 300 },
   LAYER_OFFSET: { x: 120, y: 120 },
   CANVAS_CENTER: { x: 400, y: 300 }, // Moved away from UI panels
 } as const;
@@ -64,9 +71,12 @@ export const MOUSE_POSITIONS = {
 export const EXPECTED_COUNTS = {
   SINGLE_NODE: 1,
   DOUBLE_NODES: 2,
+  TRIPLE_NODES: 3,
   QUAD_NODES: 4,
   NO_ELEMENTS: 0,
   SINGLE_EDGE: 1,
+  DOUBLE_EDGES: 2,
+  TRIPLE_EDGES: 3,
   MINIMUM_EDGES: 1, // For tests where second connection might fail
 } as const;
 
@@ -74,6 +84,7 @@ export const EXPECTED_COUNTS = {
 export const KEYBOARD = {
   DELETE: 'Delete',
   SELECT_ALL: 'Control+a',
+  ESCAPE: 'Escape',
 } as const;
 
 // Test states

@@ -16,6 +16,46 @@ jest.mock('react-map-gl/maplibre', () => ({
 }));
 // Add this line to mock the GeoJsonProvider specifically for this test
 jest.mock('../domain/map-viewer/providers/GeoJsonProvider');
+jest.mock('../domain/map-viewer/providers/IntersectionProvider', () => ({
+  IntersectionProvider: ({ children }: { children: React.ReactNode }) => children,
+  useIntersection: () => ({
+    computeIntersection: jest.fn(),
+    getIntersectionResult: jest.fn(() => null),
+    clearIntersectionResult: jest.fn(),
+  }),
+}));
+jest.mock('../shared/workers/geoJsonWorkerManager', () => ({
+  createGeoJsonWorkerManager: () => ({
+    fetchGeoJson: jest.fn(),
+    onMessage: jest.fn(),
+    offMessage: jest.fn(),
+    terminate: jest.fn(),
+    isAvailable: true,
+  }),
+  getGeoJsonWorkerManager: () => ({
+    fetchGeoJson: jest.fn(),
+    onMessage: jest.fn(),
+    offMessage: jest.fn(),
+    terminate: jest.fn(),
+    isAvailable: true,
+  }),
+}));
+jest.mock('../shared/workers/intersectionWorkerManager', () => ({
+  createIntersectionWorkerManager: () => ({
+    computeIntersection: jest.fn(),
+    onMessage: jest.fn(),
+    offMessage: jest.fn(),
+    terminate: jest.fn(),
+    isAvailable: true,
+  }),
+  getIntersectionWorkerManager: () => ({
+    computeIntersection: jest.fn(),
+    onMessage: jest.fn(),
+    offMessage: jest.fn(),
+    terminate: jest.fn(),
+    isAvailable: true,
+  }),
+}));
 
 /**
  * @jest-environment node

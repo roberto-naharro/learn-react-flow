@@ -1,11 +1,13 @@
 import type * as React from 'react';
 
+import { IntersectionCustomNode, NODE_INTERSECTION_TYPE_NAME } from './IntersectionCustomNode';
 import { LayerCustomNode, NODE_LAYER_TYPE_NAME } from './LayerCustomNode';
 import { NODE_SOURCE_TYPE_NAME, SourceCustomNode } from './SourceCustomNode';
 
 const nodeTypes = {
   [NODE_SOURCE_TYPE_NAME]: SourceCustomNode,
   [NODE_LAYER_TYPE_NAME]: LayerCustomNode,
+  [NODE_INTERSECTION_TYPE_NAME]: IntersectionCustomNode,
 } as const;
 
 type NodeTypes = { -readonly [P in keyof typeof nodeTypes]: (typeof nodeTypes)[P] };

@@ -1,5 +1,6 @@
 import { GeoJsonLayer } from '@deck.gl/layers';
 
+import { NODE_INTERSECTION_TYPE_NAME } from '../../flow/node/components/IntersectionCustomNode';
 import { NODE_SOURCE_TYPE_NAME } from '../../flow/node/components/SourceCustomNode';
 import { LAYER_COLORS } from '../constants';
 
@@ -10,7 +11,7 @@ import type { Edge, Node } from '@xyflow/react';
 import type { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
 
 /**
- * Finds the source URL connected to a layer node
+ * Finds the source URL connected to a layer node or returns intersection node ID
  */
 export function getConnectedSourceUrl(
   layerNodeId: string,
@@ -21,11 +22,16 @@ export function getConnectedSourceUrl(
   const edge = edges.find((e) => e.target === layerNodeId);
   if (!edge) return null;
 
-  const sourceNode = nodes.find(
-    (n) => n.id === edge.source && n.type === NODE_SOURCE_TYPE_NAME,
-  ) as SourceCustomNodeProps;
+  const sourceNode = nodes.find((n) => n.id === edge.source);
 
-  return sourceNode?.data?.url ?? null;
+  if (sourceNode?.type === NODE_SOURCE_TYPE_NAME) {
+    return (sourceNode as SourceCustomNodeProps)?.data?.url ?? null;
+  } else if (sourceNode?.type === NODE_INTERSECTION_TYPE_NAME) {
+    // For intersection nodes, return the node ID as identifier
+    return `intersection:${sourceNode.id}`;
+  }
+
+  return null;
 }
 
 /**

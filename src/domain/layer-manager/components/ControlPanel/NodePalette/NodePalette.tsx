@@ -10,6 +10,7 @@ import type { NodePaletteTypes } from './NodeTypes/types';
 const defaultNodeTypes = [
   { type: 'source' },
   { type: 'layer' },
+  { type: 'intersection' },
 ] as const satisfies NodePaletteTypes;
 
 export type NodePaletteProps = {

@@ -1,15 +1,4 @@
-import type { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
-
-type FetchGeoJsonMessage = {
-  type: 'FETCH_GEOJSON';
-  url: string;
-};
-
-type WorkerResponse = {
-  url: string;
-  data?: FeatureCollection<Geometry, GeoJsonProperties>;
-  error?: string;
-};
+import type { FetchGeoJsonMessage, GeoJsonWorkerResponse } from '../../../shared/workers/types';
 
 // Listen for messages from the main thread
 self.addEventListener('message', async (event: MessageEvent<FetchGeoJsonMessage>) => {
@@ -21,12 +10,16 @@ self.addEventListener('message', async (event: MessageEvent<FetchGeoJsonMessage>
       const data = await response.json();
 
       // Send the successful result back to the main thread
-      const workerResponse: WorkerResponse = { url, data };
+      const workerResponse: GeoJsonWorkerResponse = { type: 'GEOJSON_SUCCESS', url, data };
       self.postMessage(workerResponse);
     } catch (error) {
       // Send the error back to the main thread
       const errorMessage = error instanceof Error ? error.message : String(error);
-      const workerResponse: WorkerResponse = { url, error: errorMessage };
+      const workerResponse: GeoJsonWorkerResponse = {
+        type: 'GEOJSON_ERROR',
+        url,
+        error: errorMessage,
+      };
       self.postMessage(workerResponse);
     }
   }
