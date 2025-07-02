@@ -1,10 +1,9 @@
-import type { ReactNode } from 'react';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
+import type { ReactNode } from 'react';
 
 import { useReactFlow } from '@xyflow/react';
 
-import { useEdgesContext } from '../../flow/hooks/useEdgesContext';
-import { useNodesContext } from '../../flow/node/hooks/useNodesContext';
+import { useEdgesContext, useNodesContext } from '../../flow/hooks/useDiagramData';
 import { PersistenceContext } from '../context/PersistenceContext';
 import { usePersistence } from '../hooks/usePersistence';
 

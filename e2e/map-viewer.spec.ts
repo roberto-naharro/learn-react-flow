@@ -1,12 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-import {
-  EXPECTED_COUNTS,
-  NODE_POSITIONS,
-  SELECTORS,
-  TEST_URLS,
-  WAIT_TIMES,
-} from './constants/test-constants';
+import { EXPECTED_COUNTS, NODE_POSITIONS, SELECTORS, TEST_URLS } from './constants/test-constants';
 import {
   TEST_GEOJSON_URL,
   connectSourceToLayer,
@@ -21,7 +15,7 @@ import {
   triggerMapTooltip,
   verifyIntersectionStatus,
   verifyNodeAndEdgeCounts,
-  waitForIntersectionComputation,
+  waitForNodesReady,
 } from './helpers/test-helpers';
 
 test.describe('Map Viewer', () => {
@@ -114,13 +108,11 @@ test.describe('Map Viewer', () => {
     // Create complete intersection workflow
     await createIntersectionWorkflow(page, TEST_URLS.GEOJSON_PARKS, TEST_URLS.GEOJSON_STATES);
 
-    // Verify intersection computation completes
-    await waitForIntersectionComputation(page);
-
     // Switch to map view to see intersection results
     await switchToMapView(page);
 
-    await page.waitForTimeout(WAIT_TIMES.INTERSECTION);
+    // Wait for map processing to complete - should show "3 ready"
+    await waitForNodesReady(page, 3);
 
     // Switch back to diagram view to verify workflow is intact
     await switchToDiagramView(page);
@@ -131,7 +123,6 @@ test.describe('Map Viewer', () => {
   test('should show tooltip on intersection geometry hover in map view', async ({ page }) => {
     // Create intersection workflow
     await createIntersectionWorkflow(page);
-    await waitForIntersectionComputation(page);
 
     // Switch to map view
     await switchToMapView(page);

@@ -8,9 +8,8 @@ import { ReactFlowInstanceMockFactory } from '../../../../__mocks__/ReactFlow/Re
 import { localStorageMock } from '../../../../__mocks__/window/localStorageMock';
 import { usePersistenceContext } from '../../../layer-manager/hooks/usePersistenceContext';
 import { PersistenceProvider } from '../../../layer-manager/providers/PersistenceProvider';
-import { useNodesContext } from '../../node/hooks/useNodesContext';
-import { EdgesProvider } from '../EdgesProvider';
-import { NodesProvider } from '../NodesProvider';
+import { useNodesContext } from '../../hooks/useDiagramData';
+import { DiagramDataProvider } from '../DiagramDataProvider';
 
 describe('PersistenceProvider', () => {
   let originalLocalStorage: Storage;
@@ -55,13 +54,11 @@ describe('PersistenceProvider', () => {
 
   const TestComponent = () => (
     <ReactFlowProvider>
-      <NodesProvider>
-        <EdgesProvider>
-          <PersistenceProvider>
-            <TestButtons />
-          </PersistenceProvider>
-        </EdgesProvider>
-      </NodesProvider>
+      <DiagramDataProvider>
+        <PersistenceProvider>
+          <TestButtons />
+        </PersistenceProvider>
+      </DiagramDataProvider>
     </ReactFlowProvider>
   );
 

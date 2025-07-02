@@ -2,8 +2,9 @@ import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals
 import { render } from '@testing-library/react';
 
 import { reactFlowMock } from '../../../../../__mocks__/ReactFlow/ReactFlowInstanceMock';
-import { EdgesContext } from '../../../../flow/context/EdgesContext';
-import { NodesContext } from '../../../../flow/node/context/NodesContext';
+import { buildDiagramDataContextMock } from '../../../../flow/context/__mocks__/DiagramDataContextMock';
+import { DiagramDataContext } from '../../../../flow/context/DiagramDataContext';
+import { buildPersistenceContextMock } from '../../../context/__mocks__/PersistenceContextMock';
 import { PersistenceContext } from '../../../context/PersistenceContext';
 import { FlowCanvas } from '../FlowCanvas';
 
@@ -46,54 +47,28 @@ describe('FlowCanvas', () => {
     console.error = originalConsoleError;
   });
 
-  // Helper to render with all required contexts
   const renderWithContexts = () => {
-    const nodesContextValue = {
-      nodes: [],
-      setNodes: jest.fn(),
-      onNodesChange: jest.fn(),
-      addNode: jest.fn(),
-      removeNode: jest.fn(),
-      updateNodeData: jest.fn(),
-    };
-
-    const edgesContextValue = {
-      edges: [],
-      setEdges: jest.fn(),
-      onEdgesChange: jest.fn(),
-      onConnect: jest.fn(),
-    };
-
-    const persistenceContextValue = {
-      saveFlowState: jest.fn(() => true),
-      restoreFlowState: jest.fn(() => true),
-      resetFlowState: jest.fn(() => true),
-      setReactFlowInstance: jest.fn(),
-    };
+    const diagramDataContextValue = buildDiagramDataContextMock();
+    const persistenceContextValue = buildPersistenceContextMock();
 
     return render(
-      <NodesContext.Provider value={nodesContextValue}>
-        <EdgesContext.Provider value={edgesContextValue}>
-          <PersistenceContext.Provider value={persistenceContextValue}>
-            <FlowCanvas />
-          </PersistenceContext.Provider>
-        </EdgesContext.Provider>
-      </NodesContext.Provider>,
+      <DiagramDataContext.Provider value={diagramDataContextValue}>
+        <PersistenceContext.Provider value={persistenceContextValue}>
+          <FlowCanvas />
+        </PersistenceContext.Provider>
+      </DiagramDataContext.Provider>,
     );
   };
 
   it('should render ReactFlow with all required components', () => {
     const { getByTestId } = renderWithContexts();
 
-    // Check that ReactFlow is rendered
     expect(getByTestId('mock-react-flow')).toBeInTheDocument();
 
-    // Check that UI controls are rendered
     expect(getByTestId('mock-controls')).toBeInTheDocument();
     expect(getByTestId('mock-minimap')).toBeInTheDocument();
     expect(getByTestId('mock-background')).toBeInTheDocument();
 
-    // Check that custom components are rendered (directly, not through panels)
     expect(getByTestId('mock-control-panel')).toBeInTheDocument();
     expect(getByTestId('mock-action-panel')).toBeInTheDocument();
   });

@@ -4,7 +4,11 @@ import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { renderHook } from '@testing-library/react';
 
 import { reactFlowMock } from '../../../../__mocks__/ReactFlow/ReactFlowInstanceMock';
-import { NodesContext } from '../../../flow/node/context/NodesContext';
+import {
+  buildDiagramDataContextMock,
+  mockAddNode,
+} from '../../../flow/context/__mocks__/DiagramDataContextMock';
+import { DiagramDataContext } from '../../../flow/context/DiagramDataContext';
 import { DragAndDropContext, type DragAndDropContextType } from '../../context/DragAndDropContext';
 import { useDragDrop } from '../useDragDrop';
 
@@ -14,26 +18,19 @@ jest.mock('@xyflow/react', () => ({
 }));
 
 describe('useDragDrop', () => {
-  const mockAddNode = jest.fn();
-
   // Create wrapper with required contexts
   const wrapper = ({ children }: { children: React.ReactNode }) => {
     const dragAndDropValue: [string | null, React.Dispatch<React.SetStateAction<string | null>>] = [
       'test-node-type',
       jest.fn(),
     ];
-    const nodesValue = {
-      nodes: [],
-      setNodes: jest.fn(),
-      onNodesChange: jest.fn(),
-      addNode: mockAddNode,
-      removeNode: jest.fn(),
-      updateNodeData: jest.fn(),
-    };
+    const diagramDataValue = buildDiagramDataContextMock();
 
     return (
       <DragAndDropContext.Provider value={dragAndDropValue}>
-        <NodesContext.Provider value={nodesValue}>{children}</NodesContext.Provider>
+        <DiagramDataContext.Provider value={diagramDataValue}>
+          {children}
+        </DiagramDataContext.Provider>
       </DragAndDropContext.Provider>
     );
   };
@@ -93,18 +90,13 @@ describe('useDragDrop', () => {
     // Create wrapper with empty drag context value
     const customWrapper = ({ children }: { children: React.ReactNode }) => {
       const dragAndDropValue: DragAndDropContextType = [null, jest.fn()];
-      const nodesValue = {
-        nodes: [],
-        setNodes: jest.fn(),
-        onNodesChange: jest.fn(),
-        addNode: mockAddNode,
-        removeNode: jest.fn(),
-        updateNodeData: jest.fn(),
-      };
+      const diagramDataValue = buildDiagramDataContextMock();
 
       return (
         <DragAndDropContext.Provider value={dragAndDropValue}>
-          <NodesContext.Provider value={nodesValue}>{children}</NodesContext.Provider>
+          <DiagramDataContext.Provider value={diagramDataValue}>
+            {children}
+          </DiagramDataContext.Provider>
         </DragAndDropContext.Provider>
       );
     };
@@ -136,18 +128,13 @@ describe('useDragDrop', () => {
     // Create wrapper with empty drag context value
     const customWrapper = ({ children }: { children: React.ReactNode }) => {
       const dragAndDropValue: DragAndDropContextType = [null, jest.fn()];
-      const nodesValue = {
-        nodes: [],
-        setNodes: jest.fn(),
-        onNodesChange: jest.fn(),
-        addNode: mockAddNode,
-        removeNode: jest.fn(),
-        updateNodeData: jest.fn(),
-      };
+      const diagramDataValue = buildDiagramDataContextMock();
 
       return (
         <DragAndDropContext.Provider value={dragAndDropValue}>
-          <NodesContext.Provider value={nodesValue}>{children}</NodesContext.Provider>
+          <DiagramDataContext.Provider value={diagramDataValue}>
+            {children}
+          </DiagramDataContext.Provider>
         </DragAndDropContext.Provider>
       );
     };

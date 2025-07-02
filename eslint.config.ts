@@ -3,12 +3,12 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 import importPlugin from 'eslint-plugin-import';
 import prettierPlugin from 'eslint-plugin-prettier';
 import * as reactHooksPlugin from 'eslint-plugin-react-hooks';
-import { configs as tsConfigs } from 'typescript-eslint';
+import tseslint from 'typescript-eslint';
 
 export default [
   {
     ignores: [
-      // Ignore all dot directories
+      // Comprehensive ignore patterns for performance
       '**/.*/**',
       '**/.DS_Store',
       'node_modules/**',
@@ -18,12 +18,25 @@ export default [
       '.husky/**',
       '.vscode/**',
       '.git/**',
+      '**/*.d.ts',
+      'scripts/**',
+      'public/**',
+      'playwright-report/**',
+      'test-results/**',
     ],
   },
   js.configs.recommended,
-  ...tsConfigs.recommended,
-  // Replace reactHooks.configs.recommended with proper flat config format
+  ...tseslint.configs.recommended,
   {
+    // TypeScript-specific configuration following Medium article recommendations
+    languageOptions: {
+      parser: tseslint.parser,
+      parserOptions: {
+        project: ['./tsconfig.lint.json'], // Use dedicated lint config
+        tsconfigRootDir: import.meta.dirname,
+        createDefaultProgram: false, // CRITICAL: Must be false for performance
+      },
+    },
     plugins: {
       'react-hooks': reactHooksPlugin,
     },
@@ -39,36 +52,29 @@ export default [
     },
     settings: {
       'import/resolver': {
-        typescript: {
-          alwaysTryTypes: true,
-          project: './tsconfig.json',
+        node: {
+          extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
       },
-      'import/parsers': {
-        '@typescript-eslint/parser': ['.ts', '.tsx'],
+      'import/cache': {
+        lifetime: Infinity,
       },
-    },
-    rules: {
-      // Enable import resolution rules
-      'import/no-unresolved': 'error',
-      'import/namespace': 'warn',
-      'import/named': 'error',
-      'import/default': 'warn',
-      'import/no-named-as-default': 'warn',
-      'import/no-named-as-default-member': 'warn',
-      'import/no-duplicates': 'warn',
-    },
-  },
-  {
-    // Base configuration for all files
-    linterOptions: {
-      reportUnusedDisableDirectives: true,
+      rules: {
+        // Enable import resolution rules
+        'import/no-unresolved': 'error',
+        'import/namespace': 'warn',
+        'import/named': 'error',
+        'import/default': 'warn',
+        'import/no-named-as-default': 'warn',
+        'import/no-named-as-default-member': 'warn',
+        'import/no-duplicates': 'warn',
+      },
     },
     rules: {
       // Core ESLint rules
       'no-console': ['warn', { allow: ['warn', 'error'] }],
 
-      // TypeScript rules
+      // TypeScript rules - minimal set for performance
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/consistent-type-imports': [
         'error',
@@ -79,34 +85,27 @@ export default [
         },
       ],
 
-      // Import rules - keep only the ones that don't require resolver
+      // Import rules - lightweight versions for performance
       'import/first': 'error',
       'import/newline-after-import': 'error',
+      'import/no-duplicates': 'warn',
 
-      // Built-in sort-imports rule - sorts members within import statements
+      // Built-in sort-imports rule
       'sort-imports': [
         'error',
         {
           ignoreCase: false,
-          ignoreDeclarationSort: true, // Don't handle declaration sorting (import/order will do that)
-          ignoreMemberSort: false, // Do sort members within an import
+          ignoreDeclarationSort: true,
+          ignoreMemberSort: false,
           allowSeparatedGroups: true,
         },
       ],
 
-      // import/order rule - handles sorting import declarations by groups
+      // Simplified import/order for performance
       'import/order': [
         'error',
         {
-          groups: [
-            'builtin', // Node.js built-in modules
-            'external', // npm packages
-            'internal', // paths aliased in tsconfig
-            ['parent', 'sibling'], // relative imports
-            'index', // index of the current directory
-            'object', // object-imports
-            'type', // type imports
-          ],
+          groups: ['builtin', 'external', 'internal', ['parent', 'sibling'], 'index', 'type'],
           'newlines-between': 'always',
           alphabetize: {
             order: 'asc',

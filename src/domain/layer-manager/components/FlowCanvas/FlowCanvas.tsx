@@ -10,9 +10,8 @@ import {
 } from '@xyflow/react';
 
 import { flowCanvasStyles } from './FlowCanvas.styles';
-import { useEdgesContext } from '../../../flow/hooks/useEdgesContext';
+import { useEdgesContext, useNodesContext } from '../../../flow/hooks/useDiagramData';
 import { getNodeTypes } from '../../../flow/node/components/nodeTypes';
-import { useNodesContext } from '../../../flow/node/hooks/useNodesContext';
 import { useDragDrop } from '../../hooks/useDragDrop';
 import { usePersistenceContext } from '../../hooks/usePersistenceContext';
 import { ActionPanel } from '../ActionPanel/ActionPanel';

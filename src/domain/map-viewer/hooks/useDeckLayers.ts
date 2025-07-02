@@ -2,12 +2,12 @@ import { useMemo, useState } from 'react';
 
 import { createGeoJsonLayer, createHoverHandler } from '../utils/mapUtils';
 
-import type { ConnectedLayer, GeojsonCache, HoverInfo } from '../types';
+import type { GeojsonCache, HoverInfo, LayerWithSource } from '../types';
 
 /**
  * Hook to manage Deck.gl layers and hover state
  */
-export function useDeckLayers(connectedLayers: ConnectedLayer[], geojsonCache: GeojsonCache) {
+export function useDeckLayers(connectedLayers: LayerWithSource[], geojsonCache: GeojsonCache) {
   const [hoverInfo, setHoverInfo] = useState<HoverInfo>(null);
 
   const deckLayers = useMemo(() => {
@@ -15,7 +15,7 @@ export function useDeckLayers(connectedLayers: ConnectedLayer[], geojsonCache: G
 
     return connectedLayers
       .map((layerNode, i) => {
-        const data = geojsonCache[layerNode.sourceUrl];
+        const data = geojsonCache[layerNode.source];
         if (!data) return null;
 
         return createGeoJsonLayer(layerNode, i, data, handleHover);

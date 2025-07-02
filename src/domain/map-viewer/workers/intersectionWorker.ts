@@ -1,9 +1,6 @@
 import * as turf from '@turf/turf';
 
-import type {
-  ComputeIntersectionMessage,
-  IntersectionWorkerResponse,
-} from '../../../shared/workers/types';
+import type { ComputeIntersectionMessage, IntersectionWorkerResponse } from './types';
 import type {
   Feature,
   FeatureCollection,

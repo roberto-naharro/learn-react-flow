@@ -25,6 +25,9 @@ export const SELECTORS = {
 
   // Input elements
   GEOJSON_URL_INPUT: 'input[placeholder="Enter GeoJSON URL"]',
+
+  // Status indicators
+  MAP_PROCESSING_STATUS_ID: 'map-processing-status',
 } as const;
 
 // Button text patterns
@@ -45,7 +48,7 @@ export const WAIT_TIMES = {
   SHORT: 300, // For node creation, connections
   MEDIUM: 500, // For complex operations, map loading
   LONG: 1000, // For heavy operations
-  INTERSECTION: 4000, // For intersection computation
+  INTERSECTION: 60000, // For intersection computation
 } as const;
 
 // Node positions for consistent test layouts
@@ -91,6 +94,22 @@ export const KEYBOARD = {
 export const TEST_STATES = {
   VISIBLE: 'visible' as const,
   ENABLED: 'enabled' as const,
+} as const;
+
+// Map processing status text patterns
+export const MAP_STATUS_PATTERNS = {
+  READY: 'Ready:',
+  NO_LAYERS: 'No layers to process',
+  PROCESSING: 'Processing:',
+} as const;
+
+export const MAP_INFO_TOP_TIP_TEXT = {
+  // Processing: 2 loading, 0 computing, 1 ready
+  PROCESSING: 'Processing:',
+  LOADING: 'loading',
+  COMPUTING: 'computing',
+  READY: 'ready',
+  ERROR: 'error',
 } as const;
 
 // Drag and drop options

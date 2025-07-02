@@ -1,4 +1,4 @@
-import type { FetchGeoJsonMessage, GeoJsonWorkerResponse } from '../../../shared/workers/types';
+import type { FetchGeoJsonMessage, GeoJsonWorkerResponse } from './types';
 
 // Listen for messages from the main thread
 self.addEventListener('message', async (event: MessageEvent<FetchGeoJsonMessage>) => {

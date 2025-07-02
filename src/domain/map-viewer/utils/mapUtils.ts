@@ -5,7 +5,7 @@ import { NODE_SOURCE_TYPE_NAME } from '../../flow/node/components/SourceCustomNo
 import { LAYER_COLORS } from '../constants';
 
 import type { SourceCustomNodeProps } from '../../flow/node/components/SourceCustomNode/canvas/SourceCustomNode';
-import type { ConnectedLayer, HoverInfo } from '../types';
+import type { HoverInfo, LayerWithSource } from '../types';
 import type { PickingInfo } from '@deck.gl/core';
 import type { Edge, Node } from '@xyflow/react';
 import type { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
@@ -38,7 +38,7 @@ export function getConnectedSourceUrl(
  * Creates a Deck.gl GeoJsonLayer with proper configuration for all geometry types
  */
 export function createGeoJsonLayer(
-  layerNode: ConnectedLayer,
+  layerNode: LayerWithSource,
   layerIndex: number,
   geojsonData: FeatureCollection<Geometry, GeoJsonProperties>,
   onHover: (info: PickingInfo) => void,
@@ -52,10 +52,7 @@ export function createGeoJsonLayer(
     filled: true,
     lineWidthScale: 2,
     lineWidthMinPixels: 1,
-    getFillColor: [
-      ...LAYER_COLORS.fill.base, // RGB base color
-      LAYER_COLORS.fill.alphaBase + layerIndex * LAYER_COLORS.fill.alphaIncrement, // Dynamic alpha
-    ],
+    getFillColor: [...LAYER_COLORS.fill.bgList[layerIndex % LAYER_COLORS.fill.bgList.length]],
     getLineColor: [...LAYER_COLORS.stroke],
     getLineWidth: 2,
     pointType: 'circle',

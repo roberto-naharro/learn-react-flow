@@ -14,9 +14,8 @@ import { ControlPanel } from '../../../layer-manager/components/ControlPanel/Con
 import { flowCanvasStyles } from '../../../layer-manager/components/FlowCanvas/FlowCanvas.styles';
 import { useDragDrop } from '../../../layer-manager/hooks/useDragDrop';
 import { usePersistenceContext } from '../../../layer-manager/hooks/usePersistenceContext';
-import { useEdgesContext } from '../../hooks/useEdgesContext';
+import { useEdgesContext, useNodesContext } from '../../hooks/useDiagramData';
 import { getNodeTypes } from '../../node/components/nodeTypes';
-import { useNodesContext } from '../../node/hooks/useNodesContext';
 
 export const FlowCanvas = () => {
   const styles = flowCanvasStyles;

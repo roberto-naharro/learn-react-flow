@@ -1,4 +1,4 @@
-import type { Edge, Node } from '@xyflow/react';
+import type { Node } from '@xyflow/react';
 import type { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
 
 /**
@@ -20,19 +20,14 @@ export type HoverInfo = {
 } | null;
 
 /**
- * Layer node with its connected source URL
+ * Layer node with its connected source
  */
-export type ConnectedLayer = Node & {
-  sourceUrl: string;
+export type LayerWithSource = Node & {
+  /**
+   * Source URL or identifier for the layer
+   */
+  source: string;
 };
-
-/**
- * Props for the MapViewerInner component
- */
-export interface MapViewerInnerProps {
-  nodes: Node[];
-  edges: Edge[];
-}
 
 /**
  * Configuration for map view state

@@ -1,58 +1,46 @@
 import { describe, expect, it, jest } from '@jest/globals';
 
 jest.mock('@deck.gl/layers', () => ({
-  GeoJsonLayer: function MockGeoJsonLayer() {},
+  GeoJsonLayer: function MockGeoJsonLayer() {
+    return null;
+  },
 }));
+
 jest.mock('@deck.gl/react', () => ({
   __esModule: true,
   default: function MockDeckGL() {
     return null;
   },
 }));
+
 jest.mock('react-map-gl/maplibre', () => ({
   Map: function MockMap() {
     return null;
   },
 }));
-jest.mock('../domain/map-viewer/providers/GeoJsonProvider');
-jest.mock('../domain/map-viewer/providers/IntersectionProvider', () => ({
-  IntersectionProvider: ({ children }: { children: React.ReactNode }) => children,
-  useIntersection: () => ({
-    computeIntersection: jest.fn(),
-    getIntersectionResult: jest.fn(() => null),
-    clearIntersectionResult: jest.fn(),
-  }),
-}));
-jest.mock('../shared/workers/geoJsonWorkerManager', () => ({
-  createGeoJsonWorkerManager: () => ({
+
+jest.mock('../domain/map-viewer/workers/mapWorkerManager', () => ({
+  createMapWorkerManager: () => ({
     fetchGeoJson: jest.fn(),
-    onMessage: jest.fn(),
-    offMessage: jest.fn(),
+    onGeoJsonMessage: jest.fn(),
+    offGeoJsonMessage: jest.fn(),
+    computeIntersection: jest.fn(),
+    onIntersectionMessage: jest.fn(),
+    offIntersectionMessage: jest.fn(),
+    isGeoJsonAvailable: true,
+    isIntersectionAvailable: true,
     terminate: jest.fn(),
-    isAvailable: true,
   }),
-  getGeoJsonWorkerManager: () => ({
+  getMapWorkerManager: () => ({
     fetchGeoJson: jest.fn(),
-    onMessage: jest.fn(),
-    offMessage: jest.fn(),
-    terminate: jest.fn(),
-    isAvailable: true,
-  }),
-}));
-jest.mock('../shared/workers/intersectionWorkerManager', () => ({
-  createIntersectionWorkerManager: () => ({
+    onGeoJsonMessage: jest.fn(),
+    offGeoJsonMessage: jest.fn(),
     computeIntersection: jest.fn(),
-    onMessage: jest.fn(),
-    offMessage: jest.fn(),
+    onIntersectionMessage: jest.fn(),
+    offIntersectionMessage: jest.fn(),
+    isGeoJsonAvailable: true,
+    isIntersectionAvailable: true,
     terminate: jest.fn(),
-    isAvailable: true,
-  }),
-  getIntersectionWorkerManager: () => ({
-    computeIntersection: jest.fn(),
-    onMessage: jest.fn(),
-    offMessage: jest.fn(),
-    terminate: jest.fn(),
-    isAvailable: true,
   }),
 }));
 

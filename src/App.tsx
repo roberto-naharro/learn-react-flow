@@ -1,9 +1,8 @@
 import { ReactFlowProvider } from '@xyflow/react';
 
 import { appStyles } from './App.styles';
-import { EdgesProvider } from './domain/flow/providers/EdgesProvider';
-import { NodesProvider } from './domain/flow/providers/NodesProvider';
-import { PersistenceProvider } from './domain/layer-manager/providers/PersistenceProvider';
+import { DiagramDataProvider } from './domain/flow/providers/DiagramDataProvider';
+import { MapDataProcessorProvider } from './domain/map-viewer/providers/MapDataProcessor';
 import Router from './router/component';
 import { RouterProvider } from './router/provider';
 
@@ -13,15 +12,13 @@ function App() {
   return (
     <RouterProvider>
       <ReactFlowProvider>
-        <NodesProvider>
-          <EdgesProvider>
-            <PersistenceProvider>
-              <div style={appStyles.container}>
-                <Router />
-              </div>
-            </PersistenceProvider>
-          </EdgesProvider>
-        </NodesProvider>
+        <DiagramDataProvider>
+          <MapDataProcessorProvider>
+            <div style={appStyles.container}>
+              <Router />
+            </div>
+          </MapDataProcessorProvider>
+        </DiagramDataProvider>
       </ReactFlowProvider>
     </RouterProvider>
   );

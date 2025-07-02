@@ -19,7 +19,6 @@ describe('NodePalette component', () => {
   it('should render all node basic node types', () => {
     renderBasicNodeNodePalette();
 
-    // Check that all node types are rendered
     expect(screen.getByText('Input Node')).toBeInTheDocument();
     expect(screen.getByText('Default Node')).toBeInTheDocument();
     expect(screen.getByText('Output Node')).toBeInTheDocument();
@@ -28,19 +27,13 @@ describe('NodePalette component', () => {
   it('should set the correct data when dragging', () => {
     renderBasicNodeNodePalette();
 
-    // Get a node button
     const nodeButton = screen.getByText('Input Node');
-
-    // Create a drag event
     const dataTransfer = {
       setData: jest.fn(),
       effectAllowed: null,
     };
 
-    // Simulate drag start
     fireEvent.dragStart(nodeButton, { dataTransfer });
-
-    // Check that the correct data was set
     expect(dataTransfer.setData).toHaveBeenCalledWith('application/reactflow', 'input');
     expect(dataTransfer.effectAllowed).toBe('move');
   });
@@ -48,11 +41,10 @@ describe('NodePalette component', () => {
   it('should have draggable accessible buttons', () => {
     renderBasicNodeNodePalette();
 
-    // Get all node buttons
     const nodeButtons = screen.getAllByRole('button');
-    expect(nodeButtons).toHaveLength(3); // Input, Default, and Output nodes
+    expect(nodeButtons).toHaveLength(3);
 
-    // Check that buttons are both accessible AND draggable
+    // Buttons must be both accessible AND draggable
     nodeButtons.forEach((button) => {
       expect(button).toHaveAttribute('aria-label');
       expect(button).toHaveAttribute('type', 'button');

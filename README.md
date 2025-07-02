@@ -33,7 +33,9 @@ This repository contains examples and exercises for learning React Flow and deck
     - [Refactoring and Cleanup](#refactoring-and-cleanup)
     - [End-to-End Testing for Initial Exercises](#end-to-end-testing-for-initial-exercises)
     - [Bonus exercise - Support an intersection node](#bonus-exercise---support-an-intersection-node)
-    - [Refactoring and Cleanup - last changes](#refactoring-and-cleanup---last-changes)
+    - [Refactoring and Cleanup - last changes (I though...)](#refactoring-and-cleanup---last-changes-i-though)
+    - [Provider Architecture Refactoring and State Synchronization Fixes](#provider-architecture-refactoring-and-state-synchronization-fixes)
+    - [Code Quality and Professional Standards Cleanup](#code-quality-and-professional-standards-cleanup)
   - [License](#license)
 
 ## Overview
@@ -495,7 +497,7 @@ This exercise introduces a new custom node type, `IntersectionCustomNode`, which
 
 The intersection functionality seamlessly integrates with the existing architecture, allowing users to create complex geospatial analysis workflows by connecting source nodes through intersection nodes to layer nodes for visualization.
 
-### Refactoring and Cleanup - last changes
+### Refactoring and Cleanup - last changes (I though...)
 
 After all exercises and extensive testing, the codebase underwent a final round of refactoring and cleanup to ensure it meets professional standards. The focus was on enhancing code quality, maintainability, and clarity while preserving functionality.
 
@@ -536,6 +538,32 @@ After all exercises and extensive testing, the codebase underwent a final round 
    - Fixed TypeScript warnings and errors
    - Replaced `any[]` types with proper `Edge[]` and `Node[]` types
    - Enhanced type guards and interface consistency
+
+### Provider Architecture Refactoring and State Synchronization Fixes
+
+The application had critical state synchronization issues and provider architecture chaos that caused useEffect cycles and performance problems. This session focused on comprehensive provider consolidation and fixing state sharing between domains. The implementation process included:
+
+1. **Provider Architecture Consolidation**
+   - **DiagramDataProvider Integration**: Successfully unified nodes and edges providers into a single `DiagramDataProvider` following functional programming patterns
+   - **Complete unit test migration**: Updated all tests to use the new consolidated provider with proper mock builders in `__mocks__` folders
+   - **Domain separation maintained**: Clear boundaries between `layer-manager` and `map-viewer` domains with controlled state synchronization
+
+2. **Map-Viewer Complete Rewrite**
+   - **Clean MapDataProcessor implementation**: Replaced chaotic provider structure with single `MapDataProcessorProvider`.
+   - **Worker consolidation**: Unified `geoJsonWorkerManager` and `intersectionWorkerManager` into single `mapWorkerManager` using Vite's `?worker` syntax
+   - **Mock extraction**: Moved all hardcoded test mocks to proper `__mocks__` folders with reusable builder functions
+
+3. **Critical Bug Fixes**
+   - **Duplicate provider elimination**: Fixed duplicate `MapDataProcessorProvider` in `MapViewerPage` that was creating separate context instances and preventing state sharing
+   - **Source node state synchronization**: Resolved issue where source nodes weren't showing processing states (🟡 Computing...) after returning from map view
+   - **Worker MIME type resolution**: Fixed worker loading error using proper Vite import syntax instead of relative paths
+
+4. **E2E Test Updates**
+   - **Status checking improvement**: Updated `'should render intersection results on the map'` test to use new `waitForNodesReady()` helper function
+   - **Proper status parsing**: Implemented regex matching for "Ready: 3 nodes" format instead of manual timeouts
+   - **Test constants utilization**: Used existing `MAP_STATUS_PATTERNS` and `SELECTORS` for consistent test behavior
+
+The fixes eliminated the useEffect cycle by proper context isolation, unified worker management, and clean state synchronization between diagram and map domains. Source nodes now correctly display processing states, intersection computations work reliably, and the E2E test suite passes consistently across browsers.
 
 ## License
 
