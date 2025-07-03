@@ -35,7 +35,7 @@ This repository contains examples and exercises for learning React Flow and deck
     - [Bonus exercise - Support an intersection node](#bonus-exercise---support-an-intersection-node)
     - [Refactoring and Cleanup - last changes (I though...)](#refactoring-and-cleanup---last-changes-i-though)
     - [Provider Architecture Refactoring and State Synchronization Fixes](#provider-architecture-refactoring-and-state-synchronization-fixes)
-    - [Code Quality and Professional Standards Cleanup](#code-quality-and-professional-standards-cleanup)
+  - [Summary about the exercise](#summary-about-the-exercise)
   - [License](#license)
 
 ## Overview
@@ -564,6 +564,18 @@ The application had critical state synchronization issues and provider architect
    - **Test constants utilization**: Used existing `MAP_STATUS_PATTERNS` and `SELECTORS` for consistent test behavior
 
 The fixes eliminated the useEffect cycle by proper context isolation, unified worker management, and clean state synchronization between diagram and map domains. Source nodes now correctly display processing states, intersection computations work reliably, and the E2E test suite passes consistently across browsers.
+
+## Summary about the exercise
+
+I put this project together in my spare time, usually in quick bursts—finding long stretches of free time was basically impossible. To really do a proper analysis, you need to be able to focus and study the problem for a while, but that just wasn’t realistic for me this week. On top of that, I had to spend time learning and figuring out React Flow and deck.gl from scratch, since I’d never used either before. Trying to get up to speed with both libraries and build something meaningful in just a week was honestly a bit crazy!
+
+Because of all that, I just dove right in and started building, which meant I ended up refactoring the code a bunch of times as I figured out better ways to organize things. If I’d had more time to plan and really understand the libraries and the problem space, I probably could have saved myself a lot of rework... but hey, that’s part of the learning process, especially when you’re under time pressure.
+
+There are definitely things I could improve or expand on. For example, I only tested intersection nodes with direct connections from source nodes. It would be interesting to try chaining intersection nodes together, connecting the output of one to the input of another, and see how far I could push the workflow. More complex test scenarios like that are still on my to-do list.
+
+On the testing side, I started with basic unit tests and then added end-to-end tests using Playwright. To speed things up on "CI" stuff, I dropped Chromium from the E2E test runs and just stuck with Firefox. That made the test suite a lot faster and still gave me good cross-browser coverage.
+
+Overall, this project was a fun way to explore some new tech and build something interactive from scratch, even if it was a bit of a whirlwind. I learned a lot, made plenty of mistakes, and I'm proud of the final code.
 
 ## License
 
