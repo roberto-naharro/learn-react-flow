@@ -3,8 +3,8 @@ import * as React from 'react';
 import { describe, expect, it } from '@jest/globals';
 import { act, render, renderHook } from '@testing-library/react';
 
-import { useDragAndDropContext } from '../../hooks/useDragAndDropContext';
-import { DragAndDropProvider } from '../DragAndDropProvider';
+import { useDragAndDropContext } from '@domain-layer-manager/hooks/useDragAndDropContext';
+import { DragAndDropProvider } from '@domain-layer-manager/providers/DragAndDropProvider';
 
 describe('DragAndDropProvider', () => {
   it('should provide drag and drop context to children', () => {

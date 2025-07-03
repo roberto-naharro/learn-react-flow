@@ -1,8 +1,8 @@
-import { NODE_INTERSECTION_TYPE_NAME } from '../components/IntersectionCustomNode';
-import { NODE_SOURCE_TYPE_NAME } from '../components/SourceCustomNode';
+import { NODE_INTERSECTION_TYPE_NAME } from '@domain-flow/node/components/IntersectionCustomNode';
+import type { IntersectionCustomNodeProps } from '@domain-flow/node/components/IntersectionCustomNode/canvas/IntersectionCustomNode';
+import { NODE_SOURCE_TYPE_NAME } from '@domain-flow/node/components/SourceCustomNode';
+import type { SourceCustomNodeProps } from '@domain-flow/node/components/SourceCustomNode/canvas/SourceCustomNode';
 
-import type { IntersectionCustomNodeProps } from '../components/IntersectionCustomNode/canvas/IntersectionCustomNode';
-import type { SourceCustomNodeProps } from '../components/SourceCustomNode/canvas/SourceCustomNode';
 import type { Edge, Node } from '@xyflow/react';
 
 /**

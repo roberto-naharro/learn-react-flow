@@ -1,7 +1,8 @@
 import { useCallback } from 'react';
 
-import { useNodesContext } from '../../flow/hooks/useDiagramData';
-import { useMapDataProcessor } from '../../map-viewer/providers/MapDataProcessor';
+import { useNodesContext } from '@domain-flow/hooks/useDiagramData';
+
+import { useMapDataProcessor } from '@domain-map-viewer/providers/MapDataProcessor';
 
 /**
  * One-way synchronization hook for map state

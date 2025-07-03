@@ -1,5 +1,6 @@
-import LayerManagerPage from '../domain/layer-manager/pages/LayerManagerPage/LayerManagerPage';
-import MapViewerPage from '../domain/map-viewer/pages/MapViewerPage/MapViewerPage';
+import LayerManagerPage from '@domain-layer-manager/pages/LayerManagerPage/LayerManagerPage';
+
+import MapViewerPage from '@domain-map-viewer/pages/MapViewerPage/MapViewerPage';
 
 export const ROUTES = {
   'layer-manager': <LayerManagerPage />,

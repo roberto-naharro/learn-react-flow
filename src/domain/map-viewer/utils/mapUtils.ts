@@ -1,11 +1,12 @@
 import { GeoJsonLayer } from '@deck.gl/layers';
 
-import { NODE_INTERSECTION_TYPE_NAME } from '../../flow/node/components/IntersectionCustomNode';
-import { NODE_SOURCE_TYPE_NAME } from '../../flow/node/components/SourceCustomNode';
-import { LAYER_COLORS } from '../constants';
+import { NODE_INTERSECTION_TYPE_NAME } from '@domain-flow/node/components/IntersectionCustomNode';
+import { NODE_SOURCE_TYPE_NAME } from '@domain-flow/node/components/SourceCustomNode';
+import type { SourceCustomNodeProps } from '@domain-flow/node/components/SourceCustomNode/canvas/SourceCustomNode';
 
-import type { SourceCustomNodeProps } from '../../flow/node/components/SourceCustomNode/canvas/SourceCustomNode';
-import type { HoverInfo, LayerWithSource } from '../types';
+import { LAYER_COLORS } from '@domain-map-viewer/constants';
+import type { HoverInfo, LayerWithSource } from '@domain-map-viewer/types';
+
 import type { PickingInfo } from '@deck.gl/core';
 import type { Edge, Node } from '@xyflow/react';
 import type { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';

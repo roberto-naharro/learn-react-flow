@@ -1,8 +1,7 @@
 import { useContext } from 'react';
 
-import { DiagramDataContext } from '../context/DiagramDataContext';
-
-import type { DiagramDataContextType } from '../context/DiagramDataContext';
+import { DiagramDataContext } from '@domain-flow/context/DiagramDataContext';
+import type { DiagramDataContextType } from '@domain-flow/context/DiagramDataContext';
 
 /**
  * Hook to access unified diagram data (nodes and edges)

@@ -1,6 +1,9 @@
 import { type ReactNode, useMemo, useState } from 'react';
 
-import { DragAndDropContext, type DragAndDropContextType } from '../context/DragAndDropContext';
+import {
+  DragAndDropContext,
+  type DragAndDropContextType,
+} from '@domain-layer-manager/context/DragAndDropContext';
 
 export const DragAndDropProvider = ({ children }: { children: ReactNode }) => {
   const [draggedItem, setDraggedItem] = useState<string | null>(null);

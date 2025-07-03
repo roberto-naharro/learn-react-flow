@@ -1,9 +1,12 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 
-import { getMapWorkerManager } from '../workers/mapWorkerManager';
+import { getMapWorkerManager } from '@domain-map-viewer/workers/mapWorkerManager';
+import type {
+  GeoJsonWorkerResponse,
+  IntersectionWorkerResponse,
+} from '@domain-map-viewer/workers/types';
 
-import type { GeoJsonWorkerResponse, IntersectionWorkerResponse } from '../workers/types';
 import type { Edge, Node } from '@xyflow/react';
 import type { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
 

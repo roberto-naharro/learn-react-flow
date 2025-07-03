@@ -1,23 +1,15 @@
 import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { render } from '@testing-library/react';
 
-import { reactFlowMock } from '../../../../../__mocks__/ReactFlow/ReactFlowInstanceMock';
-import { buildDiagramDataContextMock } from '../../../../flow/context/__mocks__/DiagramDataContextMock';
-import { DiagramDataContext } from '../../../../flow/context/DiagramDataContext';
-import { buildPersistenceContextMock } from '../../../context/__mocks__/PersistenceContextMock';
-import { PersistenceContext } from '../../../context/PersistenceContext';
-import { FlowCanvas } from '../FlowCanvas';
+import { buildDiagramDataContextMock } from '@domain-flow/context/__mocks__/DiagramDataContextMock';
+import { DiagramDataContext } from '@domain-flow/context/DiagramDataContext';
+
+import { FlowCanvas } from '@domain-layer-manager/components/FlowCanvas/FlowCanvas';
+import { buildPersistenceContextMock } from '@domain-layer-manager/context/__mocks__/PersistenceContextMock';
+import { PersistenceContext } from '@domain-layer-manager/context/PersistenceContext';
 
 // Mock ReactFlow and hooks
-jest.mock('@xyflow/react', () => ({
-  Background: reactFlowMock.Background,
-  BackgroundVariant: reactFlowMock.BackgroundVariant,
-  ConnectionLineType: reactFlowMock.ConnectionLineType,
-  Controls: reactFlowMock.Controls,
-  MiniMap: reactFlowMock.MiniMap,
-  ReactFlow: reactFlowMock.ReactFlow,
-  Panel: reactFlowMock.Panel,
-}));
+jest.mock('@xyflow/react');
 
 // Mock other components
 jest.mock('../../ControlPanel/ControlPanel', () => ({

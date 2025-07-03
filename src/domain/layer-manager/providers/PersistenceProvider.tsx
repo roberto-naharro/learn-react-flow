@@ -3,9 +3,10 @@ import type { ReactNode } from 'react';
 
 import { useReactFlow } from '@xyflow/react';
 
-import { useEdgesContext, useNodesContext } from '../../flow/hooks/useDiagramData';
-import { PersistenceContext } from '../context/PersistenceContext';
-import { usePersistence } from '../hooks/usePersistence';
+import { useEdgesContext, useNodesContext } from '@domain-flow/hooks/useDiagramData';
+
+import { PersistenceContext } from '@domain-layer-manager/context/PersistenceContext';
+import { usePersistence } from '@domain-layer-manager/hooks/usePersistence';
 
 export const PersistenceProvider = ({ children }: { children: ReactNode }) => {
   const { setNodes } = useNodesContext();

@@ -1,3 +1,4 @@
+import importAliasPlugin from '@dword-design/eslint-plugin-import-alias';
 import js from '@eslint/js';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import importPlugin from 'eslint-plugin-import';
@@ -39,6 +40,7 @@ export default [
     },
     plugins: {
       'react-hooks': reactHooksPlugin,
+      ...importAliasPlugin.configs.recommended.plugins,
     },
     rules: {
       'react-hooks/rules-of-hooks': 'error',
@@ -52,6 +54,10 @@ export default [
     },
     settings: {
       'import/resolver': {
+        typescript: {
+          alwaysTryTypes: true,
+          project: './tsconfig.app.json',
+        },
         node: {
           extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
@@ -90,6 +96,20 @@ export default [
       'import/newline-after-import': 'error',
       'import/no-duplicates': 'warn',
 
+      // Enforce path aliases over relative imports
+      '@dword-design/import-alias/prefer-alias': [
+        'error',
+        {
+          alias: {
+            '@shared': './src/shared',
+            '@domain-flow': './src/domain/flow',
+            '@domain-layer-manager': './src/domain/layer-manager',
+            '@domain-map-viewer': './src/domain/map-viewer',
+            '@router': './src/router',
+          },
+        },
+      ],
+
       // Built-in sort-imports rule
       'sort-imports': [
         'error',
@@ -117,6 +137,31 @@ export default [
               group: 'external',
               position: 'before',
             },
+            {
+              pattern: '@shared/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: '@domain-flow/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: '@domain-layer-manager/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: '@domain-map-viewer/**',
+              group: 'internal',
+              position: 'before',
+            },
+            {
+              pattern: '@router/**',
+              group: 'internal',
+              position: 'before',
+            },
           ],
           pathGroupsExcludedImportTypes: ['react'],
         },
@@ -129,7 +174,7 @@ export default [
       '**/__tests__/**/*.{js,ts,jsx,tsx}',
       '**/*.{spec,test}.{js,ts,jsx,tsx}',
       'e2e/**/*.{js,ts,jsx,tsx}',
-      'src/__mocks__/**/*.{js,ts,jsx,tsx}',
+      '**/__mocks__/**/*.{js,ts,jsx,tsx}',
     ],
     rules: {
       // Allow console statements in test files

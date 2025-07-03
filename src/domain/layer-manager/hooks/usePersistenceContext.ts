@@ -1,6 +1,9 @@
 import { useContext } from 'react';
 
-import { PersistenceContext, type PersistenceContextType } from '../context/PersistenceContext';
+import {
+  PersistenceContext,
+  type PersistenceContextType,
+} from '@domain-layer-manager/context/PersistenceContext';
 
 export const usePersistenceContext = (): PersistenceContextType => {
   const context = useContext(PersistenceContext);

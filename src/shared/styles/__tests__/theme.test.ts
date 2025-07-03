@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 
-import { createStyles, theme } from '../theme';
+import { createStyles, theme } from '@shared/styles/theme';
 
 describe('Theme and createStyles', () => {
   it('should export theme object', () => {

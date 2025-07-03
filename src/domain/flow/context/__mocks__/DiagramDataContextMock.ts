@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
 
-import type { DiagramDataContextType } from '../DiagramDataContext';
+import type { DiagramDataContextType } from '@domain-flow/context/DiagramDataContext';
 
 // Exportable mock functions for testing assertions
 export const mockSetNodes = jest.fn();

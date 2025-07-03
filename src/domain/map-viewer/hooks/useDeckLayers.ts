@@ -1,8 +1,7 @@
 import { useMemo, useState } from 'react';
 
-import { createGeoJsonLayer, createHoverHandler } from '../utils/mapUtils';
-
-import type { GeojsonCache, HoverInfo, LayerWithSource } from '../types';
+import type { GeojsonCache, HoverInfo, LayerWithSource } from '@domain-map-viewer/types';
+import { createGeoJsonLayer, createHoverHandler } from '@domain-map-viewer/utils/mapUtils';
 
 /**
  * Hook to manage Deck.gl layers and hover state

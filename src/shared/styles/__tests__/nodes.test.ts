@@ -1,7 +1,7 @@
 import { describe, expect, it } from '@jest/globals';
 
-import { nodeStyles } from '../nodes';
-import { theme } from '../theme';
+import { nodeStyles } from '@shared/styles/nodes';
+import { theme } from '@shared/styles/theme';
 
 describe('Node Styles', () => {
   describe('base styles', () => {

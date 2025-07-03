@@ -1,7 +1,7 @@
 import { describe, expect, it } from '@jest/globals';
 
-import { formStyles } from '../forms';
-import { theme } from '../theme';
+import { formStyles } from '@shared/styles/forms';
+import { theme } from '@shared/styles/theme';
 
 describe('Form Styles', () => {
   describe('container styles', () => {

@@ -1,4 +1,5 @@
-import type { BaseWorkerMessage } from '../../../shared/workers/types';
+import type { BaseWorkerMessage } from '@shared/workers/types';
+
 import type { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
 
 // GeoJSON worker messages

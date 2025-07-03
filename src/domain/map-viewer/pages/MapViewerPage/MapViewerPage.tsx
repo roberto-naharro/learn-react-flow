@@ -2,11 +2,14 @@ import { useEffect } from 'react';
 
 import { Panel } from '@xyflow/react';
 
+import { useEdgesContext, useNodesContext } from '@domain-flow/hooks/useDiagramData';
+
+import { MapViewer } from '@domain-map-viewer/components/MapViewer/MapViewer';
+import { useMapDataProcessor } from '@domain-map-viewer/providers/MapDataProcessor';
+
+import { useRouter } from '@router/hooks';
+
 import { mapViewerPageStyles } from './MapViewerPage.styles';
-import { useRouter } from '../../../../router/hooks';
-import { useEdgesContext, useNodesContext } from '../../../flow/hooks/useDiagramData';
-import { MapViewer } from '../../components/MapViewer/MapViewer';
-import { useMapDataProcessor } from '../../providers/MapDataProcessor';
 
 const MapViewerPageInner = () => {
   const { navigate } = useRouter();

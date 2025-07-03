@@ -4,15 +4,16 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it, jest } from '@je
 import { act, renderHook } from '@testing-library/react';
 import { ReactFlowProvider } from '@xyflow/react';
 
-import { ReactFlowInstanceMockFactory } from '../../../../__mocks__/ReactFlow/ReactFlowInstanceMock';
+import { usePersistence } from '@domain-layer-manager/hooks/usePersistence';
+
+import { _reactFlowMockBuilders } from '../../../../../__mocks__/@xyflow/react';
 import { requestAnimationFrameMock } from '../../../../__mocks__/requestAnimationFrameMock';
 import { localStorageMock } from '../../../../__mocks__/window/localStorageMock';
-import { usePersistence } from '../usePersistence';
 
 describe('usePersistence hook', () => {
   let originalLocalStorage: Storage;
   let originalRequestAnimationFrame: typeof global.requestAnimationFrame;
-  let ReactFlowInstanceMock: ReturnType<typeof ReactFlowInstanceMockFactory>;
+  let ReactFlowInstanceMock: ReturnType<typeof _reactFlowMockBuilders.ReactFlowInstance>;
 
   beforeAll(() => {
     // Store original values
@@ -45,7 +46,7 @@ describe('usePersistence hook', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     localStorageMock._clearAllMocks();
-    ReactFlowInstanceMock = ReactFlowInstanceMockFactory();
+    ReactFlowInstanceMock = _reactFlowMockBuilders.ReactFlowInstance();
   });
 
   it('should initialize with empty state', () => {

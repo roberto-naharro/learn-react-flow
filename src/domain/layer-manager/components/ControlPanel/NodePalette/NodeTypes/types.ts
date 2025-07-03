@@ -1,6 +1,7 @@
+import type { Prettify } from '@shared/types/utility';
+
 import type { BasicNodePaletteProps } from './BasicNodePalette/types';
 import type { CustomNodePaletteProps } from './CustomNodePalette/types';
-import type { Prettify } from '../../../../../../shared/types/utility';
 
 export type NodePaletteTypeProps = {
   type: string;

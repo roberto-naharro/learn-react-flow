@@ -2,8 +2,9 @@ import { useCallback } from 'react';
 
 import { useReactFlow } from '@xyflow/react';
 
+import { useNodesContext } from '@domain-flow/hooks/useDiagramData';
+
 import { useDragAndDropContext } from './useDragAndDropContext';
-import { useNodesContext } from '../../flow/hooks/useDiagramData';
 
 import type { Node } from '@xyflow/react';
 

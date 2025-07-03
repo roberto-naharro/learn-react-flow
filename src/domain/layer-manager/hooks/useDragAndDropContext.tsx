@@ -1,6 +1,9 @@
 import { useContext } from 'react';
 
-import { DragAndDropContext, type DragAndDropContextType } from '../context/DragAndDropContext';
+import {
+  DragAndDropContext,
+  type DragAndDropContextType,
+} from '@domain-layer-manager/context/DragAndDropContext';
 
 export const useDragAndDropContext = (): DragAndDropContextType => {
   const context = useContext(DragAndDropContext);

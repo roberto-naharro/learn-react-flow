@@ -1,7 +1,8 @@
 import { describe, expect, it } from '@jest/globals';
 
-import { theme } from '../../../../../shared/styles/theme';
-import { mapViewerStyles } from '../MapViewer.styles';
+import { theme } from '@shared/styles/theme';
+
+import { mapViewerStyles } from '@domain-map-viewer/components/MapViewer/MapViewer.styles';
 
 describe('MapViewer Styles', () => {
   describe('map container styles', () => {

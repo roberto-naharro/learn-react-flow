@@ -15,6 +15,16 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
+    /* Path Aliases */
+    "baseUrl": ".",
+    "paths": {
+      "@shared/*": ["src/shared/*"],
+      "@domain-flow/*": ["src/domain/flow/*"],
+      "@domain-layer-manager/*": ["src/domain/layer-manager/*"],
+      "@domain-map-viewer/*": ["src/domain/map-viewer/*"],
+      "@router/*": ["src/router/*"]
+    },
+
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
@@ -23,5 +33,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src"]
+  "include": ["src", "__mocks__/@xyflow/react/index.tsx"]
 }

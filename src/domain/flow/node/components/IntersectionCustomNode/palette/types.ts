@@ -1,7 +1,7 @@
 import {
   type NodePaletteTypeProps,
   isNodePaletteTypeProps,
-} from '../../../../../layer-manager/components/ControlPanel/NodePalette/NodeTypes/types';
+} from '@domain-layer-manager/components/ControlPanel/NodePalette/NodeTypes/types';
 
 import type { NODE_INTERSECTION_TYPE_NAME } from '..';
 

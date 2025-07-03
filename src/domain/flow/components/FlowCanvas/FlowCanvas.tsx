@@ -9,13 +9,14 @@ import {
   ReactFlow,
 } from '@xyflow/react';
 
-import { ActionPanel } from '../../../layer-manager/components/ActionPanel/ActionPanel';
-import { ControlPanel } from '../../../layer-manager/components/ControlPanel/ControlPanel';
-import { flowCanvasStyles } from '../../../layer-manager/components/FlowCanvas/FlowCanvas.styles';
-import { useDragDrop } from '../../../layer-manager/hooks/useDragDrop';
-import { usePersistenceContext } from '../../../layer-manager/hooks/usePersistenceContext';
-import { useEdgesContext, useNodesContext } from '../../hooks/useDiagramData';
-import { getNodeTypes } from '../../node/components/nodeTypes';
+import { useEdgesContext, useNodesContext } from '@domain-flow/hooks/useDiagramData';
+import { getNodeTypes } from '@domain-flow/node/components/nodeTypes';
+
+import { ActionPanel } from '@domain-layer-manager/components/ActionPanel/ActionPanel';
+import { ControlPanel } from '@domain-layer-manager/components/ControlPanel/ControlPanel';
+import { flowCanvasStyles } from '@domain-layer-manager/components/FlowCanvas/FlowCanvas.styles';
+import { useDragDrop } from '@domain-layer-manager/hooks/useDragDrop';
+import { usePersistenceContext } from '@domain-layer-manager/hooks/usePersistenceContext';
 
 export const FlowCanvas = () => {
   const styles = flowCanvasStyles;

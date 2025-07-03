@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { useState } from 'react';
 
-import { nodePaletteStyles } from '../NodePalette.styles';
+import type { Prettify } from '@shared/types/utility';
+
+import { nodePaletteStyles } from '@domain-layer-manager/components/ControlPanel/NodePalette/NodePalette.styles';
 
 import type { NodePaletteTypeProps } from './types';
-import type { Prettify } from '../../../../../../shared/types/utility';
 
 // Create synthetic drag event for keyboard accessibility
 const createKeyboardDragEvent = (): React.DragEvent<HTMLElement> =>

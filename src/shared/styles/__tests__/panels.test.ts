@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 
-import { panelStyles } from '../panels';
+import { panelStyles } from '@shared/styles/panels';
 
 describe('General panelStyles', () => {
   it('should export base, smallPadding, and mediumPadding styles', () => {

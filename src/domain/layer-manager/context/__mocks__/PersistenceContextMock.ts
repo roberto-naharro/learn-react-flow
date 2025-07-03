@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
 
-import type { PersistenceContextType } from '../PersistenceContext';
+import type { PersistenceContextType } from '@domain-layer-manager/context/PersistenceContext';
 
 // Exportable mock functions for testing assertions
 export const mockSaveFlowState = jest.fn(() => true);

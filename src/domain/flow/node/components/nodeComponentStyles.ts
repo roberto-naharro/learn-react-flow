@@ -1,5 +1,5 @@
-import { nodeStyles as sharedNodeStyles } from '../../../../shared/styles/nodes';
-import { createStyles } from '../../../../shared/styles/theme';
+import { nodeStyles as sharedNodeStyles } from '@shared/styles/nodes';
+import { createStyles } from '@shared/styles/theme';
 
 export const nodeStyles = createStyles((theme) => ({
   container: {

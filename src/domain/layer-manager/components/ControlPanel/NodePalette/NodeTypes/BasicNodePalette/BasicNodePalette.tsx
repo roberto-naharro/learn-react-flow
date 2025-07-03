@@ -1,4 +1,4 @@
-import NodeTypePaletteContainer from '../NodeTypePaletteContainer';
+import NodeTypePaletteContainer from '@domain-layer-manager/components/ControlPanel/NodePalette/NodeTypes/NodeTypePaletteContainer';
 
 import type { BasicNodePaletteProps } from './types';
 

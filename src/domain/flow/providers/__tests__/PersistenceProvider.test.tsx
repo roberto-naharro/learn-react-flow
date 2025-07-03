@@ -4,16 +4,20 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it, jest } from '@je
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { ReactFlowProvider } from '@xyflow/react';
 
-import { ReactFlowInstanceMockFactory } from '../../../../__mocks__/ReactFlow/ReactFlowInstanceMock';
+import { useNodesContext } from '@domain-flow/hooks/useDiagramData';
+import { DiagramDataProvider } from '@domain-flow/providers/DiagramDataProvider';
+
+import { usePersistenceContext } from '@domain-layer-manager/hooks/usePersistenceContext';
+import { PersistenceProvider } from '@domain-layer-manager/providers/PersistenceProvider';
+
+import { _reactFlowMockBuilders } from '../../../../../__mocks__/@xyflow/react';
 import { localStorageMock } from '../../../../__mocks__/window/localStorageMock';
-import { usePersistenceContext } from '../../../layer-manager/hooks/usePersistenceContext';
-import { PersistenceProvider } from '../../../layer-manager/providers/PersistenceProvider';
-import { useNodesContext } from '../../hooks/useDiagramData';
-import { DiagramDataProvider } from '../DiagramDataProvider';
+
+jest.unmock('@xyflow/react');
 
 describe('PersistenceProvider', () => {
   let originalLocalStorage: Storage;
-  let ReactFlowInstanceMock: ReturnType<typeof ReactFlowInstanceMockFactory>;
+  let ReactFlowInstanceMock: ReturnType<typeof _reactFlowMockBuilders.ReactFlowInstance>;
 
   // Components defined within the test scope
   const TestButtons = () => {
@@ -88,7 +92,7 @@ describe('PersistenceProvider', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     localStorageMock._clearAllMocks();
-    ReactFlowInstanceMock = ReactFlowInstanceMockFactory({
+    ReactFlowInstanceMock = _reactFlowMockBuilders.ReactFlowInstance({
       nodes: [{ id: 'test-node', position: { x: 100, y: 100 }, data: { label: 'Test' } }],
       edges: [{ id: 'test-edge', source: 'test-node', target: 'other-node' }],
       viewport: { x: 0, y: 0, zoom: 1 },
@@ -122,7 +126,7 @@ describe('PersistenceProvider', () => {
 
   it('should restore flow state from localStorage', async () => {
     // No data in ReactFlowInstanceMock
-    ReactFlowInstanceMock = ReactFlowInstanceMockFactory();
+    ReactFlowInstanceMock = _reactFlowMockBuilders.ReactFlowInstance();
 
     // Set up test data in localStorage
     const testData = {

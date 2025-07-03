@@ -1,13 +1,10 @@
 import { describe, expect, it, jest } from '@jest/globals';
 import { render, screen } from '@testing-library/react';
 
-import { reactFlowMock } from '../../../../../__mocks__/ReactFlow/ReactFlowInstanceMock';
-import { ControlPanel } from '../ControlPanel';
+import { ControlPanel } from '@domain-layer-manager/components/ControlPanel/ControlPanel';
 
 // Mock dependencies
-jest.mock('@xyflow/react', () => ({
-  Panel: reactFlowMock.Panel,
-}));
+jest.mock('@xyflow/react');
 
 jest.mock('../NodePalette/NodePalette', () => ({
   NodePalette: () => <div data-testid="mock-node-palette">Node Palette Mock</div>,
@@ -18,7 +15,10 @@ describe('ControlPanel', () => {
     render(<ControlPanel />);
 
     // Check for panel wrapper - updated to use the correct testid
-    expect(screen.getByTestId('mock-panel-top-left')).toBeInTheDocument();
+    const panelElement = screen.getByTestId('mock-panel');
+    expect(panelElement).toBeInTheDocument();
+    // expect to have the correct data attribute ' for positioning
+    expect(panelElement).toHaveAttribute('data-position', 'top-left');
 
     // Check for title
     expect(screen.getByText('Flow Diagram')).toBeInTheDocument();

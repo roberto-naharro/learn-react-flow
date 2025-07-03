@@ -3,8 +3,11 @@ import * as React from 'react';
 import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { renderHook } from '@testing-library/react';
 
-import { DragAndDropContext, type DragAndDropContextType } from '../../context/DragAndDropContext';
-import { useDragAndDropContext } from '../useDragAndDropContext';
+import {
+  DragAndDropContext,
+  type DragAndDropContextType,
+} from '@domain-layer-manager/context/DragAndDropContext';
+import { useDragAndDropContext } from '@domain-layer-manager/hooks/useDragAndDropContext';
 
 describe('useDragAndDropContext', () => {
   const originalConsoleError = console.error;

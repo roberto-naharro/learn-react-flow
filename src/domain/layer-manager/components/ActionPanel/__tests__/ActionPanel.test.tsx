@@ -1,12 +1,13 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { fireEvent, render, screen } from '@testing-library/react';
 
-import { RouterProvider } from '../../../../../router/provider';
+import { ActionPanel } from '@domain-layer-manager/components/ActionPanel/ActionPanel';
 import {
   PersistenceContext,
   type PersistenceContextType,
-} from '../../../context/PersistenceContext';
-import { ActionPanel } from '../ActionPanel';
+} from '@domain-layer-manager/context/PersistenceContext';
+
+import { RouterProvider } from '@router/provider';
 
 describe('ActionPanel', () => {
   // Mock persistence context values and functions

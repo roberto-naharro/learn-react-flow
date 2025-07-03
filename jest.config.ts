@@ -33,8 +33,15 @@ const config: Config = {
   // Set cache directory to improve performance
   cacheDirectory: '<rootDir>/.jest-cache',
 
-  // Mock static assets like SVG files
+  // Mock static assets like SVG files and handle path aliases
   moduleNameMapper: {
+    // Path aliases
+    '^@shared/(.*)$': '<rootDir>/src/shared/$1',
+    '^@domain-flow/(.*)$': '<rootDir>/src/domain/flow/$1',
+    '^@domain-layer-manager/(.*)$': '<rootDir>/src/domain/layer-manager/$1',
+    '^@domain-map-viewer/(.*)$': '<rootDir>/src/domain/map-viewer/$1',
+    '^@router/(.*)$': '<rootDir>/src/router/$1',
+    // Static asset mocks
     '\\.svg$': '<rootDir>/src/__mocks__/fileMock.ts',
     '\\.css$': '<rootDir>/src/__mocks__/styleMock.ts',
     '\\.(jpg|jpeg|png|gif|webp|ico)$': '<rootDir>/src/__mocks__/fileMock.ts',

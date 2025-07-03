@@ -1,7 +1,9 @@
 // Import workers using Vite's ?worker syntax
+import type { WorkerManager } from '@shared/workers/types';
+import { createWorkerManager } from '@shared/workers/workerManager';
+
 import GeoJsonWorker from './geoJsonWorker.ts?worker';
 import IntersectionWorker from './intersectionWorker.ts?worker';
-import { createWorkerManager } from '../../../shared/workers/workerManager';
 
 import type {
   ComputeIntersectionMessage,
@@ -9,7 +11,6 @@ import type {
   GeoJsonWorkerResponse,
   IntersectionWorkerResponse,
 } from './types';
-import type { WorkerManager } from '../../../shared/workers/types';
 import type { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
 
 /**

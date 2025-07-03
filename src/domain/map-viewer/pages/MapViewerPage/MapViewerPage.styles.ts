@@ -1,6 +1,6 @@
-import { buttonStyles } from '../../../../shared/styles/buttons';
-import { panelStyles } from '../../../../shared/styles/panels';
-import { createStyles } from '../../../../shared/styles/theme';
+import { buttonStyles } from '@shared/styles/buttons';
+import { panelStyles } from '@shared/styles/panels';
+import { createStyles } from '@shared/styles/theme';
 
 export const mapViewerPageStyles = createStyles(
   (theme) =>

@@ -1,7 +1,8 @@
 import { describe, expect, it } from '@jest/globals';
 
-import { theme } from '../../../../../../shared/styles/theme';
-import { nodePaletteStyles } from '../NodePalette.styles';
+import { theme } from '@shared/styles/theme';
+
+import { nodePaletteStyles } from '@domain-layer-manager/components/ControlPanel/NodePalette/NodePalette.styles';
 
 describe('NodePalette Styles', () => {
   describe('container styles', () => {

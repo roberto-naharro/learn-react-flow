@@ -1,8 +1,10 @@
 import { Panel } from '@xyflow/react';
 
+import { usePersistenceContext } from '@domain-layer-manager/hooks/usePersistenceContext';
+
+import { useRouter } from '@router/hooks';
+
 import { actionPanelStyles } from './ActionPanel.styles';
-import { useRouter } from '../../../../router/hooks';
-import { usePersistenceContext } from '../../hooks/usePersistenceContext';
 
 type StyledButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 const StyledButton = ({ ...props }: StyledButtonProps) => {

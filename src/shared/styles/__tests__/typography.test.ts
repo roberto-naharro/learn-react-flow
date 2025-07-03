@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 
-import { typographyStyles } from '../typography';
+import { typographyStyles } from '@shared/styles/typography';
 
 describe('General typographyStyles', () => {
   it('should export heading, subheading, and instructions styles', () => {

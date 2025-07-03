@@ -1,6 +1,7 @@
-import { nodeStyles as sharedNodeStyles } from '../../../../../../shared/styles/nodes';
-import { createStyles } from '../../../../../../shared/styles/theme';
-import { nodeStyles } from '../../nodeComponentStyles';
+import { nodeStyles as sharedNodeStyles } from '@shared/styles/nodes';
+import { createStyles } from '@shared/styles/theme';
+
+import { nodeStyles } from '@domain-flow/node/components/nodeComponentStyles';
 
 export const sourceCustomNodeStyles = createStyles((theme) => ({
   container: {

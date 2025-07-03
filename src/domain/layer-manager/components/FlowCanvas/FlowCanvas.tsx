@@ -9,13 +9,15 @@ import {
   ReactFlow,
 } from '@xyflow/react';
 
+import { useEdgesContext, useNodesContext } from '@domain-flow/hooks/useDiagramData';
+import { getNodeTypes } from '@domain-flow/node/components/nodeTypes';
+
+import { ActionPanel } from '@domain-layer-manager/components/ActionPanel/ActionPanel';
+import { ControlPanel } from '@domain-layer-manager/components/ControlPanel/ControlPanel';
+import { useDragDrop } from '@domain-layer-manager/hooks/useDragDrop';
+import { usePersistenceContext } from '@domain-layer-manager/hooks/usePersistenceContext';
+
 import { flowCanvasStyles } from './FlowCanvas.styles';
-import { useEdgesContext, useNodesContext } from '../../../flow/hooks/useDiagramData';
-import { getNodeTypes } from '../../../flow/node/components/nodeTypes';
-import { useDragDrop } from '../../hooks/useDragDrop';
-import { usePersistenceContext } from '../../hooks/usePersistenceContext';
-import { ActionPanel } from '../ActionPanel/ActionPanel';
-import { ControlPanel } from '../ControlPanel/ControlPanel';
 
 export const FlowCanvas = () => {
   const styles = flowCanvasStyles;

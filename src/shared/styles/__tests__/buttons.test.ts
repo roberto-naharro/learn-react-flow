@@ -1,7 +1,7 @@
 import { describe, expect, it } from '@jest/globals';
 
-import { buttonStyles } from '../buttons';
-import { theme } from '../theme';
+import { buttonStyles } from '@shared/styles/buttons';
+import { theme } from '@shared/styles/theme';
 
 describe('Button Styles', () => {
   describe('base styles', () => {

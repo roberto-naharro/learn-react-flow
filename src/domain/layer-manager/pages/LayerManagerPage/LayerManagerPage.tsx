@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react';
 
-import { FlowCanvas } from '../../components/FlowCanvas/FlowCanvas';
-import { useMapDataSync } from '../../hooks/useMapDataSync';
-import { DragAndDropProvider } from '../../providers/DragAndDropProvider';
-import { PersistenceProvider } from '../../providers/PersistenceProvider';
+import { FlowCanvas } from '@domain-layer-manager/components/FlowCanvas/FlowCanvas';
+import { useMapDataSync } from '@domain-layer-manager/hooks/useMapDataSync';
+import { DragAndDropProvider } from '@domain-layer-manager/providers/DragAndDropProvider';
+import { PersistenceProvider } from '@domain-layer-manager/providers/PersistenceProvider';
 
 const LayerManagerPageInner = () => {
   const { syncMapDataToNodes } = useMapDataSync();

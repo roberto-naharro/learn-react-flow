@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
 
-import type { MapWorkerManager } from '../mapWorkerManager';
+import type { MapWorkerManager } from '@domain-map-viewer/workers/mapWorkerManager';
 
 // Exportable mock functions for testing assertions
 export const mockFetchGeoJson = jest.fn();

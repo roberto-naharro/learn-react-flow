@@ -14,6 +14,16 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
+    /* Path Aliases */
+    "baseUrl": ".",
+    "paths": {
+      "@shared/*": ["src/shared/*"],
+      "@domain-flow/*": ["src/domain/flow/*"],
+      "@domain-layer-manager/*": ["src/domain/layer-manager/*"],
+      "@domain-map-viewer/*": ["src/domain/map-viewer/*"],
+      "@router/*": ["src/router/*"]
+    },
+
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
@@ -28,6 +38,7 @@
     "**/*.test.ts",
     "**/*.test.tsx",
     "**/__tests__/**/*",
+    "**/__mocks__/**/*",
     "jest.config.ts",
     "src/__mocks__/**/*.ts"
   ],

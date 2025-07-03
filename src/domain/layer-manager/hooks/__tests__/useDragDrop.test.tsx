@@ -2,20 +2,23 @@ import * as React from 'react';
 
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { renderHook } from '@testing-library/react';
+import * as reactFlow from '@xyflow/react';
 
-import { reactFlowMock } from '../../../../__mocks__/ReactFlow/ReactFlowInstanceMock';
 import {
   buildDiagramDataContextMock,
   mockAddNode,
-} from '../../../flow/context/__mocks__/DiagramDataContextMock';
-import { DiagramDataContext } from '../../../flow/context/DiagramDataContext';
-import { DragAndDropContext, type DragAndDropContextType } from '../../context/DragAndDropContext';
-import { useDragDrop } from '../useDragDrop';
+} from '@domain-flow/context/__mocks__/DiagramDataContextMock';
+import { DiagramDataContext } from '@domain-flow/context/DiagramDataContext';
 
-// Mock ReactFlow hook
-jest.mock('@xyflow/react', () => ({
-  useReactFlow: reactFlowMock.useReactFlow,
-}));
+import {
+  DragAndDropContext,
+  type DragAndDropContextType,
+} from '@domain-layer-manager/context/DragAndDropContext';
+import { useDragDrop } from '@domain-layer-manager/hooks/useDragDrop';
+
+const mockedReactFlow = reactFlow as jest.Mocked<typeof reactFlow>;
+
+jest.mock('@xyflow/react');
 
 describe('useDragDrop', () => {
   // Create wrapper with required contexts
@@ -37,6 +40,9 @@ describe('useDragDrop', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    mockedReactFlow.useReactFlow.mockReturnValue({
+      screenToFlowPosition: jest.fn(({ x, y }) => ({ x, y })),
+    } satisfies Partial<typeof reactFlow.useReactFlow> as any);
   });
 
   it('should provide onDragOver and onDrop functions', () => {

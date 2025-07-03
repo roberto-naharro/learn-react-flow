@@ -1,4 +1,4 @@
-import { createStyles } from '../../../../shared/styles/theme';
+import { createStyles } from '@shared/styles/theme';
 
 export const layerManagerPageStyles = createStyles((theme) => ({
   container: {

@@ -1,8 +1,8 @@
-import { buttonStyles } from '../../../../shared/styles/buttons';
-import { formStyles } from '../../../../shared/styles/forms';
-import { panelStyles } from '../../../../shared/styles/panels';
-import { createStyles } from '../../../../shared/styles/theme';
-import { typographyStyles } from '../../../../shared/styles/typography';
+import { buttonStyles } from '@shared/styles/buttons';
+import { formStyles } from '@shared/styles/forms';
+import { panelStyles } from '@shared/styles/panels';
+import { createStyles } from '@shared/styles/theme';
+import { typographyStyles } from '@shared/styles/typography';
 
 export const controlPanelStyles = createStyles((theme) => ({
   container: {

@@ -1,5 +1,5 @@
-import { isNodePaletteTypeProps } from '../types';
-import { type NodePaletteTypeProps } from '../types';
+import { isNodePaletteTypeProps } from '@domain-layer-manager/components/ControlPanel/NodePalette/NodeTypes/types';
+import { type NodePaletteTypeProps } from '@domain-layer-manager/components/ControlPanel/NodePalette/NodeTypes/types';
 
 export interface BasicNodePaletteProps extends NodePaletteTypeProps {
   type: 'input' | 'default' | 'output';

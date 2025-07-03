@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 
 import { addEdge, useEdgesState, useNodesState } from '@xyflow/react';
 
-import { DiagramDataContext } from '../context/DiagramDataContext';
+import { DiagramDataContext } from '@domain-flow/context/DiagramDataContext';
 
 import type { Connection, Edge, Node } from '@xyflow/react';
 

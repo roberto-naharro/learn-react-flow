@@ -1,9 +1,11 @@
-import { describe, expect, it } from '@jest/globals';
+import { describe, expect, it, jest } from '@jest/globals';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ReactFlowProvider } from '@xyflow/react';
 
-import { useDiagramData } from '../../hooks/useDiagramData';
-import { DiagramDataProvider } from '../DiagramDataProvider';
+import { useDiagramData } from '@domain-flow/hooks/useDiagramData';
+import { DiagramDataProvider } from '@domain-flow/providers/DiagramDataProvider';
+
+jest.unmock('@xyflow/react');
 
 describe('DiagramDataProvider', () => {
   // Inner component that uses the unified diagram data context

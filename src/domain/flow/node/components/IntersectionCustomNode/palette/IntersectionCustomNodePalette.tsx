@@ -1,8 +1,10 @@
+import type { PartialKeys } from '@shared/types/utility';
+
+import NodeTypePaletteContainer from '@domain-layer-manager/components/ControlPanel/NodePalette/NodeTypes/NodeTypePaletteContainer';
+
 import { intersectionCustomNodePaletteStyles } from './IntersectionCustomNodePalette.styles';
-import NodeTypePaletteContainer from '../../../../../layer-manager/components/ControlPanel/NodePalette/NodeTypes/NodeTypePaletteContainer';
 
 import type { IntersectionCustomNodePaletteProps } from './types';
-import type { PartialKeys } from '../../../../../../shared/types/utility';
 
 const IntersectionCustomNodePalette = ({
   label = 'Intersection',

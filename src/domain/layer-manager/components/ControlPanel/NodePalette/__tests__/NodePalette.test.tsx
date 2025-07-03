@@ -1,9 +1,8 @@
 import { describe, expect, it, jest } from '@jest/globals';
 import { fireEvent, render, screen } from '@testing-library/react';
 
-import { NodePalette } from '../NodePalette';
-
-import type { NodePaletteTypes } from '../NodeTypes/types';
+import { NodePalette } from '@domain-layer-manager/components/ControlPanel/NodePalette/NodePalette';
+import type { NodePaletteTypes } from '@domain-layer-manager/components/ControlPanel/NodePalette/NodeTypes/types';
 
 describe('NodePalette component', () => {
   const renderBasicNodeNodePalette = () => {

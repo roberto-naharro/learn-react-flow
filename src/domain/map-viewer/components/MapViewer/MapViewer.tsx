@@ -3,10 +3,11 @@ import { useMemo } from 'react';
 import DeckGL from '@deck.gl/react';
 import { Map } from 'react-map-gl/maplibre';
 
+import { INITIAL_VIEW_STATE, MAP_STYLE_URL } from '@domain-map-viewer/constants';
+import { useDeckLayers } from '@domain-map-viewer/hooks/useDeckLayers';
+import { useMapDataProcessor } from '@domain-map-viewer/providers/MapDataProcessor';
+
 import { mapViewerStyles } from './MapViewer.styles';
-import { INITIAL_VIEW_STATE, MAP_STYLE_URL } from '../../constants';
-import { useDeckLayers } from '../../hooks/useDeckLayers';
-import { useMapDataProcessor } from '../../providers/MapDataProcessor';
 
 import type { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
 
